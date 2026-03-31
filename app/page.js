@@ -182,12 +182,12 @@ const visibleCharacters = [
           uppercase tracking-[0.18em] text-white
           backdrop-blur-[2px] transition duration-300
           hover:bg-white/10 hover:border-white/60
-          hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] absolute left-1/2 -translate-x-1/2 top-[525px] z-100`}
+          hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] absolute left-1/2 -translate-x-1/2 top-[75.5%] z-100`}
         >
           Jetzt eintauchen
         </button>
         <div
-          className={`text-center absolute left-1/2 -translate-x-1/2 text-white top-158 text-[16px] uppercase tracking-[-3%] leading-[100%] space-y-1.5 z-2`}
+          className="text-center absolute left-1/2 -translate-x-1/2 text-white top-[91.5%] text-[16px] uppercase tracking-[-3%] leading-[100%] space-y-1.5 z-2"
         >
           <p>Magie ist real. Vertrauen ist tödlich.</p>
           <p className="text-[12px]">Und Liebe kann dein Untergang sein.</p>
@@ -271,13 +271,12 @@ transition duration-300`}
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
                   >
-                    Taletopia was once a peaceful land of stories, music, and
-                    old magic. Beneath its beauty, however, ancient forces stir
-                    again, threatening to drag its people into a fate they
-                    cannot outrun.
-                  </p>
+                    Taletopia ist die Stadt der Feen und gilt als ihr Herz. Die Stadt liegt auf einem Hügel und wird von einem großen Schloss überragt. Ein Wasserfall fließt mitten durch die Stadt und fließt den Fluss, der durch die vielen Häuser und Brücken führt.
+                    Überall ist es ruhig und harmonisch. Es gibt wunderschöne Märkte und die Natur ist magisch.
+                    Regiert wird Taletopia von einem König, der über das Gleichgewicht der Feen und der anderen Seite wacht.
+                                      </p>
 
-                  <div className="mt-8">
+                  {/* <div className="mt-8">
                     <h4 className={`${ibmPlexSerif.className} text-xl`}>
                       Highlights
                     </h4>
@@ -288,7 +287,7 @@ transition duration-300`}
                       <li>• Ruins hidden beneath the forest veil</li>
                       <li>• Castle roads watched by forgotten magic</li>
                     </ul>
-                  </div>
+                  </div> */}
 
                   <div className="mt-8 flex gap-4">
                     <button
