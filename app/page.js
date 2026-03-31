@@ -201,9 +201,11 @@ const visibleCharacters = [
         <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black to-transparent z-[1]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent z-[1]" />
         <div className="absolute top-[27.5%] flex flex-col items-center z-10">
-          <h1 className="text-[120px] leading-[119px] tracking-[-5%] text-white min-w-[782px] max-w-[782px]">
-            Eine neue Welt wartet auf dich.
-          </h1>
+            <h1 className="text-[clamp(72px,8vw,120px)] leading-[0.95] tracking-[-0.05em] text-white w-[min(90vw,782px)]">
+  Eine neue Welt
+  <br />
+  wartet auf dich.
+</h1>
           <button
             className={`${ibmPlexSerif.className}
           border border-white/30 bg-black/20 px-10 py-4 text-[15px]
