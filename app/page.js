@@ -725,7 +725,7 @@ const visibleCharacters = [
                     className="object-contain transition duration-100 group-hover:brightness-110"
                   />
 
-                  <span className="absolute inset-0 flex items-center justify-center text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  <span className="absolute inset-0 z-100 flex items-center justify-center text-[14px] font-semibold text-[#2b1605] transition duration-100">
                     View Taletopia
                   </span>
                 </div>
