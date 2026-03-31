@@ -734,7 +734,7 @@ const visibleCharacters = [
           </button>
 
               <button
-            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute left-[20%] top-[13%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
             onClick={() => setOpenLocation("witraliria")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
@@ -754,7 +754,7 @@ const visibleCharacters = [
           </button>
 
               <button
-            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute left-[9%] top-[78%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
             onClick={() => setOpenLocation("erzklamm")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
@@ -775,7 +775,7 @@ const visibleCharacters = [
 
 
               <button
-            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute left-[34%] top-[67%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
             onClick={() => setOpenLocation("eldarun")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
@@ -796,7 +796,7 @@ const visibleCharacters = [
 
 
               <button
-            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute left-[72%] top-[79.5%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
             onClick={() => setOpenLocation("dammerfels")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
@@ -817,7 +817,7 @@ const visibleCharacters = [
 
 
               <button
-            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute left-[68%] top-[8%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
             onClick={() => setOpenLocation("aridryan")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
