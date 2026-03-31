@@ -171,7 +171,7 @@ const visibleCharacters = [
             Heartbeat
           </h1>
           <span
-            className={`block text-[20px] tracking-[95%] ${font2.className} mt-8`}
+            className={`block text-[20px] tracking-[0.95em] ${font2.className} mt-8`}
           >
             Die andere Seite
           </span>
@@ -200,11 +200,9 @@ const visibleCharacters = [
         <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-x-0 top-0 h-46 bg-gradient-to-b from-black to-transparent z-[1]" />
         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black to-transparent z-[1]" />
-        <div className="w-[782px]">
-          <h1 className="text-[120px] leading-[119px] tracking-[-5%] text-white translate-y-[180px]">
+          <h1 className="text-[120px] leading-[119px] tracking-[-5%] text-white translate-y-[180px] w-[782px]">
             Eine neue Welt wartet auf dich.
           </h1>
-        </div>
         <div className="absolute top-[475px] flex flex-col items-center gap-5 z-10">
           <button
             className={`${ibmPlexSerif.className}
