@@ -717,17 +717,18 @@ const visibleCharacters = [
                 className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
                 onClick={() => setOpenLocation("taletopia")}
               >
-                <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+               <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+                  <div className="relative z-[1000] flex h-full w-full items-center justify-center">
+                    <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                      View Taletopia
+                    </span>
+                  </div>
                   <Image
                     src="/scroll-plate.svg"
                     alt=""
                     fill
                     className="object-contain transition duration-100 group-hover:brightness-110"
                   />
-
-                  <span className="absolute inset-0 z-100 flex items-center justify-center text-[14px] font-semibold text-[#2b1605] transition duration-100">
-                    View Taletopia
-                  </span>
                 </div>
               </button>
 
