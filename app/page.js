@@ -733,85 +733,108 @@ const visibleCharacters = [
             </div>
           </button>
 
-              <div className="group absolute left-[20%] top-[12.5%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
-               onClick={() => setOpenLocation("witraliria")}>
-                <div className="relative h-[44px] w-[193px] transition duration-300 group-hover:scale-105">
-                  <Image
-                    src="/scroll-plate.svg"
-                    alt=""
-                    fill
-                    className="object-contain transition duration-300 group-hover:brightness-110"
-                  />
-
-                  <span className="absolute inset-0 flex items-center justify-center text-[14px] font-semibold text-[#2b1605] transition duration-300">
-                    View Witraliria
-                  </span>
-                </div>
+              <button
+            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("witraliria")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Witraliria
+                </span>
               </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
 
-              <div className="group absolute left-[9%] top-[78%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
-              onClick={() => setOpenLocation("erzklamm")}>
-                <div className="relative h-[44px] w-[193px] transition duration-300 group-hover:scale-105">
-                  <Image
-                    src="/scroll-plate.svg"
-                    alt=""
-                    fill
-                    className="object-contain transition duration-300 group-hover:brightness-110"
-                  />
-
-                  <span className="absolute inset-0 flex items-center justify-center text-[14px] font-semibold text-[#2b1605] transition duration-300">
-                    View Erzklamm
-                  </span>
-                </div>
+              <button
+            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("erzklamm")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Erzklamm
+                </span>
               </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
 
-              <div className="group absolute left-[34%] top-[66.5%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
-              onClick={() => setOpenLocation("eldarun")}>
-                <div className="relative h-[44px] w-[193px] transition duration-300 group-hover:scale-105">
-                  <Image
-                    src="/scroll-plate.svg"
-                    alt=""
-                    fill
-                    className="object-contain transition duration-300 group-hover:brightness-110"
-                  />
 
-                  <span className="absolute inset-0 flex items-center justify-center text-[14px] font-semibold text-[#2b1605] transition duration-300">
-                    View Eldarun
-                  </span>
-                </div>
+              <button
+            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("eldarun")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Eldarun
+                </span>
               </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
 
-              <div className="group absolute left-[72%] top-[79%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
-              onClick={() => setOpenLocation("dammerfels")}>
-                <div className="relative h-[44px] w-[193px] transition duration-300 group-hover:scale-105">
-                  <Image
-                    src="/scroll-plate.svg"
-                    alt=""
-                    fill
-                    className="object-contain transition duration-300 group-hover:brightness-110"
-                  />
 
-                  <span className="absolute inset-0 flex items-center justify-center text-[14px] font-semibold text-[#2b1605] transition duration-300">
-                    View Dämmerfels
-                  </span>
-                </div>
+              <button
+            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("dammerfels")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Dämmerfels
+                </span>
               </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
 
-              <div className="group absolute left-[68%] top-[8%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
-              onClick={() => setOpenLocation("aridryan")}>
-                <div className="relative h-[44px] w-[193px] transition duration-300 group-hover:scale-105">
-                  <Image
-                    src="/scroll-plate.svg"
-                    alt=""
-                    fill
-                    className="object-contain transition duration-300 group-hover:brightness-110"
-                  />
 
-                  <span className="absolute inset-0 flex items-center justify-center text-[14px] font-semibold text-[#2b1605] transition duration-300">
-                    View Aridryan
-                  </span>
-                </div>
+              <button
+            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("aridryan")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Aridryan
+                </span>
               </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
             </div>
           </div>
         </div>
