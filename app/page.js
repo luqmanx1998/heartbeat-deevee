@@ -196,21 +196,21 @@ const visibleCharacters = [
       {/* <section className="bg-black h-[15px] w-full">
       &nbsp;
     </section> */}
-      <section className="relative bg-[url('/taletopia.png')] h-screen bg-cover bg-center bg-no-repeat text-center flex justify-center z-[2]">
+      <section className="relative bg-[url('/taletopia.png')] h-screen bg-cover bg-center bg-no-repeat flex text-center justify-center z-[2]">
         <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black to-transparent z-[1]" />
-        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black to-transparent z-[1]" />
-          <h1 className="text-[120px] leading-[119px] tracking-[-5%] text-white translate-y-[180px] w-[782px]">
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent z-[1]" />
+        <div className="absolute top-[27.5%] flex flex-col items-center z-10">
+          <h1 className="text-[120px] leading-[119px] tracking-[-5%] text-white min-w-[782px] max-w-[782px]">
             Eine neue Welt wartet auf dich.
           </h1>
-        <div className="absolute top-[68.5%] flex flex-col items-center gap-5 z-10">
           <button
             className={`${ibmPlexSerif.className}
           border border-white/30 bg-black/20 px-10 py-4 text-[15px]
           uppercase tracking-[0.18em] text-white
           backdrop-blur-[2px] transition duration-300
           hover:bg-white/10 hover:border-white/60
-          hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] cursor-pointer`}
+          hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] cursor-pointer mt-8`}
           >
             Enter the World
           </button>
@@ -220,7 +220,7 @@ const visibleCharacters = [
           inline-flex items-center gap-2 text-[14px] uppercase tracking-[0.28em]
           text-white/85 transition hover:bg-white/10 hover:border-white/60
             hover:shadow-[0_0_25px_rgba(255,255,255,0.25)]
-          transition duration-300 cursor-pointer`}
+          transition duration-300 cursor-pointer mt-5`}
                     >
                       Jetzt eintauchen
           </button>
