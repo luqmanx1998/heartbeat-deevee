@@ -141,24 +141,13 @@ function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
                   >
-                    Taletopia was once a peaceful land of stories, music, and
-                    old magic. Beneath its beauty, however, ancient forces stir
-                    again, threatening to drag its people into a fate they
-                    cannot outrun.
+                   
+Erzklamm ist die Stadt der Zwerge und liegt tief verborgen in einem riesigen Berg. Die Stadt erstreckt sich durch gewaltige Höhlen, verbunden durch Brücken, Tunnel und Wasserläufe.
+Überall arbeiten Zwerge an Kristallen, Erz und Stein. Feuerstellen und Schmieden leuchten in der Dunkelheit.
+Die Zwerge sind fleißig, aber auch vorsichtig. Fremden begegnen sie mit Misstrauen und halten sich lieber unter sich.
+
                   </p>
 
-                  <div className="mt-8">
-                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
-                      Highlights
-                    </h4>
-                    <ul
-                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
-                    >
-                      <li>• The great lake of mirrored skies</li>
-                      <li>• Ruins hidden beneath the forest veil</li>
-                      <li>• Castle roads watched by forgotten magic</li>
-                    </ul>
-                  </div>
 
                   <div className="mt-8 flex gap-4">
                     <button
@@ -219,24 +208,11 @@ function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
                   >
-                    Taletopia was once a peaceful land of stories, music, and
-                    old magic. Beneath its beauty, however, ancient forces stir
-                    again, threatening to drag its people into a fate they
-                    cannot outrun.
+                    Eldarun ist die Stadt der Elfen und von einer riesigen Mauer umgeben, die seit tausenden Jahren steht. Deshalb nennt man sie auch „die Stadt, die niemals fällt“.
+Die Stadt ist geprägt von hohen, eleganten Gebäuden und einem großen Schloss im Zentrum.
+Elfen halten sich für überlegen und bleiben meist unter sich. Fremden begegnen sie kühl und abweisend.
                   </p>
 
-                  <div className="mt-8">
-                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
-                      Highlights
-                    </h4>
-                    <ul
-                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
-                    >
-                      <li>• The great lake of mirrored skies</li>
-                      <li>• Ruins hidden beneath the forest veil</li>
-                      <li>• Castle roads watched by forgotten magic</li>
-                    </ul>
-                  </div>
 
                   <div className="mt-8 flex gap-4">
                     <button
@@ -297,24 +273,12 @@ function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
                   >
-                    Taletopia was once a peaceful land of stories, music, and
-                    old magic. Beneath its beauty, however, ancient forces stir
-                    again, threatening to drag its people into a fate they
-                    cannot outrun.
+                    
+Witraliria ist die Stadt der Hexen und Hexenmeister. Sie liegt auf einem Hügel und ist von Wasserfällen und Flüssen umgeben.
+Die Stadt ist lebendig und offen. Neben Hexen leben auch viele andere Wesen hier friedlich zusammen.
+Hexen halten sich meist aus Konflikten heraus und bleiben neutral.
                   </p>
 
-                  <div className="mt-8">
-                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
-                      Highlights
-                    </h4>
-                    <ul
-                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
-                    >
-                      <li>• The great lake of mirrored skies</li>
-                      <li>• Ruins hidden beneath the forest veil</li>
-                      <li>• Castle roads watched by forgotten magic</li>
-                    </ul>
-                  </div>
 
                   <div className="mt-8 flex gap-4">
                     <button
@@ -375,24 +339,11 @@ function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
                   >
-                    Taletopia was once a peaceful land of stories, music, and
-                    old magic. Beneath its beauty, however, ancient forces stir
-                    again, threatening to drag its people into a fate they
-                    cannot outrun.
+                    Aridryan ist die Stadt der Dryaden und von blühenden Gärten und Wasserfällen umgeben.
+Dort leben nur Frauen, ein eigentlich friedliches Volk, das eng mit der Natur verbunden ist.
+Die Königin jedoch gilt als unberechenbar. Sie hasst die Feen und lässt fremde Späher oft verfolgen oder töten.
                   </p>
 
-                  <div className="mt-8">
-                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
-                      Highlights
-                    </h4>
-                    <ul
-                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
-                    >
-                      <li>• The great lake of mirrored skies</li>
-                      <li>• Ruins hidden beneath the forest veil</li>
-                      <li>• Castle roads watched by forgotten magic</li>
-                    </ul>
-                  </div>
 
                   <div className="mt-8 flex gap-4">
                     <button
@@ -453,24 +404,10 @@ function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
                   >
-                    Taletopia was once a peaceful land of stories, music, and
-                    old magic. Beneath its beauty, however, ancient forces stir
-                    again, threatening to drag its people into a fate they
-                    cannot outrun.
+                    Dämmerfels ist die Stadt der Vampire und liegt im verbotenen Distrikt, eingeschlossen von einer magischen Mauer.
+Die Stadt besteht aus einer düsteren Burg hoch auf einem Felsen, umgeben von Nebel und toten Wäldern.
+Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierher und noch seltener kehren sie zurück.
                   </p>
-
-                  <div className="mt-8">
-                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
-                      Highlights
-                    </h4>
-                    <ul
-                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
-                    >
-                      <li>• The great lake of mirrored skies</li>
-                      <li>• Ruins hidden beneath the forest veil</li>
-                      <li>• Castle roads watched by forgotten magic</li>
-                    </ul>
-                  </div>
 
                   <div className="mt-8 flex gap-4">
                     <button
