@@ -2,6 +2,22 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { IBM_Plex_Serif } from "next/font/google";
+import localFont from "next/font/local";
+
+// const ibmPlexSerif = IBM_Plex_Serif({
+//   subsets: ["latin"],
+//   weight: ["400", "500", "600", "700"],
+// });
+
+// const segamoriz = localFont({
+//   src: "../fonts/Segamoriz.woff2",
+// });
+
+const font2 = localFont({
+  src: "../fonts/NeueMontreal-Regular.woff2",
+});
+
 
 export default function AlbumLightbox({
   isOpen,

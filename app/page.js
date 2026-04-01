@@ -99,6 +99,11 @@ export default function Home() {
       },
     );
 
+    gsap.set(introLine3Ref.current, {
+      scale: 1,
+      textShadow: "0 0 0px rgba(255,255,255,0)",
+    });
+
     const tl = gsap.timeline({
       onComplete: () => {
         sessionStorage.setItem("heartbeat_intro_seen", "true");
@@ -109,58 +114,70 @@ export default function Home() {
     tl.to(introLine1Ref.current, {
       opacity: 1,
       y: 0,
-      duration: 1.1,
+      duration: 0.9,
       ease: "power3.out",
     })
       .to(introLine1Ref.current, {
         opacity: 0,
         y: -24,
-        duration: 0.8,
+        duration: 0.65,
         ease: "power2.inOut",
-        delay: 0.9,
+        delay: 0.6,
       })
       .to(
         introLine2Ref.current,
         {
           opacity: 1,
           y: 0,
-          duration: 1.15,
+          duration: 0.95,
           ease: "power3.out",
         },
-        "-=0.15",
+        "-=0.08",
       )
       .to(introLine2Ref.current, {
         opacity: 0,
         y: -24,
-        duration: 0.8,
+        duration: 0.65,
         ease: "power2.inOut",
-        delay: 1.0,
+        delay: 0.7,
       })
       .to(
         introLine3Ref.current,
         {
           opacity: 1,
           y: 0,
-          duration: 1.15,
+          duration: 0.95,
           ease: "power3.out",
         },
-        "-=0.15",
+        "-=0.08",
+      )
+      .to(
+        introLine3Ref.current,
+        {
+          scale: 1.04,
+          textShadow: "0 0 24px rgba(255,255,255,0.85)",
+          duration: 0.22,
+          ease: "power2.out",
+        },
+        "+=0.2",
       )
       .to(introLine3Ref.current, {
         opacity: 0,
-        y: -28,
-        duration: 0.9,
+        y: -30,
+        scale: 1,
+        textShadow: "0 0 0px rgba(255,255,255,0)",
+        duration: 0.75,
         ease: "power2.inOut",
-        delay: 1.0,
+        delay: 0.18,
       })
       .to(
         introOverlayRef.current,
         {
           opacity: 0,
-          duration: 1,
+          duration: 0.85,
           ease: "power2.out",
         },
-        "-=0.1",
+        "-=0.12",
       )
       .to(
         heroSectionRef.current,
@@ -176,40 +193,40 @@ export default function Home() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.75,
           ease: "power3.out",
         },
-        "-=0.45",
+        "-=0.42",
       )
       .to(
         heroTitleWrapRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 1.1,
+          duration: 1,
           ease: "power4.out",
         },
-        "-=0.35",
+        "-=0.32",
       )
       .to(
         heroButtonWrapRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.9,
+          duration: 0.8,
           ease: "power3.out",
         },
-        "-=0.55",
+        "-=0.5",
       )
       .to(
         heroCaptionRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.75,
           ease: "power3.out",
         },
-        "-=0.45",
+        "-=0.42",
       );
 
     return () => {
@@ -520,15 +537,15 @@ export default function Home() {
             <p className={`text-[18px] text-white ${ibmPlexSerif.className}`}>
               Deevee ist Autorin im Genre Dark Romantasy und Romantasy und
               erschafft Geschichten, in denen sich Liebe und Dunkelheit auf
-              faszinierende Weise begegnen. Schon seit ihrem 14. Lebensjahr widmet
-              sie sich dem Schreiben und hat seither ihre Leidenschaft für das
-              Erzählen intensiver, emotionaler und geheimnisvoller Welten stetig
-              vertieft. Ihre Geschichten laden Leserinnen und Leser dazu ein, in
-              neue magische Welten einzutauchen, in denen nichts ganz so ist, wie
-              es scheint. Wenn sie nicht schreibt, sammelt Deevee neue
-              Inspirationen für ihre nächsten Projekte und ist immer auf der Suche
-              nach Geschichten, die berühren, fesseln und lange im Gedächtnis
-              bleiben.
+              faszinierende Weise begegnen. Schon seit ihrem 14. Lebensjahr
+              widmet sie sich dem Schreiben und hat seither ihre Leidenschaft
+              für das Erzählen intensiver, emotionaler und geheimnisvoller
+              Welten stetig vertieft. Ihre Geschichten laden Leserinnen und
+              Leser dazu ein, in neue magische Welten einzutauchen, in denen
+              nichts ganz so ist, wie es scheint. Wenn sie nicht schreibt,
+              sammelt Deevee neue Inspirationen für ihre nächsten Projekte und
+              ist immer auf der Suche nach Geschichten, die berühren, fesseln
+              und lange im Gedächtnis bleiben.
             </p>
           </div>
 
