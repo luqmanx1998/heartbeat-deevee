@@ -54,8 +54,8 @@ function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
                 </div>
 
                 <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
-                  <h3 className={`${ibmPlexSerif.className} text-2xl`}></h3>
-                     Über die Stadt
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Über die Stadt
+</h3>
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
                   >
@@ -270,7 +270,7 @@ Elfen halten sich für überlegen und bleiben meist unter sich. Fremden begegnen
                 </div>
 
                 <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
-                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Über die Stadte</h3>
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Über die Stadt</h3>
 
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
