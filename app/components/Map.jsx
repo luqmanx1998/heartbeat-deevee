@@ -48,14 +48,14 @@ function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
                     <p
                       className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
                     >
-                      Wonderous City of the Fairies
+                      Die märchenhafte Stadt der Feen
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
-                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
-
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}></h3>
+                     Über die Stadt
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
                   >
@@ -130,13 +130,14 @@ function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
                     <p
                       className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
                     >
-                      Mountain City of Dwarvenkind
+                      Bergstadt des Zwergenvolkes
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
-                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Über die Stadt
+</h3>
 
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
@@ -197,13 +198,14 @@ Die Zwerge sind fleißig, aber auch vorsichtig. Fremden begegnen sie mit Misstra
                     <p
                       className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
                     >
-                      Hidden City of the Elves
+                      Die leuchtende Stadt der Elfen
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
-                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>
+Über die Stadt</h3>
 
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
@@ -262,13 +264,13 @@ Elfen halten sich für überlegen und bleiben meist unter sich. Fremden begegnen
                     <p
                       className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
                     >
-                      Magical City of the Witches
+                      Die magische Stadt der Hexen
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
-                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Über die Stadte</h3>
 
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
@@ -328,13 +330,13 @@ Hexen halten sich meist aus Konflikten heraus und bleiben neutral.
                     <p
                       className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
                     >
-                      Lush City of the Dryads
+                      Die blühende Stadt der Dryaden
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
-                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Über die Stadt</h3>
 
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
@@ -393,13 +395,13 @@ Die Königin jedoch gilt als unberechenbar. Sie hasst die Feen und lässt fremde
                     <p
                       className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
                     >
-                      Castle of the Vampires
+                      Das Schloss der Vampire
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
-                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Über die Stadt</h3>
 
                   <p
                     className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
