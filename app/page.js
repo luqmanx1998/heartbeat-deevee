@@ -292,7 +292,7 @@ export default function Home() {
     },
     {
       name: "Liv & Mia",
-      image: "/characters/livmia.png",
+      image: "/characters/livmia.jpg",
     },
     {
       name: "Zac",
@@ -301,6 +301,10 @@ export default function Home() {
     {
       name: "Chloe",
       image: "/characters/chloe.jpg",
+    },
+    {
+      name: "Sofia",
+      image: "/characters/sofia.jpg",
     },
   ];
 
