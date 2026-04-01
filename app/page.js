@@ -528,9 +528,9 @@ export default function Home() {
             alt="authorbg"
             width={450}
             height={700}
-            className="absolute top-[220px] left-[180px]"
+            className="absolute top-[220px] left-[10%]"
           />
-          <div className="absolute top-[270px] right-[150px] z-100 w-[506px] space-y-16">
+          <div className="absolute top-[270px] right-[10%] z-100 w-[506px] space-y-16">
             <h1 className="text-[80px] leading-[80px] tracking-[-5%] text-white uppercase">
               About The Author
             </h1>
