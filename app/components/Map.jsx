@@ -1,0 +1,617 @@
+import Image from "next/image";
+
+function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
+  return <section className="relative bg-black pt-20">
+        
+        {openLocation === "taletopia" && (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
+          onClick={() => setOpenLocation(null)}>
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            onClick={(e) => e.stopPropagation()}>
+              <button
+                onClick={() => setOpenLocation(null)}
+                className="absolute right-5 top-5 z-10 text-white/70 transition hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+                <div className="relative min-h-[320px]">
+                  <Image
+                    src="/taletopia.png"
+                    alt="Taletopia"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-6 left-6">
+                    <h2
+                      className={`uppercase text-5xl text-white`}
+                    >
+                      Taletopia
+                    </h2>
+                    <p
+                      className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
+                    >
+                      Wonderous City of the Fairies
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+
+                  <p
+                    className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
+                  >
+                    Taletopia ist die Stadt der Feen und gilt als ihr Herz. Die Stadt liegt auf einem Hügel und wird von einem großen Schloss überragt. Ein Wasserfall fließt mitten durch die Stadt und fließt den Fluss, der durch die vielen Häuser und Brücken führt.
+                    Überall ist es ruhig und harmonisch. Es gibt wunderschöne Märkte und die Natur ist magisch.
+                    Regiert wird Taletopia von einem König, der über das Gleichgewicht der Feen und der anderen Seite wacht.
+                                      </p>
+
+                  {/* <div className="mt-8">
+                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
+                      Highlights
+                    </h4>
+                    <ul
+                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
+                    >
+                      <li>• The great lake of mirrored skies</li>
+                      <li>• Ruins hidden beneath the forest veil</li>
+                      <li>• Castle roads watched by forgotten magic</li>
+                    </ul>
+                  </div> */}
+
+                  <div className="mt-8 flex gap-4">
+                    <button
+                      className={`${ibmPlexSerif.className} border border-white/30 bg-white/10 px-6 py-3 text-sm uppercase tracking-[0.14em] text-white transition hover:bg-white/15 cursor-pointer`}     
+                      onClick={() => {
+                        setOpenLocation(null);
+                        setAlbumLocation("taletopia");
+                      }}
+                    >
+                      View Album
+                    </button>
+                    {/* <button
+                      className={`${ibmPlexSerif.className} border border-amber-300/30 bg-amber-700/40 px-6 py-3 text-sm uppercase tracking-[0.14em] text-white transition hover:bg-amber-600/50`}
+                    >
+                      Learn More
+                    </button> */}
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        )}
+
+        {openLocation === "erzklamm" && (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
+          onClick={() => setOpenLocation(null)}>
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            onClick={(e) => e.stopPropagation()}>
+              <button
+                onClick={() => setOpenLocation(null)}
+                className="absolute right-5 top-5 z-10 text-white/70 transition hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+                <div className="relative min-h-[320px]">
+                  <Image
+                    src="/erzklamm.jpg"
+                    alt="Erzklamm"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-6 left-6">
+                    <h2
+                      className={`uppercase text-5xl text-white`}
+                    >
+                      Erzklamm
+                    </h2>
+                    <p
+                      className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
+                    >
+                      Mountain City of Dwarvenkind
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+
+                  <p
+                    className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
+                  >
+                    Taletopia was once a peaceful land of stories, music, and
+                    old magic. Beneath its beauty, however, ancient forces stir
+                    again, threatening to drag its people into a fate they
+                    cannot outrun.
+                  </p>
+
+                  <div className="mt-8">
+                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
+                      Highlights
+                    </h4>
+                    <ul
+                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
+                    >
+                      <li>• The great lake of mirrored skies</li>
+                      <li>• Ruins hidden beneath the forest veil</li>
+                      <li>• Castle roads watched by forgotten magic</li>
+                    </ul>
+                  </div>
+
+                  <div className="mt-8 flex gap-4">
+                    <button
+                      className={`${ibmPlexSerif.className} border border-white/30 bg-white/10 px-6 py-3 text-sm uppercase tracking-[0.14em] text-white transition hover:bg-white/15 cursor-pointer`}
+                      onClick={() => {
+                        setOpenLocation(null);
+                        setAlbumLocation("erzklamm");
+                      }}
+                    >
+                      View Album
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        )}
+
+        {openLocation === "eldarun" && (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
+           onClick={() => setOpenLocation(null)}>
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            onClick={(e) => e.stopPropagation()}>
+              <button
+                onClick={() => setOpenLocation(null)}
+                className="absolute right-5 top-5 z-10 text-white/70 transition hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+                <div className="relative min-h-[320px]">
+                  <Image
+                    src="/eldarun.jpg"
+                    alt="Eldarun"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-6 left-6">
+                    <h2
+                      className={`uppercase text-5xl text-white`}
+                    >
+                      Eldarun
+                    </h2>
+                    <p
+                      className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
+                    >
+                      Hidden City of the Elves
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+
+                  <p
+                    className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
+                  >
+                    Taletopia was once a peaceful land of stories, music, and
+                    old magic. Beneath its beauty, however, ancient forces stir
+                    again, threatening to drag its people into a fate they
+                    cannot outrun.
+                  </p>
+
+                  <div className="mt-8">
+                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
+                      Highlights
+                    </h4>
+                    <ul
+                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
+                    >
+                      <li>• The great lake of mirrored skies</li>
+                      <li>• Ruins hidden beneath the forest veil</li>
+                      <li>• Castle roads watched by forgotten magic</li>
+                    </ul>
+                  </div>
+
+                  <div className="mt-8 flex gap-4">
+                    <button
+                      className={`${ibmPlexSerif.className} border border-white/30 bg-white/10 px-6 py-3 text-sm uppercase tracking-[0.14em] text-white transition hover:bg-white/15 cursor-pointer`}
+                      onClick={() => {
+                        setOpenLocation(null);
+                        setAlbumLocation("eldarun");
+                      }}
+                    >
+                      View Album
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        )}
+
+        {openLocation === "witraliria" && (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
+          onClick={() => setOpenLocation(null)}>
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+             onClick={(e) => e.stopPropagation()}>
+              <button
+                onClick={() => setOpenLocation(null)}
+                className="absolute right-5 top-5 z-10 text-white/70 transition hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+                <div className="relative min-h-[320px] bg-[url('/witraliria.jpeg')] bg-cover bg-center bg-no-repeat bg-top">
+                  {/* <Image
+                    src="/witraliria.jpeg"
+                    alt="Witraliria"
+                    fill
+                    className="object-cover scale-90"
+                  /> */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-6 left-6">
+                    <h2
+                      className={`text-5xl text-white uppercase`}
+                    >
+                      Witraliria
+                    </h2>
+                    <p
+                      className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
+                    >
+                      Magical City of the Witches
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+
+                  <p
+                    className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
+                  >
+                    Taletopia was once a peaceful land of stories, music, and
+                    old magic. Beneath its beauty, however, ancient forces stir
+                    again, threatening to drag its people into a fate they
+                    cannot outrun.
+                  </p>
+
+                  <div className="mt-8">
+                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
+                      Highlights
+                    </h4>
+                    <ul
+                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
+                    >
+                      <li>• The great lake of mirrored skies</li>
+                      <li>• Ruins hidden beneath the forest veil</li>
+                      <li>• Castle roads watched by forgotten magic</li>
+                    </ul>
+                  </div>
+
+                  <div className="mt-8 flex gap-4">
+                    <button
+                      className={`${ibmPlexSerif.className} border border-white/30 bg-white/10 px-6 py-3 text-sm uppercase tracking-[0.14em] text-white transition hover:bg-white/15 cursor-pointer`}
+                      onClick={() => {
+                        setOpenLocation(null);
+                        setAlbumLocation("witraliria");
+                      }}
+                    >
+                      View Album
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        )}
+
+        {openLocation === "aridryan" && (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
+          onClick={() => setOpenLocation(null)}>
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            onClick={(e) => e.stopPropagation()}>
+              <button
+                onClick={() => setOpenLocation(null)}
+                className="absolute right-5 top-5 z-10 text-white/70 transition hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+                <div className="relative min-h-[320px]">
+                  <Image
+                    src="/aridryan.jpg"
+                    alt="Aridryan"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-6 left-6">
+                    <h2
+                      className={`text-5xl text-white uppercase`}
+                    >
+                      Aridryan
+                    </h2>
+                    <p
+                      className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
+                    >
+                      Lush City of the Dryads
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+
+                  <p
+                    className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
+                  >
+                    Taletopia was once a peaceful land of stories, music, and
+                    old magic. Beneath its beauty, however, ancient forces stir
+                    again, threatening to drag its people into a fate they
+                    cannot outrun.
+                  </p>
+
+                  <div className="mt-8">
+                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
+                      Highlights
+                    </h4>
+                    <ul
+                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
+                    >
+                      <li>• The great lake of mirrored skies</li>
+                      <li>• Ruins hidden beneath the forest veil</li>
+                      <li>• Castle roads watched by forgotten magic</li>
+                    </ul>
+                  </div>
+
+                  <div className="mt-8 flex gap-4">
+                    <button
+                      className={`${ibmPlexSerif.className} border border-white/30 bg-white/10 px-6 py-3 text-sm uppercase tracking-[0.14em] text-white transition hover:bg-white/15 cursor-pointer`}
+                      onClick={() => {
+                        setOpenLocation(null);
+                        setAlbumLocation("aridryan");
+                      }}
+                    >
+                      View Album
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        )}
+
+        {openLocation === "dammerfels" && (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
+          onClick={() => setOpenLocation(null)}>
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            onClick={(e) => e.stopPropagation()}>
+              <button
+                onClick={() => setOpenLocation(null)}
+                className="absolute right-5 top-5 z-10 text-white/70 transition hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+                <div className="relative min-h-[320px]">
+                  <Image
+                    src="/dammerfels.jpeg"
+                    alt="Dämmerfels"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-6 left-6">
+                    <h2
+                      className={`uppercase text-5xl text-white uppercase`}
+                    >
+                      Dämmerfels
+                    </h2>
+                    <p
+                      className={`${font2.className} mt-2 uppercase tracking-[0.25em] text-white/80`}
+                    >
+                      Castle of the Vampires
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-[linear-gradient(180deg,#2d1c12_0%,#1c120d_100%)] p-8 text-white">
+                  <h3 className={`${ibmPlexSerif.className} text-2xl`}>Lore</h3>
+
+                  <p
+                    className={`${font2.className} mt-4 text-[15px] leading-7 text-white/85 normal-case`}
+                  >
+                    Taletopia was once a peaceful land of stories, music, and
+                    old magic. Beneath its beauty, however, ancient forces stir
+                    again, threatening to drag its people into a fate they
+                    cannot outrun.
+                  </p>
+
+                  <div className="mt-8">
+                    <h4 className={`${ibmPlexSerif.className} text-xl`}>
+                      Highlights
+                    </h4>
+                    <ul
+                      className={`${font2.className} mt-4 space-y-3 text-white/80 normal-case`}
+                    >
+                      <li>• The great lake of mirrored skies</li>
+                      <li>• Ruins hidden beneath the forest veil</li>
+                      <li>• Castle roads watched by forgotten magic</li>
+                    </ul>
+                  </div>
+
+                  <div className="mt-8 flex gap-4">
+                    <button
+                      className={`${ibmPlexSerif.className} border border-white/30 bg-white/10 px-6 py-3 text-sm uppercase tracking-[0.14em] text-white transition hover:bg-white/15 cursor-pointer`}
+                      onClick={() => {
+                        setOpenLocation(null);
+                        setAlbumLocation("dammerfels");
+                      }}
+                    >
+                      View Album
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="mx-auto w-full max-w-[1440px]">
+          <div className="relative overflow-auto">
+            <div className="relative h-[900px] w-[1440px]">
+              <Image
+                src="/map.jpeg"
+                alt="Fantasy world map"
+                fill
+                className="object-cover"
+                priority
+              />
+
+                        <button
+            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("taletopia")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Taletopia
+                </span>
+              </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
+
+              <button
+            className="group absolute left-[20%] top-[13%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("witraliria")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Witraliria
+                </span>
+              </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
+
+              <button
+            className="group absolute left-[9%] top-[78%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("erzklamm")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Erzklamm
+                </span>
+              </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
+
+
+              <button
+            className="group absolute left-[34%] top-[67%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("eldarun")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Eldarun
+                </span>
+              </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
+
+
+              <button
+            className="group absolute left-[72%] top-[79.5%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("dammerfels")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Dämmerfels
+                </span>
+              </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
+
+
+              <button
+            className="group absolute left-[68%] top-[8%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            onClick={() => setOpenLocation("aridryan")}
+          >
+            <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
+              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
+                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
+                  View Aridryan
+                </span>
+              </div>
+              <Image
+                src="/scroll-plate.svg"
+                alt=""
+                fill
+                className="object-contain transition duration-100 group-hover:brightness-110"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
+          </button>
+            </div>
+          </div>
+        </div>
+      </section>
+}
+
+export default Map
