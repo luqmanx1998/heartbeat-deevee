@@ -9,6 +9,7 @@ import { gsap } from "gsap";
 import AlbumLightbox from "./components/AlbumLightbox";
 import CharacterCard from "./components/CharacterCard";
 import Map from "./components/Map";
+import Characters from "./components/Characters";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -26,7 +27,6 @@ const font2 = localFont({
 export default function Home() {
   const [openLocation, setOpenLocation] = useState(null);
   const [albumLocation, setAlbumLocation] = useState(null);
-  const [currentCharacter, setCurrentCharacter] = useState(0);
   const [introDone, setIntroDone] = useState(false);
 
   const introOverlayRef = useRef(null);
@@ -39,31 +39,6 @@ export default function Home() {
   const heroTitleWrapRef = useRef(null);
   const heroButtonWrapRef = useRef(null);
   const heroCaptionRef = useRef(null);
-
-  const handlePrevCharacter = () => {
-    setCurrentCharacter(
-      (prev) => (prev - 1 + characters.length) % characters.length,
-    );
-  };
-
-  const handleNextCharacter = () => {
-    setCurrentCharacter((prev) => (prev + 1) % characters.length);
-  };
-
-  useEffect(() => {
-    function handleKeyDown(e) {
-      if (e.key === "ArrowLeft") {
-        handlePrevCharacter();
-      }
-
-      if (e.key === "ArrowRight") {
-        handleNextCharacter();
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
 
   useEffect(() => {
     const seenIntro = sessionStorage.getItem("heartbeat_intro_seen");
@@ -143,33 +118,39 @@ export default function Home() {
       })
       .to(
         introLine3Ref.current,
-        {
+         {
           opacity: 1,
           y: 0,
-          duration: 0.95,
+          duration: 1.1,
           ease: "power3.out",
         },
         "-=0.08",
-      )
-      .to(
+            )
+      .fromTo(
         introLine3Ref.current,
         {
-          scale: 1.04,
-          textShadow: "0 0 24px rgba(255,255,255,0.85)",
-          duration: 0.22,
-          ease: "power2.out",
+          scale: 0.96,
+          filter: "blur(6px)",
+        },
+        {
+          scale: 1,
+          filter: "blur(0px)",
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=1",
+      )
+            .to(
+        introLine3Ref.current,
+        {
+          textShadow: "0 0 28px rgba(255,255,255,0.9)",
+          duration: 0.3,
+          yoyo: true,
+          repeat: 1,
+          ease: "power2.inOut",
         },
         "+=0.2",
       )
-      .to(introLine3Ref.current, {
-        opacity: 0,
-        y: -30,
-        scale: 1,
-        textShadow: "0 0 0px rgba(255,255,255,0)",
-        duration: 0.75,
-        ease: "power2.inOut",
-        delay: 0.18,
-      })
       .to(
         introOverlayRef.current,
         {
@@ -276,42 +257,6 @@ export default function Home() {
       "/albums/dammerfels/dammerfels4.jpeg",
     ],
   };
-
-  const characters = [
-    {
-      name: "Jason",
-      image: "/characters/jason.png",
-    },
-    {
-      name: "Jake",
-      image: "/characters/jake.jpg",
-    },
-    {
-      name: "Kylie",
-      image: "/characters/kylie.jpg",
-    },
-    {
-      name: "Liv & Mia",
-      image: "/characters/livmia.jpg",
-    },
-    {
-      name: "Zac",
-      image: "/characters/zac.jpg",
-    },
-    {
-      name: "Chloe",
-      image: "/characters/chloe.jpg",
-    },
-    {
-      name: "Sofia",
-      image: "/characters/sofia.jpg",
-    },
-  ];
-
-  const visibleCharacters = [
-    ...characters.slice(currentCharacter),
-    ...characters.slice(0, currentCharacter),
-  ];
 
   return (
     <>
@@ -473,87 +418,22 @@ export default function Home() {
           images={albumLocation ? albumImages[albumLocation] || [] : []}
         />
 
-        <section className="relative min-h-screen bg-[#1A0C01] pt-14 pb-40">
-          <div className="mx-auto flex max-w-[1320px] items-center justify-between border-t-1 border-b-1 border-[#4e4318] text-white">
-            <h2 className="text-[40px] leading-[119px] tracking-[-5%]">
-              Meet The Characters
-            </h2>
-            <div className="translate-y-9 flex items-center gap-3">
-              <button
-                onClick={handlePrevCharacter}
-                className="mb-16 flex h-12 w-12 items-center justify-center rounded-xl border border-white/20 text-white transition hover:bg-white/10"
-                aria-label="Previous character"
-              >
-                ←
-              </button>
+        <Characters />
 
-              <button
-                onClick={handleNextCharacter}
-                className="mb-16 flex h-12 w-12 items-center justify-center rounded-xl border border-white/20 text-white transition hover:bg-white/10"
-                aria-label="Next character"
-              >
-                →
-              </button>
+        <section className="h-screen bg-[url('/bgauthor1.png')] bg-cover bg-center bg-no-repeat contrast-140 relative"> 
+         <div className="absolute inset-x-0 top-0 z-[20] h-30 bg-gradient-to-b from-black to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 z-[1] h-30 bg-gradient-to-t from-black to-transparent" />       
+           <div className="absolute top-0 right-0 h-full z-10 pointer-events-none w-[90vw]">
+              <Image 
+                src="/rippedpaper_soft.png"
+                alt="nametag"
+                fill
+                className="object-cover rotate-x-180 contrast-140 opacity-87"
+              />
             </div>
-          </div>
-          <div className="mt-10 overflow-hidden">
-            <div className="flex justify-center gap-6 transition-transform duration-500 ease-in-out">
-              {visibleCharacters.map((char, index) => (
-                <CharacterCard
-                  key={char.name}
-                  name={char.name}
-                  image={char.image}
-                  isActive={index === 2}
-                />
-              ))}
+          <div>
+              {/* <h1 className="absolute top-[30%] left-[30%] text-white z-5 text-2xl">Hello</h1> */}
             </div>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 z-[1] h-50 bg-gradient-to-t from-black to-transparent" />
-        </section>
-
-        <section className="relative z-10 h-[2062px] overflow-hidden bg-[#1A0C01]">
-          <div className="absolute inset-0 z-2 bg-black/40" />
-          <div className="absolute inset-0">
-            <Image
-              src="/bgauthor.png"
-              alt="About the story background"
-              fill
-              priority
-              className="object-cover object-center"
-            />
-          </div>
-
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="absolute inset-x-0 top-0 z-[1] h-50 bg-gradient-to-b from-black to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-black to-transparent" />
-
-          <Image
-            src="/g39.svg"
-            alt="authorbg"
-            width={450}
-            height={700}
-            className="absolute top-[220px] left-[10%]"
-          />
-          <div className="absolute top-[270px] right-[10%] z-100 w-[506px] space-y-16">
-            <h1 className="text-[80px] leading-[80px] tracking-[-5%] text-white uppercase">
-              About The Author
-            </h1>
-            <p className={`text-[18px] text-white ${ibmPlexSerif.className}`}>
-              Deevee ist Autorin im Genre Dark Romantasy und Romantasy und
-              erschafft Geschichten, in denen sich Liebe und Dunkelheit auf
-              faszinierende Weise begegnen. Schon seit ihrem 14. Lebensjahr
-              widmet sie sich dem Schreiben und hat seither ihre Leidenschaft
-              für das Erzählen intensiver, emotionaler und geheimnisvoller
-              Welten stetig vertieft. Ihre Geschichten laden Leserinnen und
-              Leser dazu ein, in neue magische Welten einzutauchen, in denen
-              nichts ganz so ist, wie es scheint. Wenn sie nicht schreibt,
-              sammelt Deevee neue Inspirationen für ihre nächsten Projekte und
-              ist immer auf der Suche nach Geschichten, die berühren, fesseln
-              und lange im Gedächtnis bleiben.
-            </p>
-          </div>
-
-          <div className="relative z-10">&nbsp;</div>
         </section>
       </main>
     </>

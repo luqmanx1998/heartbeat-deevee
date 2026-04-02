@@ -1,11 +1,27 @@
 import Image from "next/image";
 import "../globals.css";
+import { IBM_Plex_Serif } from "next/font/google";
+import localFont from "next/font/local";
+
+// const ibmPlexSerif = IBM_Plex_Serif({
+//   subsets: ["latin"],
+//   weight: ["400", "500", "600", "700"],
+// });
+
+// const segamoriz = localFont({
+//   src: "../fonts/Segamoriz.woff2",
+// });
+
+// const font2 = localFont({
+//   src: "../fonts/NeueMontreal-Regular.woff2",
+// });
+
 
 function CharacterCard({ name, image, isActive }) {
   return (
     <div
       className={`relative h-[490px] min-w-[340px] overflow-hidden rounded-[28px] transition duration-500 ${
-        isActive ? "scale-100 opacity-100" : "scale-95 opacity-70"
+        isActive ? "scale-100 opacity-100 shadow-[0px_-30px_80px_-40px_rgba(239,217,131,0.85)]" : "scale-95 opacity-70"
       }`}
     >
       <div

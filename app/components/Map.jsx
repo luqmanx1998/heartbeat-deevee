@@ -430,8 +430,8 @@ Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierhe
         )}
 
         <div className="mx-auto w-full max-w-[1440px]">
-          <div className="relative overflow-auto">
-            <div className="relative h-[900px] w-[1440px]">
+          <div className="relative w-full max-w-[1440px]">
+            <div className="relative w-full max-w-[1440px] aspect-[16/10]">
               <Image
                 src="/map.jpeg"
                 alt="Fantasy world map"
