@@ -420,20 +420,41 @@ export default function Home() {
 
         <Characters />
 
-        <section className="h-screen bg-[url('/bgauthor1.png')] bg-cover bg-center bg-no-repeat contrast-140 relative"> 
-         <div className="absolute inset-x-0 top-0 z-[20] h-30 bg-gradient-to-b from-black to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 z-[1] h-30 bg-gradient-to-t from-black to-transparent" />       
-           <div className="absolute top-0 right-0 h-full z-10 pointer-events-none w-[90vw]">
+        <section className="h-screen bg-[url('/bgauthor1.png')] bg-cover bg-center bg-no-repeat contrast-130 relative"> 
+         <div className="absolute inset-x-0 top-0 z-[30] h-32.5 bg-gradient-to-b from-black to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 z-[20] h-30 bg-gradient-to-t from-black to-transparent" />  
+          <div className="absolute top-0 right-0 h-full w-[15%] z-[20] bg-gradient-to-l from-black to-transparent pointer-events-none" /> 
+          <div className="absolute top-0 left-0 h-full w-[12.5%] z-[20] bg-gradient-to-r from-black to-transparent pointer-events-none" />             
+           <div className="absolute top-0 right-0 h-full z-10 pointer-events-none w-[53vw]">
               <Image 
-                src="/rippedpaper_soft.png"
+                src="/rippedpaper_colored3.png"
                 alt="nametag"
                 fill
-                className="object-cover rotate-x-180 contrast-140 opacity-87"
+                className="object-cover contrast-200"
               />
+           </div>
+          <div className="flex z-25 w-full h-full items-center">
+            <div className="max-w-[1440px] w-[75%] mx-auto grid grid-cols-2 items-center gap-[15%]">
+             <Image
+          src="/g39.svg"
+          alt="Author image"
+          width={430}
+          height={730}
+          className="h-auto w-[280px] object-contain brightness-110 contrast-75 sm:w-[340px] lg:w-[400px] xl:w-[430px] justify-self-end"
+        />
+              <div className="text-white z-25 justify-self-start space-y-10 translate-x-[20%]">
+                <h2 className="text-[clamp(48px,6vw,70px)] leading-[0.92] tracking-[-0.05em]">About <br />The Author</h2>
+                <div className={`${ibmPlexSerif.className} text-[16px] leading-[25px] tracking-[-5%] space-y-5`}>
+                  <p>Deevee ist Autorin im Genre Dark Romantasy und Romantasy und erschafft Geschichten, in denen sich Liebe und Dunkelheit auf faszinierende Weise begegnen.</p>
+                  <p>Schon seit ihrem 14. Lebensjahr widmet sie sich dem Schreiben und hat seither ihre Leidenschaft für das Erzählen intensiver, emotionaler und geheimnisvoller Welten stetig vertieft.</p>
+                  <p>Ihre Geschichten laden Leserinnen und Leser dazu ein, in neue magische Welten einzutauchen, in denen nichts ganz so ist, wie es scheint.</p>
+                  <p>Wenn sie nicht schreibt, sammelt Deevee neue Inspirationen für ihre nächsten Projekte und ist immer auf der Suche nach Geschichten, die berühren, fesseln und lange im Gedächtnis bleiben.</p>
+
+                </div>
+                
+              </div>
             </div>
-          <div>
-              {/* <h1 className="absolute top-[30%] left-[30%] text-white z-5 text-2xl">Hello</h1> */}
-            </div>
+          </div>
         </section>
       </main>
     </>
