@@ -424,15 +424,16 @@ export default function Home() {
          <div className="absolute inset-x-0 top-0 z-[30] h-32.5 bg-gradient-to-b from-black to-transparent" />
           <div className="absolute inset-x-0 bottom-0 z-[20] h-30 bg-gradient-to-t from-black to-transparent" />  
           <div className="absolute top-0 right-0 h-full w-[15%] z-[20] bg-gradient-to-l from-black to-transparent pointer-events-none" /> 
-          <div className="absolute top-0 left-0 h-full w-[12.5%] z-[20] bg-gradient-to-r from-black to-transparent pointer-events-none" />             
-           <div className="absolute top-0 right-0 h-full z-10 pointer-events-none w-[53vw]">
+          <div className="absolute top-0 left-0 h-full w-[15%] z-[20] bg-gradient-to-r from-black to-transparent pointer-events-none" />             
+          <div className="absolute top-0 right-[-5%] h-full z-10 pointer-events-none overflow-visible">
               <Image 
                 src="/rippedpaper_colored3.png"
-                alt="nametag"
-                fill
-                className="object-cover contrast-200"
+                alt=""
+                width={900}
+                height={900}
+                className="h-full w-auto max-w-[62.5vw] contrast-200"
               />
-           </div>
+            </div>
           <div className="flex z-25 w-full h-full items-center">
             <div className="max-w-[1440px] w-[75%] mx-auto grid grid-cols-2 items-center gap-[15%]">
              <Image
