@@ -7,9 +7,9 @@ import { IBM_Plex_Serif } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import AlbumLightbox from "./components/AlbumLightbox";
-import CharacterCard from "./components/CharacterCard";
 import Map from "./components/Map";
 import Characters from "./components/Characters";
+import { AnimatePresence, motion } from "framer-motion";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -28,6 +28,7 @@ export default function Home() {
   const [openLocation, setOpenLocation] = useState(null);
   const [albumLocation, setAlbumLocation] = useState(null);
   const [introDone, setIntroDone] = useState(false);
+  const [aboutView, setAboutView] = useState("author");
 
   const introOverlayRef = useRef(null);
   const introLine1Ref = useRef(null);
@@ -39,6 +40,30 @@ export default function Home() {
   const heroTitleWrapRef = useRef(null);
   const heroButtonWrapRef = useRef(null);
   const heroCaptionRef = useRef(null);
+
+   const aboutContent = {
+  author: {
+    titleTop: "About",
+    titleBottom: "The Author",
+    paragraphs: [
+      "Deevee ist Autorin im Genre Dark Romantasy und Romantasy und erschafft Geschichten, in denen sich Liebe und Dunkelheit auf faszinierende Weise begegnen.",
+      "Schon seit ihrem 14. Lebensjahr widmet sie sich dem Schreiben und hat seither ihre Leidenschaft für das Erzählen intensiver, emotionaler und geheimnisvoller Welten stetig vertieft.",
+      "Ihre Geschichten laden Leserinnen und Leser dazu ein, in neue magische Welten einzutauchen, in denen nichts ganz so ist, wie es scheint.",
+      "Wenn sie nicht schreibt, sammelt Deevee neue Inspirationen für ihre nächsten Projekte und ist immer auf der Suche nach Geschichten, die berühren, fesseln und lange im Gedächtnis bleiben.",
+    ],
+  },
+  story: {
+    titleTop: "About",
+    titleBottom: "The Story",
+    paragraphs: [
+      "Kylie glaubte, sie sei ein ganz normales Mädchen. Bis zu dem Tag, an dem ihre Schwester spurlos verschwindet und die Wahrheit ihre Welt zerreißt.",
+      "Magische Wesen sind real. Und Kylie ist tiefer in ihrer Welt verstrickt, als sie je hätte ahnen können. Auf der Suche nach ihrer Schwester betritt sie die andere Seite, ein Reich aus tödlicher Magie, uralten Bündnissen und Intrigen, die niemals in Vergessenheit geraten sind.",
+      "Doch je näher sie der Wahrheit kommt, desto mehr beginnt alles zu zerbrechen. An der Seite eines Feenprinzen gerät Kylie in einen Strudel aus Machtkämpfen und dunklen Entscheidungen, die der Auslöser eines apokalyptischen Krieges werden. Und während Schatten näher rücken, muss Kylie sich fragen:",
+      "Wie viel ist sie bereit zu opfern, um die zu retten, die sie liebt?",
+    ],
+  },
+};
+
 
   useEffect(() => {
     const seenIntro = sessionStorage.getItem("heartbeat_intro_seen");
@@ -214,6 +239,7 @@ export default function Home() {
       tl.kill();
     };
   }, []);
+
 
   const albumImages = {
     taletopia: [
@@ -419,44 +445,104 @@ export default function Home() {
         />
 
         <Characters />
+        {/* <div className="absolute inset-x-0 top-0 z-[30] h-32.5 bg-gradient-to-b from-black to-transparent" /> */}
 
-        <section className="h-screen bg-[url('/bgauthor1.png')] bg-cover bg-center bg-no-repeat contrast-130 relative"> 
-         <div className="absolute inset-x-0 top-0 z-[30] h-32.5 bg-gradient-to-b from-black to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 z-[20] h-30 bg-gradient-to-t from-black to-transparent" />  
-          <div className="absolute top-0 right-0 h-full w-[15%] z-[20] bg-gradient-to-l from-black to-transparent pointer-events-none" /> 
-          <div className="absolute top-0 left-0 h-full w-[15%] z-[20] bg-gradient-to-r from-black to-transparent pointer-events-none" />             
-          <div className="absolute top-0 right-[-5%] h-full z-10 pointer-events-none overflow-visible">
-              <Image 
-                src="/rippedpaper_colored3.png"
-                alt=""
-                width={900}
-                height={900}
-                className="h-full w-auto max-w-[62.5vw] contrast-200"
-              />
-            </div>
-          <div className="flex z-25 w-full h-full items-center">
-            <div className="max-w-[1440px] w-[75%] mx-auto grid grid-cols-2 items-center gap-[15%]">
-             <Image
+      <section className="h-screen bg-[url('/bgauthor1.png')] bg-cover bg-center bg-no-repeat contrast-130 relative overflow-hidden">
+  <div className="absolute inset-x-0 top-0 z-[20] h-30 bg-gradient-to-b from-black to-transparent pointer-events-none" />
+  <div className="absolute inset-x-0 bottom-0 z-[20] h-30 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+  <div className="absolute top-0 right-0 h-full w-[15%] z-[20] bg-gradient-to-l from-black to-transparent pointer-events-none" />
+  <div className="absolute top-0 left-0 h-full w-[15%] z-[20] bg-gradient-to-r from-black to-transparent pointer-events-none" />
+
+  <div className="absolute top-0 right-[-5%] h-full z-10 pointer-events-none overflow-visible">
+    <Image
+      src="/rippedpaper_colored3.png"
+      alt=""
+      width={900}
+      height={900}
+      className="h-full w-auto max-w-[62.5vw] contrast-200"
+    />
+  </div>
+
+  <div className="flex z-25 w-full h-full items-center">
+    <div className="max-w-[1440px] w-[75%] mx-auto grid grid-cols-2 items-center gap-[15%]">
+      
+      {/* static image */}
+      <div className="justify-self-end">
+        <Image
           src="/g39.svg"
           alt="Author image"
           width={430}
           height={730}
-          className="h-auto w-[280px] object-contain brightness-110 contrast-75 sm:w-[340px] lg:w-[400px] xl:w-[430px] justify-self-end"
+          className="h-auto w-[280px] object-contain brightness-110 contrast-75 sm:w-[340px] lg:w-[400px] xl:w-[430px]"
         />
-              <div className="text-white z-25 justify-self-start space-y-10 translate-x-[20%]">
-                <h2 className="text-[clamp(48px,6vw,70px)] leading-[0.92] tracking-[-0.05em]">About <br />The Author</h2>
-                <div className={`${ibmPlexSerif.className} text-[16px] leading-[25px] tracking-[-5%] space-y-5`}>
-                  <p>Deevee ist Autorin im Genre Dark Romantasy und Romantasy und erschafft Geschichten, in denen sich Liebe und Dunkelheit auf faszinierende Weise begegnen.</p>
-                  <p>Schon seit ihrem 14. Lebensjahr widmet sie sich dem Schreiben und hat seither ihre Leidenschaft für das Erzählen intensiver, emotionaler und geheimnisvoller Welten stetig vertieft.</p>
-                  <p>Ihre Geschichten laden Leserinnen und Leser dazu ein, in neue magische Welten einzutauchen, in denen nichts ganz so ist, wie es scheint.</p>
-                  <p>Wenn sie nicht schreibt, sammelt Deevee neue Inspirationen für ihre nächsten Projekte und ist immer auf der Suche nach Geschichten, die berühren, fesseln und lange im Gedächtnis bleiben.</p>
+      </div>
 
-                </div>
-                
-              </div>
+      {/* text side */}
+      <div className="relative text-white z-25 justify-self-start translate-x-[20%]">
+        {/* absolute toggle, won't affect layout */}
+        <div className={`absolute ${
+              aboutView === "author"
+                ? "top-[clamp(21%,10vw,370px)] right-[clamp(49%,10vw,370px)]"
+                : "top-[clamp(19%,9vw,370px)] right-[clamp(50%,10vw,370px)]"
+            } z-30 inline-flex rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-sm z-150 transition`}>
+          <button
+            onClick={() => setAboutView("author")}
+            className={`cursor-pointer rounded-full px-5 py-2 text-[12px] uppercase tracking-[0.18em] transition z-150 ${
+              aboutView === "author"
+                ? "bg-white text-black"
+                : "text-white/70 hover:text-white"
+            }`}
+          >
+            Author
+          </button>
+
+          <button
+            onClick={() => setAboutView("story")}
+            className={`cursor-pointer rounded-full px-5 py-2 text-[12px] uppercase tracking-[0.18em] transition z-150 ${
+              aboutView === "story"
+                ? "bg-white text-black"
+                : "text-white/70 hover:text-white"
+            }`}
+          >
+            Story
+          </button>
+        </div>
+
+        <h2 className="text-[clamp(48px,6vw,70px)] leading-[0.92] tracking-[-0.05em]">
+          {aboutContent[aboutView].titleTop}
+          <br />
+          {aboutContent[aboutView].titleBottom}
+        </h2>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={aboutView}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="mt-18"
+          >
+            <div
+              className={`${ibmPlexSerif.className} max-w-[560px] text-[16px] leading-[1.75] tracking-normal space-y-4`}
+            >
+              {aboutContent[aboutView].paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
-          </div>
-        </section>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  </div>
+</section>
+<div className="w-full h-10 bg-black">
+  &nbsp;
+</div>
+<section className="h-screen bg-[url('/missingfamily.png')] bg-cover bg-center bg-no-repeat relative text-center flex justify-center items-center">
+  <div className="absolute inset-x-0 top-0 z-[20] h-30 bg-gradient-to-b from-black to-transparent pointer-events-none" />
+  <h1 className="w-[min(90vw,782px)] text-[clamp(150px,12vw,190px)] leading-[0.9] tracking-[-0.05em] text-white translate-y-[10%]">A Missing <br />Family</h1>
+</section>
       </main>
     </>
   );
