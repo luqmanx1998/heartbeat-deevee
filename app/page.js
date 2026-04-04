@@ -166,25 +166,35 @@ export default function Home() {
         "-=1",
       )
             .to(
-        introLine3Ref.current,
-        {
-          textShadow: "0 0 28px rgba(255,255,255,0.9)",
-          duration: 0.3,
-          yoyo: true,
-          repeat: 1,
-          ease: "power2.inOut",
-        },
-        "+=0.2",
-      )
-      .to(
-        introOverlayRef.current,
-        {
-          opacity: 0,
-          duration: 0.85,
-          ease: "power2.out",
-        },
-        "-=0.12",
-      )
+  introLine3Ref.current,
+  {
+    textShadow: "0 0 28px rgba(255,255,255,0.9)",
+    duration: 0.3,
+    yoyo: true,
+    repeat: 1,
+    ease: "power2.inOut",
+  },
+  "+=0.2",
+)
+.to(
+  introLine3Ref.current,
+  {
+    opacity: 0,
+    y: -18,
+    duration: 0.35,
+    ease: "power2.inOut",
+  },
+  "+=0.05",
+)
+.to(
+  introOverlayRef.current,
+  {
+    opacity: 0,
+    duration: 0.85,
+    ease: "power2.out",
+  },
+  "+=0.02",
+)
       .to(
         heroSectionRef.current,
         {
@@ -482,8 +492,8 @@ export default function Home() {
         {/* absolute toggle, won't affect layout */}
         <div className={`absolute ${
               aboutView === "author"
-                ? "top-[clamp(21%,10vw,370px)] right-[clamp(49%,10vw,370px)]"
-                : "top-[clamp(19%,9vw,370px)] right-[clamp(50%,10vw,370px)]"
+                ? "top-[clamp(24%,10vw,370px)] right-[clamp(49%,10vw,370px)]"
+                : "top-[clamp(23%,9vw,370px)] right-[clamp(50%,10vw,370px)]"
             } z-30 inline-flex rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-sm z-150 transition`}>
           <button
             onClick={() => setAboutView("author")}
@@ -521,10 +531,10 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="mt-18"
+            className="mt-10"
           >
             <div
-              className={`${ibmPlexSerif.className} max-w-[560px] text-[16px] leading-[1.75] tracking-normal space-y-4`}
+              className={`${ibmPlexSerif.className} max-w-[600px] text-[clamp(14px,1.2vw,16px)] leading-[1.55] tracking-normal space-y-3 translate-y-2`}
             >
               {aboutContent[aboutView].paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
@@ -541,7 +551,6 @@ export default function Home() {
 </div>
 <section className="h-screen bg-[url('/missingfamily.png')] bg-cover bg-center bg-no-repeat relative text-center flex justify-center items-center">
   <div className="absolute inset-x-0 top-0 z-[20] h-30 bg-gradient-to-b from-black to-transparent pointer-events-none" />
-  <h1 className="w-[min(90vw,782px)] text-[clamp(150px,12vw,190px)] leading-[0.9] tracking-[-0.05em] text-white translate-y-[10%]">A Missing <br />Family</h1>
 </section>
       </main>
     </>
