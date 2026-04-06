@@ -493,7 +493,7 @@ export default function Home() {
         <div className={`absolute ${
               aboutView === "author"
                 ? "top-[clamp(24%,10vw,370px)] right-[clamp(49%,10vw,370px)]"
-                : "top-[clamp(23%,9vw,370px)] right-[clamp(50%,10vw,370px)]"
+                : "top-[clamp(23%,9vw,380px)] right-[clamp(50%,10vw,370px)]"
             } z-30 inline-flex rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-sm z-150 transition`}>
           <button
             onClick={() => setAboutView("author")}
@@ -534,7 +534,7 @@ export default function Home() {
             className="mt-10"
           >
             <div
-              className={`${ibmPlexSerif.className} max-w-[600px] text-[clamp(14px,1.2vw,16px)] leading-[1.55] tracking-normal space-y-3 translate-y-2`}
+              className={`${ibmPlexSerif.className} max-w-[600px] text-[clamp(14px,1.2vw,16px)] leading-[1.55] tracking-normal space-y-3 translate-y-4`}
             >
               {aboutContent[aboutView].paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
@@ -549,8 +549,16 @@ export default function Home() {
 <div className="w-full h-10 bg-black">
   &nbsp;
 </div>
-<section className="h-screen bg-[url('/missingfamily.png')] bg-cover bg-center bg-no-repeat relative text-center flex justify-center items-center">
-  <div className="absolute inset-x-0 top-0 z-[20] h-30 bg-gradient-to-b from-black to-transparent pointer-events-none" />
+<section className="h-screen bg-[url('/gaze.png')] bg-cover bg-center bg-no-repeat relative text-center flex justify-center items-center">
+  <div className="absolute inset-x-0 top-0 z-[20] h-20 bg-gradient-to-b from-black to-transparent pointer-events-none" />
+  <div className="absolute inset-x-0 bottom-0 z-[20] h-40 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+</section>
+{/* <div className="w-full h-10 bg-black">
+  &nbsp;
+</div> */}
+<section className="h-screen bg-[url('/fieryy.png')] bg-cover bg-center bg-no-repeat relative">
+  <div className="absolute inset-x-0 top-0 z-[20] h-20 bg-gradient-to-b from-black to-transparent pointer-events-none" />
+  <div className="absolute inset-x-0 bottom-0 z-[20] h-40 bg-gradient-to-t from-black to-transparent pointer-events-none" />
 </section>
       </main>
     </>
