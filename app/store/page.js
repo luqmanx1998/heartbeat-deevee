@@ -1,4 +1,4 @@
-export default function Page() {
+export default function HeartbeatStorePage() {
   const book = {
     title: "Heartbeat",
     subtitle: "Die andere Seite",
@@ -187,10 +187,10 @@ export default function Page() {
                     title: "Starker Reihenauftakt",
                     text: "Perfekt, um die Welt und ihre Konflikte kennenzulernen, bevor weitere Bände folgen.",
                   },
-                //   {
-                //     title: "Shop-ready Layout",
-                //     text: "Später leicht erweiterbar für Hardcover, E-Book, signierte Exemplare oder Bundles.",
-                //   },
+                  {
+                    title: "Shop-ready Layout",
+                    text: "Später leicht erweiterbar für Hardcover, E-Book, signierte Exemplare oder Bundles.",
+                  },
                 ].map((item) => (
                   <div
                     key={item.title}
