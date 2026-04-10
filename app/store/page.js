@@ -343,9 +343,9 @@ export default function HeartbeatStorePage() {
               Für Leserinnen und Leser, die düstere Romantasy lieben.
             </h2>
             <p className={`${ibmPlexSerif.className} mt-5 max-w-2xl text-base leading-8 text-white/76 sm:text-lg lg:text-center`}>
-              Wenn du emotionale Spannung, geheimnisvolle Magie und eine Atmosphäre suchst,
-              die sich gleichzeitig elegant und gefährlich anfühlt, ist Heartbeat genau der
-              richtige Einstieg in diese Reihe.
+             Wenn du emotionale Spannung,
+geheimnisvolle Magie und eine Atmosphäre suchst, die sich gleichzeitig gefährlich und romantisch anfühlt, ist Heartbeat genau der richtige Einstieg in diese Reihe.
+Bitte beachte die Triggerwarnung.
             </p>
           </div>
 
