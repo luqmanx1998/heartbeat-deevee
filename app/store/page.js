@@ -309,7 +309,9 @@ export default function HeartbeatStorePage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-6 py-12 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:px-10 lg:py-16">
+     <div className="w-full relative overflow-hidden border-white/10 bg-[radial-gradient(circle_at_top,rgba(74,109,190,0.18),transparent_34%),radial-gradient(circle_at_top_right,rgba(132,33,64,0.18),transparent_26%),linear-gradient(to_bottom,#0b0b0d,#090909)] py-10">
+      <section className="mx-auto grid max-w-7xl gap-8 px-6 py-12 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:px-10 lg:py-16 relative">
+        <div className="absolute inset-0 bg-[url('/book1.jpeg')] bg-cover bg-center opacity-[0.05] scale-120" />
         <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-7 sm:p-8">
           <p className={`${font2.className} text-sm uppercase tracking-[0.25em] text-white/45`}>Über das Buch</p>
           <p className={`${ibmPlexSerif.className} mt-5 text-base leading-8 text-white/78 sm:text-lg`}>
@@ -329,6 +331,7 @@ export default function HeartbeatStorePage() {
           </div>
         </div>
       </section>
+
 
       <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 lg:px-10 lg:pb-20">
         <div className="overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]">
@@ -392,6 +395,7 @@ export default function HeartbeatStorePage() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }
