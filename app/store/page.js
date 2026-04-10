@@ -16,35 +16,35 @@ const font2 = localFont({
 export default function HeartbeatStorePage() {
 
   const book = {
-    title: "Heartbeat",
-    subtitle: "Die andere Seite",
-    author: "deevee",
-    price: "€19.99",
-    originalPrice: "€24.99",
-    badge: "Band 1 der Reihe",
-    description:
-      "Ein düster-romantischer Fantasyroman über Geheimnisse, Magie, Verrat und Liebe. Tauche ein in eine Welt, in der Vertrauen gefährlich ist und jede Entscheidung alles verändern kann.",
-    longDescription:
-      "Kylie glaubte, sie sei ein ganz normales Mädchen. Bis zu dem Tag, an dem ihre Schwester spurlos verschwindet und die Wahrheit ihre Welt zerreißt. Magische Wesen sind real, und Kylie ist tiefer in ihrer Welt verstrickt, als sie je hätte ahnen können. Auf der Suche nach ihrer Schwester betritt sie die andere Seite – ein Reich aus tödlicher Magie, uralten Bündnissen und Intrigen.",
-    images: [
-      "/book1.jpeg",
-      "/book2.jpeg",
-      "/book3.jpeg",
-      "/book4.jpeg",
-    ],
-    features: [
-      "Slow Burn",
-      "Magische Welt",
-      "Betrayal",
-      "Hidden Power",
-    ],
-    details: [
-      ["Format", "Taschenbuch"],
-      ["Sprache", "Deutsch"],
-      ["Reihe", "Heartbeat"],
-      ["Band", "1"],
-    ],
-  };
+  title: "Heartbeat",
+  subtitle: "Die andere Seite",
+  author: "deevee",
+  price: "€16.99",
+  badge: "Band 1 der Reihe",
+  description:
+    "Ein düster-romantischer Fantasyroman über Geheimnisse, Intrigen und Drama. Folge Kylie in eine fremde Welt, in der Magie real ist, Vertrauen tödlich und Liebe dein Untergang sein kann.",
+  longDescription: [
+    "Kylie glaubte, sie sei ein ganz normales Mädchen. Bis zu dem Tag, an dem ihre Schwester spurlos verschwindet und die Wahrheit ihre Welt zerreißt. Magische Wesen sind real. Und Kylie ist tiefer in ihrer Welt verstrickt, als sie je hätte ahnen können.",
+    "Auf der Suche nach ihrer Schwester betritt sie die andere Seite, ein Reich aus tödlicher Magie, uralten Bündnissen und Intrigen, die niemals in Vergessenheit geraten sind. Doch je näher sie der Wahrheit kommt, desto mehr beginnt alles zu zerbrechen.",
+    "An der Seite eines Feenprinzen gerät Kylie in einen Strudel aus Machtkämpfen und dunklen Entscheidungen, die der Auslöser eines apokalyptischen Krieges werden. Und während Schatten näher rücken, muss Kylie sich fragen: Wie viel ist sie bereit zu opfern, um die zu retten, die sie liebt?",
+  ],
+  images: ["/book1.jpeg", "/book3.jpeg", "/book4.jpeg", "/backcover.jpg"],
+  features: [
+    "Slow Burn",
+    "Magische Welt",
+    "Betrayal",
+    "Hidden Power",
+    "Entführung",
+    "Abenteuer",
+    "Parallelwelten",
+  ],
+  details: [
+    ["Format", "Taschenbuch"],
+    ["Sprache", "Deutsch"],
+    ["Reihe", "Heartbeat"],
+    ["Band", "1"],
+  ],
+};
 
   const primaryButton =
     "inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition hover:-translate-y-0.5";
@@ -57,13 +57,13 @@ export default function HeartbeatStorePage() {
   <p
     className={`${font2.className} text-[11px] uppercase tracking-[0.38em] text-white/45`}
   >
-    Official Book Shop
+    Offizieller Book Shop
   </p>
 
   <h1
     className={`${ibmPlexSerif.className} mt-4 text-[clamp(42px,5vw,72px)] leading-[0.92] tracking-[-0.04em] text-white`}
   >
-    Heartbeat Store
+    Heartbeat Shop
   </h1>
 
   <p
@@ -81,10 +81,10 @@ export default function HeartbeatStorePage() {
           <div className="mb-12 rounded-[34px] border border-[#f3d4a2]/15 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-6 shadow-2xl shadow-black/40 backdrop-blur-sm sm:p-8">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
               <div className="inline-flex items-center rounded-full border border-[#ffcf88]/20 bg-[#8c4e17]/18 px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-[#ffdca8]">
-                Featured Presale
+                Exklusiver Vorverkauf
               </div>
               <div className="inline-flex items-center rounded-full border border-[#ffcf88]/20 bg-[#a7521d] px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-white shadow-[0_0_25px_rgba(167,82,29,0.35)]">
-                Selling Fast
+                Verkauft sich schnell
               </div>
             </div>
 
@@ -118,19 +118,16 @@ export default function HeartbeatStorePage() {
                   className={`${ibmPlexSerif.className} mt-6 max-w-[640px] text-[20px] leading-[1.55] text-white/88 sm:text-[24px]`}
                 >
                   Die besondere Presale-Edition für alle, die mehr als nur das
-                  Buch wollen — emotional, sammelwürdig und perfekt als
-                  Geschenk.
+                  Buch wollen.
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-2">
                   <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[12px] uppercase tracking-[0.18em] text-white/72">
-                    Presale Exclusive
-                  </span>
-                  <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[12px] uppercase tracking-[0.18em] text-white/72">
                     Limitierte Stückzahl
                   </span>
                   <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[12px] uppercase tracking-[0.18em] text-white/72">
-                    Geschenkidee
+                    Auf Wunsch signiert
+
                   </span>
                 </div>
 
@@ -144,21 +141,9 @@ export default function HeartbeatStorePage() {
                         <div
                           className={`${ibmPlexSerif.className} mt-3 text-4xl text-[#fff5e8] sm:text-5xl`}
                         >
-                          €30.99
+                          €29.99
                         </div>
-                        {/* <div className="items-center rounded-full border border-[#ffcf88]/20 bg-[#a7521d] px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-white shadow-[0_0_25px_rgba(167,82,29,0.35)] self-center">
-                Selling Fast
-              </div> */}
                       </div>
-                    </div>
-
-                    <div className="text-right">
-                      <p className="text-[11px] uppercase tracking-[0.28em] text-white/45">
-                        statt
-                      </p>
-                      <p className="mt-2 text-lg text-white/35 line-through">
-                        €39.99
-                      </p>
                     </div>
                   </div>
 
@@ -200,10 +185,10 @@ export default function HeartbeatStorePage() {
                       Was ist in der Buchbox?
                     </p>
                     <ul className={`${ibmPlexSerif.className} mt-3 text-[18px] leading-[1.65] text-[#f7ead8] flex flex-wrap gap-x-4 gap-y-2`}>
-                  {["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"].map((item, i) => (
+                  {["Taschenbuch", "Metall-Lesezeichen", "4 Charakterkarten (beidseitig bedruckt)", "Acryl-Foto-Schlüsselanhänger", "Acryl-Aufsteller"].map((item, i) => (
                     <li key={item} className="flex items-center">
+                      <span className="mx-3 text-white/40">•</span>
                       <span>{item}</span>
-                      {i !== 6  && <span className="mx-3 text-white/40">•</span>}
                     </li>
                   ))}
                 </ul>
@@ -215,11 +200,6 @@ export default function HeartbeatStorePage() {
                     >
                       Buchbox sichern
                     </button>
-                    {/* <button
-                      className={`${primaryButton} border border-white/15 bg-white/5 text-white hover:bg-white/10 sm:flex-1`}
-                    >
-                      Inhalt ansehen
-                    </button> */}
                   </div>
 
                   <p className="mt-5 text-center text-[12px] uppercase tracking-[0.24em] text-[#f1d3a5]/50">
@@ -233,14 +213,14 @@ export default function HeartbeatStorePage() {
             <div className="grid gap-4 sm:grid-cols-[1fr_120px]">
               <div className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 shadow-2xl shadow-black/40">
                 <img
-                  src={book.images[0]}
+                  src={book.images[1]}
                   alt={`${book.title} cover`}
                   className="h-full w-full object-cover"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
-                {book.images.slice(1).map((src, index) => (
+                {book.images.filter((_, idx) => idx !== 1).map((src, index) => (
                   <div
                     key={src}
                     className="overflow-hidden rounded-2xl border border-white/10 bg-white/5"
@@ -284,118 +264,124 @@ export default function HeartbeatStorePage() {
               </div>
 
               <div className="mt-8 rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-xl shadow-black/30 backdrop-blur">
-                <div className="flex items-end gap-3">
-                  <div className={`${ibmPlexSerif.className} text-3xl sm:text-4xl`}>{book.price}</div>
-                  <div className="pb-1 text-base text-white/35 line-through">{book.originalPrice}</div>
-                </div>
+                  <p className="text-[11px] uppercase tracking-[0.28em]">
+                        Buch Preis
+                      </p>
+                  <div className={`${ibmPlexSerif.className} text-3xl sm:text-4xl mt-4`}>{book.price}</div>
 
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                  <button className={`${primaryButton} ${font2.className} bg-white text-black`}>
-                    Jetzt kaufen
-                  </button>
-                  <button
-                    className={`${primaryButton} ${font2.className} border border-white/15 bg-white/5 text-white hover:bg-white/10`}
-                  >
-                    Leseprobe ansehen
-                  </button>
-                </div>
+                <div className="mt-6">
+                <button className={`${primaryButton} ${font2.className} w-full bg-white text-black`}>
+                  Jetzt kaufen
+                </button>
+              </div>
 
                 <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/65">
                   Sicherer Checkout mit Stripe oder PayPal. Versand- und Formatoptionen kannst du später leicht ergänzen.
                 </div>
               </div>
+              <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-4">
+              <p className={`${font2.className} text-[11px] uppercase tracking-[0.26em] text-white/45`}>
+                Triggerwarnungen
+              </p>
+
+              <p className={`${ibmPlexSerif.className} mt-3 flex flex-wrap text-[16px] leading-[1.6] text-white/78`}>
+                Dieses Buch enthält 
+                Extreme Gewalt, Tod, psychische Erkrankungen, Entführung, Stalking, Mord, Panikattacken, emotionaler Missbrauch, Gaslighting, Vernachlässigung von Kindern, Tod eines Elternteils, blutige oder grafische Gewalt.
+              </p>
             </div>
+                        </div>
           </div>
         </div>
       </section>
 
      <div className="w-full relative overflow-hidden border-white/10 bg-[radial-gradient(circle_at_top,rgba(74,109,190,0.18),transparent_34%),radial-gradient(circle_at_top_right,rgba(132,33,64,0.18),transparent_26%),linear-gradient(to_bottom,#0b0b0d,#090909)] py-10">
-      <section className="mx-auto grid max-w-7xl gap-8 px-6 py-12 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:px-10 lg:py-16 relative">
-        <div className="absolute inset-0 bg-[url('/book1.jpeg')] bg-cover bg-center opacity-[0.05] scale-120" />
-        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-7 sm:p-8">
-          <p className={`${font2.className} text-sm uppercase tracking-[0.25em] text-white/45`}>Über das Buch</p>
-          <p className={`${ibmPlexSerif.className} mt-5 text-base leading-8 text-white/78 sm:text-lg`}>
-            {book.longDescription}
-          </p>
-        </div>
+  <section className="relative mx-auto grid max-w-7xl items-start gap-8 px-6 py-12 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:px-10 lg:py-16">
+    <div className="absolute inset-0 bg-[url('/book1.jpeg')] bg-cover bg-center opacity-[0.05] scale-120" />
 
-        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-7 sm:p-8">
-          <p className="text-sm uppercase tracking-[0.25em] text-white/45">Details</p>
-          <div className="mt-5 divide-y divide-white/10">
-            {book.details.map(([label, value]) => (
-              <div key={label} className="flex items-center justify-between gap-4 py-4 text-sm sm:text-base">
-                <span className={`${font2.className} text-white/48`}>{label}</span>
-                <span className={`${ibmPlexSerif.className} text-right text-white/84`}>{value}</span>
+    <div className="relative rounded-[28px] border border-white/10 bg-white/[0.03] p-7 sm:p-8">
+      <p className={`${font2.className} text-sm uppercase tracking-[0.25em] text-white/45`}>
+        Über das Buch
+      </p>
+
+      <div className={`${ibmPlexSerif.className} mt-5 space-y-5 text-base leading-8 text-white/78 sm:text-lg`}>
+        {book.longDescription.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
+      </div>
+    </div>
+
+    <div className="relative rounded-[28px] border border-white/10 bg-white/[0.03] p-7 sm:p-8">
+      <p className={`${font2.className} text-sm uppercase tracking-[0.25em] text-white/45`}>
+        Details
+      </p>
+
+      <div className="mt-5 divide-y divide-white/10">
+        {book.details.map(([label, value]) => (
+          <div
+            key={label}
+            className="flex items-center justify-between gap-4 py-4 text-sm sm:text-base"
+          >
+            <span className={`${font2.className} text-white/48`}>{label}</span>
+            <span className={`${ibmPlexSerif.className} text-right text-white/84`}>
+              {value}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 lg:px-10 lg:pb-20">
+    <div className="overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]">
+      <div className="grid gap-0">
+        <div className="p-6 sm:p-8 lg:p-10 lg:flex lg:flex-col lg:items-center lg:w-full lg:text-center">
+          <div className="lg:flex lg:flex-col lg:items-center">
+            <p className={`${font2.className} text-sm uppercase tracking-[0.25em] text-white/45`}>
+              Für wen ist es?
+            </p>
+            <h2 className={`${ibmPlexSerif.className} mt-4 text-3xl tracking-tight sm:text-4xl`}>
+              Für Leserinnen und Leser, die düstere Romantasy lieben.
+            </h2>
+            <p className={`${ibmPlexSerif.className} mt-5 max-w-2xl text-base leading-8 text-white/76 sm:text-lg lg:text-center`}>
+              Wenn du emotionale Spannung, geheimnisvolle Magie und eine Atmosphäre suchst,
+              die sich gleichzeitig elegant und gefährlich anfühlt, ist Heartbeat genau der
+              richtige Einstieg in diese Reihe.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                title: "Dunkle Atmosphäre",
+                text: "Geheimnisvolle Welten und eine Stimmung, die sofort fesselt.",
+              },
+              {
+                title: "Romantische Spannung",
+                text: "Kein hektisches Tempo – sondern langsames Knistern mit echtem Sog.",
+              },
+              {
+                title: "Starker Reihenauftakt",
+                text: "Perfekt, um die Welt und ihre Konflikte kennenzulernen, bevor der nächste Band folgt.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl border border-white/10 bg-black/20 p-5"
+              >
+                <h3 className={`${ibmPlexSerif.className} text-lg`}>
+                  {item.title}
+                </h3>
+                <p className={`${font2.className} mt-2 text-sm leading-7 text-white/66`}>
+                  {item.text}
+                </p>
               </div>
             ))}
           </div>
         </div>
-      </section>
-
-
-      <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 lg:px-10 lg:pb-20">
-        <div className="overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]">
-          <div className="grid gap-0 lg:grid-cols-[0.92fr_1.08fr]">
-            <div className="border-b border-white/10 p-6 sm:p-8 lg:border-b-0 lg:border-r">
-              <p className="text-sm uppercase tracking-[0.25em] text-white/45">Was dich erwartet</p>
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                {book.images.map((src, index) => (
-                  <div
-                    key={src}
-                    className={`overflow-hidden rounded-2xl border border-white/10 bg-black/20 ${
-                      index === 3 ? "col-span-2" : ""
-                    }`}
-                  >
-                    <img
-                      src={src}
-                      alt={`${book.title} gallery ${index + 1}`}
-                      className="h-full w-full object-cover transition duration-300 hover:scale-[1.02]"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="p-6 sm:p-8 lg:p-10">
-              <p className="text-sm uppercase tracking-[0.25em] text-white/45">Für wen ist es?</p>
-              <h2 className={`${ibmPlexSerif.className} mt-4 text-3xl tracking-tight sm:text-4xl`}>
-                Für Leserinnen und Leser, die düstere Romantasy lieben.
-              </h2>
-              <p className={`${ibmPlexSerif.className} mt-5 max-w-2xl text-base leading-8 text-white/76 sm:text-lg`}>
-                Wenn du emotionale Spannung, geheimnisvolle Magie und eine Atmosphäre suchst,
-                die sich gleichzeitig elegant und gefährlich anfühlt, ist Heartbeat genau der
-                richtige Einstieg in diese Reihe.
-              </p>
-
-              <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                {[
-                  {
-                    title: "Dunkle Atmosphäre",
-                    text: "Kühle Farben, geheimnisvolle Welten und eine Stimmung, die sofort fesselt.",
-                  },
-                  {
-                    title: "Romantische Spannung",
-                    text: "Kein hektisches Tempo – sondern langsames Knistern mit echtem Sog.",
-                  },
-                  {
-                    title: "Starker Reihenauftakt",
-                    text: "Perfekt, um die Welt und ihre Konflikte kennenzulernen, bevor weitere Bände folgen.",
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.title}
-                    className="rounded-2xl border border-white/10 bg-black/20 p-5"
-                  >
-                    <h3 className="text-lg font-medium">{item.title}</h3>
-                    <p className={`${font2.className} mt-2 text-sm leading-7 text-white/66`}>{item.text}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       </div>
+    </div>
+  </section>
+</div>
     </div>
   );
 }
