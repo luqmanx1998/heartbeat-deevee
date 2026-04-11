@@ -123,7 +123,7 @@ export default function HeartbeatStorePage() {
               <div className="overflow-hidden rounded-[28px] border border-white/10 bg-black/20">
                 <div className="relative aspect-[1/1] w-full">
                   <Image
-                    src="/buchbox.jpg"
+                    src="/buchbox2.jpg"
                     alt="Heartbeat Buchbox"
                     fill
                     priority
@@ -221,7 +221,6 @@ export default function HeartbeatStorePage() {
                         "Taschenbuch",
                         "Metall-Lesezeichen",
                         "4 Charakterkarten (beidseitig bedruckt)",
-                        "Acryl-Foto-Schlüsselanhänger",
                         "Acryl-Aufsteller",
                       ].map((item, i) => (
                         <li key={item} className="flex items-center">
