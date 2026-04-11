@@ -221,6 +221,7 @@ export default function HeartbeatStorePage() {
                         "Taschenbuch",
                         "Metall-Lesezeichen",
                         "4 Charakterkarten (beidseitig bedruckt)",
+                        "Acryl-Schlüsselanhänger",
                         "Acryl-Aufsteller",
                       ].map((item, i) => (
                         <li key={item} className="flex items-center">
