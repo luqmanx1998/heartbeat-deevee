@@ -72,13 +72,13 @@ export default function HeartbeatStorePage() {
     onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
     className="relative min-h-screen bg-[#090909] text-white">
       <div
-        className="pointer-events-none fixed z-[9999] h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl transition-opacity duration-300"
+        className="pointer-events-none fixed z-[9999] h-[280px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl transition-opacity duration-300"
         style={{
           left: `${cursorGlow.x}px`,
           top: `${cursorGlow.y}px`,
-          opacity: cursorGlow.visible ? 0.85 : 0,
-          background:
-            "radial-gradient(circle, rgba(120,150,255,0.18) 0%, rgba(175,140,255,0.12) 35%, rgba(243,212,162,0.08) 58%, transparent 74%)",
+          opacity: cursorGlow.visible ? 0.65 : 0,
+         background:
+  "radial-gradient(circle, rgba(120,150,255,0.28) 0%, rgba(175,140,255,0.20) 35%, rgba(243,212,162,0.14) 58%, transparent 74%)",
         }}
       />
       <section className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_top,rgba(74,109,190,0.18),transparent_34%),radial-gradient(circle_at_top_right,rgba(132,33,64,0.18),transparent_26%),linear-gradient(to_bottom,#0b0b0d,#090909)] py-10">
