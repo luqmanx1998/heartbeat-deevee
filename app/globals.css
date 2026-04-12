@@ -31,3 +31,64 @@
 .animate-glowMove {
   animation: glowMove 12s ease-in-out infinite;
 }
+
+.stickySection {
+  width: 100%;
+  height: 100dvh;
+  position: relative;
+  perspective: 1000px;
+  perspective-origin: left center;
+}
+
+.intro {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  padding: 1em;
+  display: flex;
+  z-index: 2;
+}
+
+.intro-col {
+  display: flex;
+  flex: 1;
+}
+
+.intro-col p {
+  flex: 1;
+  text-transform: uppercase;
+}
+
+.introcol p span {
+  display: inline-block;
+}
+
+.intro-col:nth-child(2) p {
+  text-align: right;
+}
+
+.img-1,
+.img-2,
+.img-3 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.img-2 {
+  clip-path: polygon(40% 25%, 60% 25%, 60% 75%, 40% 75%);
+}
+
+.img-3 {
+  clip-path: polygon(50% 25%, 50% 25%, 50% 75%, 50% 75%);
+}
+
+.img-3 img {
+  transform-origin: bottom-center;
+  transform: scale(3);
+}
