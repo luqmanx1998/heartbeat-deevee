@@ -76,8 +76,8 @@ export default function BookRevealSection({
       });
 
       gsap.to(bookFloatRef.current, {
-            y: -14,
-            duration: 2.2,
+            y: -12,
+            duration: 2.6,
             repeat: -1,
             yoyo: true,
             ease: "sine.inOut",
