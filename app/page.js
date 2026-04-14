@@ -13,6 +13,8 @@ import Characters from "./components/Characters";
 import { AnimatePresence, motion } from "framer-motion";
 import StickyStorySection from "./components/StickyStorySection";
 import SmoothScroll from "./components/SmoothScroll";
+import BookRevealSection from "./components/BookRevealSection";
+import Footer from "./components/Footer";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -73,39 +75,39 @@ export default function Home() {
     },
   };
 
-  function handleStoreTransition() {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
+  function handleStoreTransition(targetRef) {
+  if (isTransitioning) return;
+  setIsTransitioning(true);
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        router.push("/store");
-      },
-    });
+  const tl = gsap.timeline({
+    onComplete: () => {
+      router.push("/store");
+    },
+  });
 
-    tl.to(heroCtaRef.current, {
-      boxShadow: "0 0 40px rgba(255,255,255,0.65)",
-      borderColor: "rgba(255,255,255,0.95)",
-      backgroundColor: "rgba(255,255,255,0.14)",
-      scale: 1.04,
-      duration: 0.18,
-      ease: "power2.out",
+  tl.to(targetRef.current, {
+    boxShadow: "0 0 40px rgba(255,255,255,0.65)",
+    borderColor: "rgba(255,255,255,0.95)",
+    backgroundColor: "rgba(255,255,255,0.14)",
+    scale: 1.04,
+    duration: 0.18,
+    ease: "power2.out",
+  })
+    .to(targetRef.current, {
+      scale: 1,
+      duration: 0.12,
+      ease: "power2.inOut",
     })
-      .to(heroCtaRef.current, {
-        scale: 1,
-        duration: 0.12,
-        ease: "power2.inOut",
-      })
-      .to(
-        pageFlashRef.current,
-        {
-          opacity: 1,
-          duration: 0.28,
-          ease: "power2.out",
-        },
-        "-=0.02",
-      );
-  }
+    .to(
+      pageFlashRef.current,
+      {
+        opacity: 1,
+        duration: 0.28,
+        ease: "power2.out",
+      },
+      "-=0.02"
+    );
+}
 
   useEffect(() => {
     const seenIntro = sessionStorage.getItem("heartbeat_intro_seen");
@@ -132,6 +134,7 @@ export default function Home() {
     gsap.set(heroTitleWrapRef.current, { opacity: 0, y: 40 });
     gsap.set(heroButtonWrapRef.current, { opacity: 0, y: 30 });
     gsap.set(heroCaptionRef.current, { opacity: 0, y: 20 });
+    
 
     gsap.set(
       [introLine1Ref.current, introLine2Ref.current, introLine3Ref.current],
@@ -596,14 +599,30 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="h-10 w-full bg-black">&nbsp;</div>
-
-        <section className="relative flex h-screen items-center justify-center bg-[url('/gaze.png')] bg-cover bg-center bg-no-repeat text-center">
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-[20] h-20 bg-gradient-to-b from-black to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[20] h-40 bg-gradient-to-t from-black to-transparent" />
-        </section>
-
         <StickyStorySection ibmPlexSerif={ibmPlexSerif} font2={font2} />
+        <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-center">
+        <div
+          className="absolute inset-0 bg-[url('/gaze.png')] bg-cover bg-center opacity-[1]"
+          aria-hidden
+        />
+
+        <div className="absolute inset-0 bg-black/40" />
+
+        <div className="relative z-10 flex flex-col items-center">
+          <h2 className="text-[clamp(40px,6vw,108px)] leading-[1.02] uppercase text-white mb-8">
+            Bist du bereit <br/> Für die andere Seite?
+          </h2>
+        </div>
+      </section>
+
+        <BookRevealSection
+            ibmPlexSerif={ibmPlexSerif}
+            font2={font2}
+            handleStoreTransition={handleStoreTransition}
+            isTransitioning={isTransitioning}
+          />
+
+        <Footer ibmPlexSerif={ibmPlexSerif} font2={font2}/>
       </main>
     </>
   );
