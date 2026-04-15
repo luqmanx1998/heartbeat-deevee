@@ -53,27 +53,26 @@ export default function Home() {
   const pageFlashRef = useRef(null);
 
   const aboutContent = {
-    author: {
-      titleTop: "About",
-      titleBottom: "The Author",
-      paragraphs: [
-        "Deevee ist Autorin im Genre Dark Romantasy und Romantasy und erschafft Geschichten, in denen sich Liebe und Dunkelheit auf faszinierende Weise begegnen.",
-        "Schon seit ihrem 14. Lebensjahr widmet sie sich dem Schreiben und hat seither ihre Leidenschaft für das Erzählen intensiver, emotionaler und geheimnisvoller Welten stetig vertieft.",
-        "Ihre Geschichten laden Leserinnen und Leser dazu ein, in neue magische Welten einzutauchen, in denen nichts ganz so ist, wie es scheint.",
-        "Wenn sie nicht schreibt, sammelt Deevee neue Inspirationen für ihre nächsten Projekte und ist immer auf der Suche nach Geschichten, die berühren, fesseln und lange im Gedächtnis bleiben.",
-      ],
-    },
-    story: {
-      titleTop: "About",
-      titleBottom: "The Story",
-      paragraphs: [
-        "Kylie glaubte, sie sei ein ganz normales Mädchen. Bis zu dem Tag, an dem ihre Schwester spurlos verschwindet und die Wahrheit ihre Welt zerreißt.",
-        "Magische Wesen sind real. Und Kylie ist tiefer in ihrer Welt verstrickt, als sie je hätte ahnen können. Auf der Suche nach ihrer Schwester betritt sie die andere Seite, ein Reich aus tödlicher Magie, uralten Bündnissen und Intrigen, die niemals in Vergessenheit geraten sind.",
-        "Doch je näher sie der Wahrheit kommt, desto mehr beginnt alles zu zerbrechen. An der Seite eines Feenprinzen gerät Kylie in einen Strudel aus Machtkämpfen und dunklen Entscheidungen, die der Auslöser eines apokalyptischen Krieges werden. Und während Schatten näher rücken, muss Kylie sich fragen:",
-        "Wie viel ist sie bereit zu opfern, um die zu retten, die sie liebt?",
-      ],
-    },
-  };
+  author: {
+    titleTop: "About",
+    titleBottom: "The Author",
+    paragraphs: [
+      "Deevee ist Autorin im Genre Dark Romantasy und Romantasy und erschafft Geschichten, in denen sich Liebe und Dunkelheit auf faszinierende Weise begegnen. Schon seit ihrem 14. Lebensjahr widmet sie sich dem Schreiben und hat seither ihre Leidenschaft für das Erzählen intensiver, emotionaler und geheimnisvoller Welten stetig vertieft.",
+      "Ihre Geschichten laden Leserinnen und Leser dazu ein, in neue magische Welten einzutauchen, in denen nichts ganz so ist, wie es scheint.",
+      "Wenn sie nicht schreibt, sammelt Deevee neue Inspirationen für ihre nächsten Projekte und ist immer auf der Suche nach Geschichten, die berühren, fesseln und lange im Gedächtnis bleiben.",
+    ],
+  },
+
+  story: {
+    titleTop: "About",
+    titleBottom: "The Story",
+    paragraphs: [
+      "Kylie glaubte, sie sei ein ganz normales Mädchen. Bis zu dem Tag, an dem ihre Schwester spurlos verschwindet und die Wahrheit ihre Welt zerreißt.",
+      "Magische Wesen sind real. Und Kylie ist tiefer in ihrer Welt verstrickt, als sie je hätte ahnen können. Auf der Suche nach ihrer Schwester betritt sie die andere Seite, ein Reich aus tödlicher Magie, uralten Bündnissen und Intrigen, die niemals in Vergessenheit geraten sind.",
+      "Doch je näher sie der Wahrheit kommt, desto mehr beginnt alles zu zerbrechen. An der Seite eines Feenprinzen gerät Kylie in einen Strudel aus Machtkämpfen und dunklen Entscheidungen, die der Auslöser eines apokalyptischen Krieges werden. Und während Schatten näher rücken, muss Kylie sich fragen: Wie viel ist sie bereit zu opfern, um die zu retten, die sie liebt?",
+    ],
+  },
+};
 
   function handleStoreTransition(targetRef) {
   if (isTransitioning) return;
@@ -543,8 +542,8 @@ export default function Home() {
                 <div
                   className={`absolute ${
                     aboutView === "author"
-                      ? "top-[clamp(24%,10vw,370px)] right-[clamp(49%,10vw,370px)]"
-                      : "top-[clamp(23%,9vw,380px)] right-[clamp(50%,10vw,370px)]"
+                      ? "top-[clamp(24%,10.5vw,370px)] right-[clamp(49%,10vw,370px)] 2xl:top-[clamp(22%,10vw,370px)] 2xl:right-[clamp(55%,9vw,370px)] 3xl:top-[clamp(22%,9.25vw,370px)] 3xl:right-[clamp(56%,9vw,370px)] 4xl:top-[clamp(22%,8vw,370px)] 4xl:right-[clamp(62%,9vw,370px)]"
+                      : "top-[clamp(22.5%,10.5vw,380px)] right-[clamp(50%,10vw,370px)] 2xl:top-[clamp(22%,9.75vw,370px)] 2xl:right-[clamp(55%,9vw,370px)] 3xl:top-[clamp(22%,9.25vw,370px)] 3xl:right-[clamp(57%,9vw,370px)] 4xl:top-[clamp(22%,8vw,370px)] 4xl:right-[clamp(63%,9vw,370px)]"
                   } z-30 z-[150] inline-flex rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-sm transition`}
                 >
                   <button
@@ -570,7 +569,7 @@ export default function Home() {
                   </button>
                 </div>
 
-                <h2 className="text-[clamp(48px,6vw,70px)] leading-[0.92] tracking-[-0.05em]">
+                <h2 className="text-[clamp(48px,6vw,70px)] leading-[0.92] tracking-[-0.05em] 4xl:-translate-y-2">
                   {aboutContent[aboutView].titleTop}
                   <br />
                   {aboutContent[aboutView].titleBottom}
@@ -583,10 +582,10 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="mt-10"
+                    className="mt-11"
                   >
                     <div
-                      className={`${ibmPlexSerif.className} translate-y-4 max-w-[600px] space-y-3 text-[clamp(14px,1.2vw,16px)] leading-[1.55] tracking-normal`}
+                      className={`${ibmPlexSerif.className} translate-y-4 max-w-[600px] space-y-3 text-[clamp(14px,1vw,16px)] leading-[1.55] tracking-normal`}
                     >
                       {aboutContent[aboutView].paragraphs.map((paragraph) => (
                         <p key={paragraph}>{paragraph}</p>

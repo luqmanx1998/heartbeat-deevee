@@ -92,3 +92,9 @@
   transform-origin: bottom-center;
   transform: scale(3);
 }
+
+@theme {
+  --breakpoint-2xl: 1350px;
+  --breakpoint-3xl: 1440px;
+  --breakpoint-4xl: 1600px;
+}
