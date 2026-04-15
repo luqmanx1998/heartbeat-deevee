@@ -585,7 +585,7 @@ export default function Home() {
                     className="mt-11"
                   >
                     <div
-                      className={`${ibmPlexSerif.className} translate-y-4 max-w-[600px] space-y-3 text-[clamp(14px,1vw,16px)] leading-[1.55] tracking-normal`}
+                      className={`${ibmPlexSerif.className} translate-y-3.5 max-w-[600px] space-y-2 text-[clamp(14px,0.9vw,16px)] leading-[1.55] tracking-normal`}
                     >
                       {aboutContent[aboutView].paragraphs.map((paragraph) => (
                         <p key={paragraph}>{paragraph}</p>
