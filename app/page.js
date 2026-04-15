@@ -515,7 +515,8 @@ export default function Home() {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[20] h-30 bg-gradient-to-t from-black to-transparent" />
           <div className="pointer-events-none absolute top-0 right-0 h-full w-[15%] z-[20] bg-gradient-to-l from-black to-transparent" />
           <div className="pointer-events-none absolute top-0 left-0 h-full w-[15%] z-[20] bg-gradient-to-r from-black to-transparent" />
-
+          
+          <div className="max-w-[1600px] 2xl:mx-auto">
           <div className="pointer-events-none absolute top-0 right-[-5%] h-full z-10 overflow-visible">
             <Image
               src="/rippedpaper_colored3.png"
@@ -585,7 +586,7 @@ export default function Home() {
                     className="mt-11"
                   >
                     <div
-                      className={`${ibmPlexSerif.className} translate-y-3.5 max-w-[600px] space-y-2 text-[clamp(14px,0.9vw,16px)] leading-[1.55] tracking-normal`}
+                      className={`${ibmPlexSerif.className} translate-y-1.5 xl:translate-y-4 max-w-[600px] space-y-3 text-[clamp(14px,1.1vw,16px)] leading-[1.35] tracking-normal`}
                     >
                       {aboutContent[aboutView].paragraphs.map((paragraph) => (
                         <p key={paragraph}>{paragraph}</p>
@@ -595,6 +596,7 @@ export default function Home() {
                 </AnimatePresence>
               </div>
             </div>
+          </div>
           </div>
         </section>
 
