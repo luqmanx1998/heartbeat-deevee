@@ -60,8 +60,24 @@ function Footer({ ibmPlexSerif, font2 }) {
 
           <div className="mt-16 space-y-10">
             <div className="flex items-center gap-4">
-              <FiInstagram className="cursor-pointer text-lg transition hover:text-[#FFD281]" />
-              <SiTiktok className="cursor-pointer text-lg transition hover:text-[#FFD281]" />
+              <a
+            href="https://instagram.com/xdeeveee"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="inline-flex items-center justify-center p-1 text-white transition-colors duration-300 hover:text-[#FFD281]"
+          >
+            <FiInstagram lassName="text-[20px] text-white hover:text-[#FFD281] transition-colors duration-300 cursor-pointer" />
+          </a>
+              <a
+            href="https://www.tiktok.com/@xdeeveee"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="inline-flex items-center justify-center p-1 text-white transition-colors duration-300 hover:text-[#FFD281]"
+          >
+            <SiTiktok className="text-[18px] text-white hover:text-[#FFD281] transition-colors duration-300 cursor-pointer" />
+          </a>
             </div>
 
             <div className={`${ibmPlexSerif.className} text-lg uppercase`}>

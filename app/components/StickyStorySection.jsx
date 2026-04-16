@@ -197,9 +197,10 @@ export default function StickyStorySection({ ibmPlexSerif, font2 }) {
         <div className="absolute top-1/2 left-1/2 z-30 w-[min(78vw,900px)] -translate-x-1/2 -translate-y-1/2">
           <div ref={copyRef} className="text-center opacity-0">
             <h2
-              className={`text-[clamp(34px,5vw,80px)] leading-[120%] text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.6),0_0_15px_rgba(0,0,0,0.4)] uppercase`}
+              className={`text-[clamp(34px,5vw,80px)] leading-[120%] text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.6),0_0_15px_rgba(0,0,0,0.4)] uppercase lg:w-[900px]`}
             >
-              Manche Welten findet man nicht.
+              Manche Welten findet <br />
+              man nicht.
               <br />
               Sie finden dich.
             </h2>

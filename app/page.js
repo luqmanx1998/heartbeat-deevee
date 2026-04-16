@@ -15,6 +15,11 @@ import StickyStorySection from "./components/StickyStorySection";
 import SmoothScroll from "./components/SmoothScroll";
 import BookRevealSection from "./components/BookRevealSection";
 import Footer from "./components/Footer";
+import WorldIntroSection from "./components/WorldIntroSection";
+import ReadySection from "./components/ReadySection";
+import FloatingMenu from "./components/FloatingMenu";
+import { FiInstagram } from "react-icons/fi";
+import { SiTiktok } from "react-icons/si";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -37,6 +42,8 @@ export default function Home() {
   const [introDone, setIntroDone] = useState(false);
   const [aboutView, setAboutView] = useState("author");
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showFloatingMenu, setShowFloatingMenu] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const introOverlayRef = useRef(null);
   const introLine1Ref = useRef(null);
@@ -74,6 +81,20 @@ export default function Home() {
   },
 };
 
+  function scrollToId(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    setOpen(false);
+
+    setTimeout(() => {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 350);
+  }
+
   function handleStoreTransition(targetRef) {
   if (isTransitioning) return;
   setIsTransitioning(true);
@@ -106,7 +127,19 @@ export default function Home() {
       },
       "-=0.02"
     );
-}
+} 
+
+  useEffect(() => {
+  function handleScroll() {
+    const heroHeight = window.innerHeight * 0.8;
+    setShowFloatingMenu(window.scrollY > heroHeight);
+  }
+
+  handleScroll();
+  window.addEventListener("scroll", handleScroll);
+
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
   useEffect(() => {
     const seenIntro = sessionStorage.getItem("heartbeat_intro_seen");
@@ -294,6 +327,7 @@ export default function Home() {
     };
   }, []);
 
+
   const albumImages = {
     taletopia: [
       "/albums/taletopia/taletopia.png",
@@ -337,6 +371,14 @@ export default function Home() {
   return (
     <>
       <SmoothScroll />
+      <FloatingMenu
+        ibmPlexSerif={ibmPlexSerif}
+        font2={font2}
+        visible={showFloatingMenu}
+        scrollToId={scrollToId}
+        open={open}
+        setOpen={setOpen}
+      />
 
       <div
         ref={pageFlashRef}
@@ -377,6 +419,7 @@ export default function Home() {
 
       <main className="overflow-x-hidden">
         <section
+          id="home"
           ref={heroSectionRef}
           className="relative flex h-screen items-center justify-center"
         >
@@ -392,22 +435,52 @@ export default function Home() {
               <ul
                 className={`ml-14 flex gap-6.25 text-[14px] leading-[100%] tracking-[6%] text-white uppercase ${ibmPlexSerif.className}`}
               >
-                <li className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
+                <li 
+                onClick={() => scrollToId("home")}
+                className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
                   Home
                 </li>
-                <li className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
+                <li 
+                onClick={() => scrollToId("map")}
+                className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
                   The World
                 </li>
-                <li className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
+                <li 
+                onClick={() => scrollToId("characters")}
+                className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
                   Characters
                 </li>
-                <li className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
+                <li 
+                onClick={() => scrollToId("about")}
+                className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
                   About
                 </li>
               </ul>
             </div>
 
+          <div className="flex gap-3 items-center">
+            <a
+            href="https://instagram.com/xdeeveee"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="inline-flex items-center justify-center p-1 text-white transition-colors duration-300 hover:text-[#FFD281]"
+          >
+            <FiInstagram lassName="text-[18px] text-white hover:text-[#FFD281] transition-colors duration-300 cursor-pointer" />
+          </a>
+
+          <a
+            href="https://www.tiktok.com/@xdeeveee"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="inline-flex items-center justify-center p-1 text-white transition-colors duration-300 hover:text-[#FFD281]"
+          >
+            <SiTiktok className="text-[16px] text-white hover:text-[#FFD281] transition-colors duration-300 cursor-pointer" />
+          </a>
+            
             <button
+              onClick={() => scrollToId("footer")}
               className={`cursor-pointer rounded-2xl bg-amber-900 py-2 px-3 text-[14px] font-medium text-white uppercase ${ibmPlexSerif.className}`}
               style={{
                 clipPath:
@@ -416,6 +489,7 @@ export default function Home() {
             >
               Join the journey
             </button>
+          </div>
           </nav>
 
           <video
@@ -425,7 +499,7 @@ export default function Home() {
             playsInline
             className="absolute inset-0 h-full w-full object-cover"
           >
-            <source src="/video/video2.mp4" type="video/mp4" />
+            <source src="/video/video3.mp4" type="video/mp4" />
           </video>
 
           <div className="absolute inset-0 bg-black/30" />
@@ -468,38 +542,18 @@ export default function Home() {
             <p className="text-[12px]">Und Liebe kann dein Untergang sein.</p>
           </div>
         </section>
+        
+        <div id="world">
+          <WorldIntroSection ibmPlexSerif={ibmPlexSerif} font2={font2} handleStoreTransition={handleStoreTransition} scrollToId={scrollToId} setOpen={setOpen} open={open}/>
+        </div>
 
-        <section className="relative z-[2] flex h-screen justify-center bg-[url('/taletopia.png')] bg-cover bg-center bg-no-repeat text-center">
-          <div className="absolute inset-0 bg-black/30" />
-          <div className="absolute inset-x-0 top-0 z-[1] h-48 bg-gradient-to-b from-black to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-black to-transparent" />
-          <div className="absolute top-[27.5%] z-10 flex flex-col items-center">
-            <h1 className="w-[min(90vw,782px)] text-[clamp(72px,8vw,120px)] leading-[0.95] tracking-[-0.05em] text-white">
-              Eine neue Welt
-              <br />
-              wartet auf dich.
-            </h1>
-
-            <button
-              className={`${ibmPlexSerif.className} mt-8 cursor-pointer border border-white/30 bg-black/20 px-10 py-4 text-[15px] tracking-[0.18em] text-white uppercase backdrop-blur-[2px] transition duration-300 hover:border-white/60 hover:bg-white/10 hover:shadow-[0_0_25px_rgba(255,255,255,0.25)]`}
-            >
-              Enter the World
-            </button>
-
-            <button
-              onClick={handleStoreTransition}
-              className={`${font2.className} mt-5 inline-flex cursor-pointer items-center gap-2 text-[14px] tracking-[0.28em] text-white/85 uppercase transition duration-300 hover:border-white/60 hover:bg-white/10 hover:shadow-[0_0_25px_rgba(255,255,255,0.25)]`}
-            >
-              Jetzt eintauchen
-            </button>
-          </div>
-        </section>
-
-        <Map
-          openLocation={openLocation}
-          setAlbumLocation={setAlbumLocation}
-          setOpenLocation={setOpenLocation}
-        />
+        <div id="map">
+          <Map
+            openLocation={openLocation}
+            setAlbumLocation={setAlbumLocation}
+            setOpenLocation={setOpenLocation}
+          />
+        </div>
 
         <AlbumLightbox
           isOpen={!!albumLocation}
@@ -508,16 +562,20 @@ export default function Home() {
           images={albumLocation ? albumImages[albumLocation] || [] : []}
         />
 
+        <div id="characters">
         <Characters />
+        </div>
 
-        <section className="relative h-screen overflow-hidden bg-[url('/bgauthor1.png')] bg-cover bg-center bg-no-repeat contrast-130">
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-[20] h-30 bg-gradient-to-b from-black to-transparent" />
+        <section
+        id="about"
+        className="relative h-screen overflow-hidden bg-[url('/bgauthor1.png')] bg-cover bg-center bg-no-repeat contrast-130">
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-[20] h-24 bg-gradient-to-b from-black to-transparent" />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[20] h-30 bg-gradient-to-t from-black to-transparent" />
           <div className="pointer-events-none absolute top-0 right-0 h-full w-[15%] z-[20] bg-gradient-to-l from-black to-transparent" />
           <div className="pointer-events-none absolute top-0 left-0 h-full w-[15%] z-[20] bg-gradient-to-r from-black to-transparent" />
           
           <div className="max-w-[1600px] 2xl:mx-auto">
-          <div className="pointer-events-none absolute top-0 right-[-5%] h-full z-10 overflow-visible">
+          <div className="pointer-events-none absolute top-0 3xl:-top-2 right-[-5%] h-full z-10 overflow-visible">
             <Image
               src="/rippedpaper_colored3.png"
               alt=""
@@ -599,9 +657,12 @@ export default function Home() {
           </div>
           </div>
         </section>
-
+        
+        <div id="story">
         <StickyStorySection ibmPlexSerif={ibmPlexSerif} font2={font2} />
-        <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-center">
+        </div>
+
+        {/* <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-center">
         <div
           className="absolute inset-0 bg-[url('/gaze.png')] bg-cover bg-center opacity-[1]"
           aria-hidden
@@ -614,16 +675,21 @@ export default function Home() {
             Bist du bereit <br/> Für die andere Seite?
           </h2>
         </div>
-      </section>
-
+      </section> */}
+       <ReadySection />
+        
+        <div id="store">
         <BookRevealSection
             ibmPlexSerif={ibmPlexSerif}
             font2={font2}
             handleStoreTransition={handleStoreTransition}
             isTransitioning={isTransitioning}
           />
-
+        </div>
+        
+        <div id="footer">
         <Footer ibmPlexSerif={ibmPlexSerif} font2={font2}/>
+        </div>
       </main>
     </>
   );
