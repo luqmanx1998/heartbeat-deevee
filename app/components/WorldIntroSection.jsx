@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 const worldImages = [
   "/taletopia.png",
   "/eldarun.jpg",
-  "/aridryan.jpg",
+  "/aridryan2.png",
   "/dammerfels.jpeg",
 ];
 

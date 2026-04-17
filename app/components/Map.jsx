@@ -315,7 +315,7 @@ Hexen halten sich meist aus Konflikten heraus und bleiben neutral.
               <div className="grid md:grid-cols-[1.1fr_0.9fr]">
                 <div className="relative min-h-[320px]">
                   <Image
-                    src="/aridryan.jpg"
+                    src="/aridryan2.png"
                     alt="Aridryan"
                     fill
                     className="object-cover"

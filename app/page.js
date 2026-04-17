@@ -359,7 +359,7 @@ export default function Home() {
       "/albums/erzklamm/erzklamm3.jpeg",
       "/albums/erzklamm/erzklamm4.jpeg",
     ],
-    aridryan: ["/albums/aridryan/aridryan.jpg", "/albums/aridryan/aridryan2.jpeg"],
+    aridryan: ["/albums/aridryan/aridryan3.png", "/albums/aridryan/aridryan2.jpeg"],
     dammerfels: [
       "/albums/dammerfels/dammerfels.jpeg",
       "/albums/dammerfels/dammerfels2.jpeg",
@@ -466,7 +466,7 @@ export default function Home() {
             aria-label="Instagram"
             className="inline-flex items-center justify-center p-1 text-white transition-colors duration-300 hover:text-[#FFD281]"
           >
-            <FiInstagram lassName="text-[18px] text-white hover:text-[#FFD281] transition-colors duration-300 cursor-pointer" />
+            <FiInstagram className="text-[18px] text-white hover:text-[#FFD281] transition-colors duration-300 cursor-pointer" />
           </a>
 
           <a
@@ -688,7 +688,7 @@ export default function Home() {
         </div>
         
         <div id="footer">
-        <Footer ibmPlexSerif={ibmPlexSerif} font2={font2}/>
+        <Footer ibmPlexSerif={ibmPlexSerif} font2={font2} scrollToId={scrollToId} setOpen={setOpen} open={open}/>
         </div>
       </main>
     </>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FiInstagram } from "react-icons/fi";
 import { SiTiktok } from "react-icons/si";
 
-function Footer({ ibmPlexSerif, font2 }) {
+function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -43,16 +43,24 @@ function Footer({ ibmPlexSerif, font2 }) {
             <ul
               className={`${ibmPlexSerif.className} mt-14 space-y-[25px] text-sm leading-[100%] tracking-[6%] uppercase`}
             >
-              <li className="cursor-pointer transition hover:text-[#FFD281]">
+              <li 
+              onClick={() => scrollToId("home")}
+              className="cursor-pointer transition hover:text-[#FFD281]">
                 Home
               </li>
-              <li className="cursor-pointer transition hover:text-[#FFD281]">
+              <li 
+              onClick={() => scrollToId("map")}
+              className="cursor-pointer transition hover:text-[#FFD281]">
                 The World
               </li>
-              <li className="cursor-pointer transition hover:text-[#FFD281]">
+              <li 
+              onClick={() => scrollToId("characters")}
+              className="cursor-pointer transition hover:text-[#FFD281]">
                 Characters
               </li>
-              <li className="cursor-pointer transition hover:text-[#FFD281]">
+              <li 
+              onClick={() => scrollToId("about")}
+              className="cursor-pointer transition hover:text-[#FFD281]">
                 About
               </li>
             </ul>
@@ -67,7 +75,7 @@ function Footer({ ibmPlexSerif, font2 }) {
             aria-label="Instagram"
             className="inline-flex items-center justify-center p-1 text-white transition-colors duration-300 hover:text-[#FFD281]"
           >
-            <FiInstagram lassName="text-[20px] text-white hover:text-[#FFD281] transition-colors duration-300 cursor-pointer" />
+            <FiInstagram className="text-[20px] text-white hover:text-[#FFD281] transition-colors duration-300 cursor-pointer" />
           </a>
               <a
             href="https://www.tiktok.com/@xdeeveee"
