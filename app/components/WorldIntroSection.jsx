@@ -31,52 +31,63 @@ export default function WorldIntroSection({
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+  const section = sectionRef.current;
+  if (!section) return;
 
-    const ctx = gsap.context(() => {
-      gsap.set(headingRef.current, {
-        opacity: 0,
-        y: 35,
-      });
+  const ctx = gsap.context(() => {
+    gsap.set(headingRef.current, {
+      opacity: 0,
+      y: 50,
+    });
 
-      gsap.set(buttonsWrapRef.current, {
-        opacity: 0,
-        y: 28,
-      });
+    gsap.set(buttonsWrapRef.current, {
+      opacity: 0,
+      y: 30,
+    });
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 78%",
-          end: "top 10%",
-          scrub: 1.4,
-        },
-      });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: "+=130%",
+        scrub: 1.3,
+        pin: true,
+      },
+    });
 
-      tl.to(
-        headingRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          ease: "power2.out",
-        },
-        0.18
-      ).to(
+    tl.to(
+      headingRef.current,
+      {
+        opacity: 1,
+        y: 0,
+        ease: "power2.out",
+      },
+      0.18
+    )
+      .to(
         buttonsWrapRef.current,
         {
           opacity: 1,
           y: 0,
           ease: "power2.out",
         },
-        0.34
+        0.38
+      )
+      .to(
+        slideRefs.current,
+        {
+          scale: 1.08,
+          ease: "none",
+          stagger: 0,
+        },
+        0
       );
 
-      ScrollTrigger.refresh();
-    }, section);
+    ScrollTrigger.refresh();
+  }, section);
 
-    return () => ctx.revert();
-  }, []);
+  return () => ctx.revert();
+}, []);
 
   useEffect(() => {
     slideRefs.current.forEach((slide, index) => {
