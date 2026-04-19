@@ -3,7 +3,9 @@
 import localFont from "next/font/local";
 import { IBM_Plex_Serif } from "next/font/google";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import LoginModal from "../components/LoginModal";
+import { createClient } from "../lib/supabase/client";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -52,6 +54,75 @@ export default function HeartbeatStorePage() {
     visible: false,
   });
 
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [user, setUser] = useState(null);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef(null);
+
+  const supabase = createClient();
+
+useEffect(() => {
+  function handleKeyDown(e) {
+    if (e.key === "Escape") setShowLoginModal(false);
+  }
+
+  if (showLoginModal) {
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+  } else {
+    document.body.style.overflow = "";
+  }
+
+  return () => {
+    document.body.style.overflow = "";
+    window.removeEventListener("keydown", handleKeyDown);
+  };
+}, [showLoginModal]);
+
+useEffect(() => {
+
+  async function loadUser() {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error) {
+      console.error("Failed to load user:", error.message);
+      return;
+    }
+
+    setUser(user ?? null);
+  }
+
+  loadUser();
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    setUser(session?.user ?? null);
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
+
+useEffect(() => {
+  function handleClickOutside(e) {
+    if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+      setShowUserMenu(false);
+    }
+  }
+
+  if (showUserMenu) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [showUserMenu]);
+
+
   function handleMouseMove(e) {
     setCursorGlow({
       x: e.clientX,
@@ -64,10 +135,27 @@ export default function HeartbeatStorePage() {
     setCursorGlow((prev) => ({ ...prev, visible: false }));
   }
 
+  async function handleSignOut() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error("Sign out failed:", error.message);
+    return;
+  }
+
+  setShowUserMenu(false);
+  setUser(null);
+}
+
+
   const primaryButton =
     "inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition hover:-translate-y-0.5";
 
   return (
+    <>
+    {showLoginModal && (
+ <LoginModal ibmPlexSerif={ibmPlexSerif} font2={font2} showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal}/>
+)}
     <main 
     onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
     className="relative min-h-screen bg-[#090909] text-white">
@@ -82,27 +170,77 @@ export default function HeartbeatStorePage() {
         }}
       />
       <section className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_top,rgba(74,109,190,0.18),transparent_34%),radial-gradient(circle_at_top_right,rgba(132,33,64,0.18),transparent_26%),linear-gradient(to_bottom,#0b0b0d,#090909)] py-10">
-        <div className="mb-10 text-center">
-          <p
-            className={`${font2.className} text-[11px] uppercase tracking-[0.38em] text-white/45`}
-          >
-            Offizieller Book Shop
-          </p>
+        <div className="relative mb-10">
+  <div className="absolute right-[11%] top-0 z-20" ref={userMenuRef}>
+  {!user ? (
+    <button
+      onClick={() => setShowLoginModal(true)}
+      className={`${font2.className} inline-flex cursor-pointer items-center justify-center rounded-full border border-white/14 bg-white/[0.04] px-5 py-2.5 text-[11px] uppercase tracking-[0.24em] text-white/88 backdrop-blur-[6px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:text-[#fff4de] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)]`}
+    >
+      Login
+    </button>
+  ) : (
+    <div className="relative">
+      <button
+        onClick={() => setShowUserMenu((prev) => !prev)}
+        className={`${font2.className} inline-flex max-w-[260px] cursor-pointer items-center gap-3 rounded-full border border-[#f3d4a2]/18 bg-white/[0.05] px-4 py-2.5 text-[11px] uppercase tracking-[0.18em] text-[#fff4de] backdrop-blur-[8px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)]`}
+      >
+        <span className="inline-block h-2 w-2 rounded-full bg-[#f3d4a2]" />
+        <span className="truncate normal-case tracking-normal text-[12px]">
+          {user.email}
+        </span>
+      </button>
 
-          <h1
-            className={`${ibmPlexSerif.className} mt-4 text-[clamp(42px,5vw,72px)] leading-[0.92] tracking-[-0.04em] text-white`}
+      {showUserMenu && (
+        <div className="absolute right-0 mt-3 w-[220px] overflow-hidden rounded-[22px] border border-white/10 bg-[#111113]/95 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+          <button
+            className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-white/82 transition hover:bg-white/[0.06] hover:text-[#fff4de]`}
           >
-            Heartbeat Shop
-          </h1>
+            Orders
+          </button>
 
-          <p
-            className={`${font2.className} mt-3 text-[13px] uppercase tracking-[0.32em] text-white/55`}
+          <button
+            className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-white/82 transition hover:bg-white/[0.06] hover:text-[#fff4de]`}
           >
-            Heartbeat · Die andere Seite
-          </p>
+            Profile
+          </button>
 
-          <div className="mx-auto mt-5 h-px w-[220px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+          <div className="my-1 h-px bg-white/8" />
+
+          <button
+            onClick={handleSignOut}
+            className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-[#f1d3a5] transition hover:bg-white/[0.06] hover:text-white`}
+          >
+            Sign out
+          </button>
         </div>
+      )}
+    </div>
+  )}
+</div>
+
+  <div className="text-center">
+    <p
+      className={`${font2.className} text-[11px] uppercase tracking-[0.38em] text-white/45`}
+    >
+      Offizieller Book Shop
+    </p>
+
+    <h1
+      className={`${ibmPlexSerif.className} mt-4 text-[clamp(42px,5vw,72px)] leading-[0.92] tracking-[-0.04em] text-white`}
+    >
+      Heartbeat Shop
+    </h1>
+
+    <p
+      className={`${font2.className} mt-3 text-[13px] uppercase tracking-[0.32em] text-white/55`}
+    >
+      Heartbeat · Die andere Seite
+    </p>
+
+    <div className="mx-auto mt-5 h-px w-[220px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+  </div>
+</div>
 
         <div className="absolute inset-0 bg-[url('/book4.jpeg')] bg-cover bg-center opacity-[0.08]" />
         <div className="relative mx-auto max-w-7xl px-6 py-12 sm:px-8 lg:px-10 lg:py-16">
@@ -528,5 +666,6 @@ export default function HeartbeatStorePage() {
         </section>
       </div>
     </main>
+    </>
   );
 }

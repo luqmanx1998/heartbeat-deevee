@@ -20,6 +20,7 @@ import ReadySection from "./components/ReadySection";
 import FloatingMenu from "./components/FloatingMenu";
 import { FiInstagram } from "react-icons/fi";
 import { SiTiktok } from "react-icons/si";
+import { createClient } from "./lib/supabase/client";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -128,6 +129,23 @@ export default function Home() {
       "-=0.02"
     );
 } 
+
+useEffect(() => {
+  const supabase = createClient();
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((event, session) => {
+    console.log("Auth event:", event);
+    console.log("Session:", session);
+
+    if (session?.user) {
+      console.log("User email:", session.user.email);
+    }
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
 
   useEffect(() => {
   function handleScroll() {
