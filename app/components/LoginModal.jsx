@@ -6,34 +6,8 @@ function LoginModal({ ibmPlexSerif, font2, setShowLoginModal, showLoginModal }) 
 
 const supabase = createClient()
 
-useEffect(() => {
-  async function checkUser() {
-
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
-
-    if (error) {
-      console.error("Auth error:", error);
-      return;
-    }
-
-    console.log("Logged in user:", user);
-
-    if (user) {
-      console.log("Email:", user.email);
-      console.log("ID:", user.id);
-      console.log("Provider:", user.app_metadata?.provider);
-    } else {
-      console.log("No user logged in.");
-    }
-  }
-
-  checkUser();
-}, []);
-
- const handleOAuthLogin = async () => {
+const handleOAuthLogin = async () => {
+    const supabase = createClient();
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",

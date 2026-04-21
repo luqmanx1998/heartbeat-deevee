@@ -3,9 +3,10 @@
 import localFont from "next/font/local";
 import { IBM_Plex_Serif } from "next/font/google";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import LoginModal from "../components/LoginModal";
 import { createClient } from "../lib/supabase/client";
+import Link from "next/link";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -57,9 +58,14 @@ export default function HeartbeatStorePage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [user, setUser] = useState(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [profile, setProfile] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const userMenuRef = useRef(null);
+  const isSigningOutRef = useRef(false);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [showSignOutOverlay, setShowSignOutOverlay] = useState(false);
 
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
 useEffect(() => {
   function handleKeyDown(e) {
@@ -79,32 +85,78 @@ useEffect(() => {
   };
 }, [showLoginModal]);
 
-useEffect(() => {
+async function hydrateAuthState() {
+  if (isSigningOutRef.current) return;
 
-  async function loadUser() {
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
-
-    if (error) {
-      console.error("Failed to load user:", error.message);
-      return;
-    }
-
-    setUser(user ?? null);
-  }
-
-  loadUser();
+  console.log("Hydrating auth...");
+  setAuthLoading(true);
 
   const {
-    data: { subscription },
-  } = supabase.auth.onAuthStateChange((_event, session) => {
-    setUser(session?.user ?? null);
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error) {
+    console.error("Failed to get user:", error.message);
+    setUser(null);
+    setProfile(null);
+    setIsAdmin(false);
+    setAuthLoading(false);
+    return;
+  }
+
+  if (!user) {
+    setUser(null);
+    setProfile(null);
+    setIsAdmin(false);
+    setAuthLoading(false);
+    return;
+  }
+
+  setUser(user);
+
+  const { data: profileData, error: profileError } = await supabase
+    .from("profiles")
+    .select("id, email, role")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (profileError) {
+    console.error("Failed to load profile:", profileError.message);
+    setProfile(null);
+    setIsAdmin(false);
+    setAuthLoading(false);
+    return;
+  }
+
+  setProfile(profileData ?? null);
+  setIsAdmin(profileData?.role === "admin");
+  setAuthLoading(false);
+
+  console.log("Hydrated user:", user.email);
+  console.log("Admin:", profileData?.role === "admin");
+}
+
+useEffect(() => {
+  // 1. Hydrate on mount
+  hydrateAuthState();
+
+  // 2. React to auth changes (login, logout, token refresh)
+  const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    if (isSigningOutRef.current) return;
+
+    if (event === 'SIGNED_OUT' || !session) {
+      setUser(null);
+      setProfile(null);
+      setIsAdmin(false);
+      setAuthLoading(false);
+    } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+      hydrateAuthState();
+    }
   });
 
   return () => subscription.unsubscribe();
-}, []);
+}, [supabase]); // supabase is stable (useMemo), so this runs once
 
 useEffect(() => {
   function handleClickOutside(e) {
@@ -135,30 +187,65 @@ useEffect(() => {
     setCursorGlow((prev) => ({ ...prev, visible: false }));
   }
 
-  async function handleSignOut() {
-  const { error } = await supabase.auth.signOut();
+async function handleSignOut() {
+  isSigningOutRef.current = true;
+  setShowUserMenu(false);
 
+  const { error } = await supabase.auth.signOut({ scope: 'local' });
   if (error) {
-    console.error("Sign out failed:", error.message);
+    console.error('Sign out failed:', error.message);
+    isSigningOutRef.current = false;
     return;
   }
 
-  setShowUserMenu(false);
   setUser(null);
-}
+  setProfile(null);
+  setIsAdmin(false);
+  setShowSignOutOverlay(true);
 
+  setTimeout(() => {
+    setShowSignOutOverlay(false);
+    setAuthLoading(false);
+    isSigningOutRef.current = false;
+  }, 2200);
+}
 
   const primaryButton =
     "inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition hover:-translate-y-0.5";
+
+      if (authLoading) {
+  return (
+    <div className="min-h-screen bg-[#090909] flex flex-col items-center justify-center gap-4">
+      <div className="relative w-[72px] h-[72px] flex items-center justify-center">
+        <div className="absolute w-[72px] h-[72px] rounded-full border border-[#f3d4a2]/25 border-t-[#f3d4a2]/70 animate-spin" style={{animationDuration:'2.8s'}} />
+        <div className="absolute w-[52px] h-[52px] rounded-full border border-[#af8cff]/20 border-r-[#af8cff]/60 animate-spin" style={{animationDuration:'2s', animationDirection:'reverse'}} />
+        <div className="absolute w-[34px] h-[34px] rounded-full border border-[#f3d4a2]/50 border-l-transparent animate-spin" style={{animationDuration:'1.4s'}} />
+        <div className="w-[5px] h-[5px] rounded-full bg-[#f3d4a2]/90" />
+      </div>
+      <p className="text-[11px] uppercase tracking-[0.28em] text-[#f3d4a2]/55">
+        Entering the realm
+      </p>
+    </div>
+  );
+}
 
   return (
     <>
     {showLoginModal && (
  <LoginModal ibmPlexSerif={ibmPlexSerif} font2={font2} showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal}/>
-)}
+)}  
     <main 
     onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
     className="relative min-h-screen bg-[#090909] text-white">
+      {showSignOutOverlay && (
+  <div className="fixed inset-0 z-[9999] bg-[#07060f]/97 flex flex-col items-center justify-center gap-4 animate-[fadeIn_0.5s_ease-out]">
+    <span className="text-[#f3d4a2]/50 text-[13px] tracking-[0.2em] font-serif">— ✦ —</span>
+    <div className="w-[120px] h-px bg-gradient-to-r from-transparent via-[#f3d4a2]/35 to-transparent" />
+    <p className="text-[22px] text-[#fff4de]/92 font-serif tracking-tight">Bis zur anderen Seite</p>
+    <div className="w-[120px] h-px bg-gradient-to-r from-transparent via-[#f3d4a2]/35 to-transparent" />
+    <span className="text-[11px] uppercase tracking-[0.3em] text-white/28">Bis zum nächsten Mal</span>
+  </div>
+)}
       <div
         className="pointer-events-none fixed z-[9999] h-[280px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl transition-opacity duration-300"
         style={{
@@ -172,13 +259,19 @@ useEffect(() => {
       <section className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_top,rgba(74,109,190,0.18),transparent_34%),radial-gradient(circle_at_top_right,rgba(132,33,64,0.18),transparent_26%),linear-gradient(to_bottom,#0b0b0d,#090909)] py-10">
         <div className="relative mb-10">
   <div className="absolute right-[11%] top-0 z-20" ref={userMenuRef}>
-  {!user ? (
-    <button
-      onClick={() => setShowLoginModal(true)}
-      className={`${font2.className} inline-flex cursor-pointer items-center justify-center rounded-full border border-white/14 bg-white/[0.04] px-5 py-2.5 text-[11px] uppercase tracking-[0.24em] text-white/88 backdrop-blur-[6px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:text-[#fff4de] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)]`}
-    >
-      Login
-    </button>
+  {authLoading ? (
+  <div
+    className={`${font2.className} inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-5 py-2.5 text-[11px] uppercase tracking-[0.24em] text-white/45 backdrop-blur-[6px]`}
+  >
+    Loading...
+  </div>
+) : !user ? (
+  <button
+    onClick={() => setShowLoginModal(true)}
+    className={`${font2.className} inline-flex cursor-pointer items-center justify-center rounded-full border border-white/14 bg-white/[0.04] px-5 py-2.5 text-[11px] uppercase tracking-[0.24em] text-white/88 backdrop-blur-[6px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:text-[#fff4de] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)]`}
+  >
+    Login
+  </button>
   ) : (
     <div className="relative">
       <button
@@ -193,7 +286,16 @@ useEffect(() => {
 
       {showUserMenu && (
         <div className="absolute right-0 mt-3 w-[220px] overflow-hidden rounded-[22px] border border-white/10 bg-[#111113]/95 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl">
-          <button
+          {isAdmin && (
+            <Link
+              href="/admindashboard"
+              className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-[#f1d3a5] transition hover:bg-white/[0.06] hover:text-white`}
+              onClick={() => setShowUserMenu(false)}
+            >
+              Admin Dashboard
+            </Link>
+          )}
+                    <button
             className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-white/82 transition hover:bg-white/[0.06] hover:text-[#fff4de]`}
           >
             Orders

@@ -130,23 +130,6 @@ export default function Home() {
     );
 } 
 
-useEffect(() => {
-  const supabase = createClient();
-
-  const {
-    data: { subscription },
-  } = supabase.auth.onAuthStateChange((event, session) => {
-    console.log("Auth event:", event);
-    console.log("Session:", session);
-
-    if (session?.user) {
-      console.log("User email:", session.user.email);
-    }
-  });
-
-  return () => subscription.unsubscribe();
-}, []);
-
   useEffect(() => {
   function handleScroll() {
     const heroHeight = window.innerHeight * 0.8;
