@@ -1,0 +1,607 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import localFont from "next/font/local";
+import { IBM_Plex_Serif } from "next/font/google";
+import Image from "next/image";
+import Link from "next/link";
+import { createClient } from "../../lib/supabase/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+const ibmPlexSerif = IBM_Plex_Serif({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const segamoriz = localFont({
+  src: "../../fonts/Segamoriz.woff2",
+});
+
+const font2 = localFont({
+  src: "../../fonts/NeueMontreal-Regular.woff2",
+});
+
+const FILTERS = [
+  { key: "all", label: "Alle" },
+  { key: "paid", label: "Paid" },
+  { key: "shipped", label: "Versandt" },
+  { key: "delivered", label: "Geliefert" },
+  { key: "cancelled", label: "Storniert" },
+];
+
+const OPERATIONAL_STATUSES = ["paid", "shipped", "delivered", "cancelled"];
+
+const PAGE_SIZE = 5;
+
+export default function OrdersPage() {
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [page, setPage] = useState(1);
+
+  const supabase = useMemo(() => createClient(), []);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setPage(1);
+  }, [activeFilter]);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("admin-orders-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "orders",
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, queryClient]);
+
+  const {
+    data,
+    isLoading,
+    isFetching,
+    error,
+  } = useQuery({
+    queryKey: ["admin-orders", activeFilter, page],
+    queryFn: () => loadOrdersPage({ supabase, activeFilter, page }),
+    keepPreviousData: true,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 15,
+  });
+
+  useEffect(() => {
+    function handleEscape(e) {
+      if (e.key === "Escape") setSelectedOrder(null);
+    }
+
+    if (selectedOrder) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleEscape);
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [selectedOrder]);
+
+  const orders = data?.orders ?? [];
+  const orderItems = data?.orderItems ?? [];
+  const totalCount = data?.totalCount ?? 0;
+  const statsCount = data?.statsCount ?? 0;
+  const statsRevenue = data?.statsRevenue ?? 0;
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+
+  function getItemsForOrder(orderId) {
+    return orderItems.filter((item) => item.order_id === orderId);
+  }
+
+  return (
+    <>
+      {selectedOrder && (
+        <OrderDetailsModal
+          order={selectedOrder}
+          items={getItemsForOrder(selectedOrder.id)}
+          onClose={() => setSelectedOrder(null)}
+          font2={font2}
+          ibmPlexSerif={ibmPlexSerif}
+          setSelectedOrder={setSelectedOrder}
+        />
+      )}
+
+      <main className="relative min-h-screen overflow-hidden text-[#f3e7d3]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(68,48,22,0.42),transparent_26%),radial-gradient(circle_at_top_right,rgba(40,64,98,0.22),transparent_22%),radial-gradient(circle_at_bottom_left,rgba(120,74,20,0.18),transparent_20%),linear-gradient(to_bottom,#0a0910,#0d0a12_35%,#120d12_70%,#0a090d)]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.75] bg-[url('/bgimage2.png')] bg-cover bg-center mix-blend-screen" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:radial-gradient(rgba(255,235,200,0.8)_0.7px,transparent_0.7px)] [background-size:22px_22px]" />
+        <div className="pointer-events-none absolute inset-3 rounded-[30px] border border-[#8f6a37]/55 shadow-[inset_0_0_0_1px_rgba(217,182,115,0.16),0_0_40px_rgba(0,0,0,0.35)] sm:inset-5 lg:inset-6" />
+
+        <div className="relative mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+            <Link
+              href="/admindashboard"
+              className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border border-[#6c4621] bg-[linear-gradient(180deg,#6a4526,#3f2818)] px-5 py-3 text-[12px] uppercase tracking-[0.16em] text-[#f7e3bc] shadow-[0_10px_18px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,230,176,0.06)] transition hover:-translate-y-[1px] hover:brightness-110`}
+            >
+              ← Dashboard
+            </Link>
+
+            <Link
+              href="/store"
+              className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border border-[#6c4621] bg-[linear-gradient(180deg,#6a4526,#3f2818)] px-5 py-3 text-[12px] uppercase tracking-[0.16em] text-[#f7e3bc] shadow-[0_10px_18px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,230,176,0.06)] transition hover:-translate-y-[1px] hover:brightness-110`}
+            >
+              Open Store ↗
+            </Link>
+          </div>
+
+          <header className="relative mb-10 text-center">
+            <h1
+              className={`${segamoriz.className} text-[clamp(42px,5vw,72px)] leading-[0.96] tracking-[0.01em] text-[#f3dfb7] drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]`}
+            >
+              Orders
+            </h1>
+
+            <div className="mx-auto mt-4 flex items-center justify-center gap-4">
+              <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#b89154]/60" />
+              <span className="text-[#d2aa6a]">☾</span>
+              <span className="h-px w-12 bg-gradient-to-l from-transparent to-[#b89154]/60" />
+            </div>
+
+            <p
+              className={`${ibmPlexSerif.className} mt-5 text-[clamp(24px,2.3vw,36px)] italic text-[#f7ead6]`}
+            >
+              Bestellungen im Überblick
+            </p>
+
+            <p
+              className={`${ibmPlexSerif.className} mx-auto mt-4 max-w-3xl text-[18px] leading-[1.7] text-[#e4d4be]/82`}
+            >
+              Verfolge bezahlte Bestellungen, Versandstatus und abgeschlossene
+              Aufträge an einem Ort.
+            </p>
+          </header>
+
+          <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <StatCard
+              label="Bestellungen"
+              value={isLoading ? "—" : String(statsCount)}
+              icon="✦"
+              ibmPlexSerif={ibmPlexSerif}
+            />
+            <StatCard
+              label="Aktualisierung"
+              value={isFetching && !isLoading ? "Live" : "Bereit"}
+              icon="❦"
+              ibmPlexSerif={ibmPlexSerif}
+            />
+            <StatCard
+              label="Revenue"
+              value={isLoading ? "—" : `€${statsRevenue.toFixed(2)}`}
+              icon="✧"
+              ibmPlexSerif={ibmPlexSerif}
+            />
+          </section>
+
+          <section className="mt-8">
+            <div className="flex flex-wrap gap-3">
+              {FILTERS.map((filter) => {
+                const active = activeFilter === filter.key;
+
+                return (
+                  <button
+                    key={filter.key}
+                    onClick={() => setActiveFilter(filter.key)}
+                    className={`${font2.className} cursor-pointer rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.18em] transition ${
+                      active
+                        ? "border-[#b89154]/45 bg-[#4a2d14]/60 text-[#f3d4a2]"
+                        : "border-[#8d693b]/35 bg-[#2b1b12]/45 text-[#f4dfba]/75 hover:bg-[#2b1b12]/70"
+                    }`}
+                  >
+                    {filter.label}
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="mt-8">
+            <div className="overflow-hidden rounded-[26px] border border-[#8d693b]/45 bg-[linear-gradient(180deg,rgba(19,13,12,0.78),rgba(11,8,10,0.7))] shadow-[0_22px_45px_rgba(0,0,0,0.32),inset_0_0_0_1px_rgba(205,171,114,0.06)]">
+              <div className="hidden grid-cols-[1.7fr_1.1fr_1fr_1fr_1.1fr_0.8fr] gap-4 border-b border-[#8c6a40]/22 px-6 py-4 lg:grid">
+                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+                  Order ID
+                </p>
+                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+                  Kunde
+                </p>
+                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+                  Datum
+                </p>
+                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+                  Status
+                </p>
+                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+                  Total
+                </p>
+                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 text-right`}>
+                  Aktion
+                </p>
+              </div>
+
+              {isLoading ? (
+                <div className="px-6 py-6">
+                  <p className={`${font2.className} text-sm text-[#e1cfb6]/70`}>
+                    Lade Bestellungen...
+                  </p>
+                </div>
+              ) : error ? (
+                <div className="px-6 py-6">
+                  <p className={`${font2.className} text-sm text-red-200/80`}>
+                    Bestellungen konnten nicht geladen werden.
+                  </p>
+                </div>
+              ) : orders.length === 0 ? (
+                <div className="px-6 py-6">
+                  <p className={`${font2.className} text-sm text-[#e1cfb6]/70`}>
+                    Keine Bestellungen für diesen Filter.
+                  </p>
+                </div>
+              ) : (
+                orders.map((order) => (
+                  <div
+                    key={order.id}
+                    className="border-b border-[#8c6a40]/16 px-6 py-5 last:border-b-0"
+                  >
+                    <div className="grid gap-4 lg:grid-cols-[1.7fr_1.1fr_1fr_1fr_1.1fr_0.8fr] lg:items-center">
+                      <div>
+                        <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}>
+                          Order ID
+                        </p>
+                        <p className={`${ibmPlexSerif.className} mt-1 text-[16px] leading-[1.2] text-[#f4dfba] break-all`}>
+                          {order.id}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}>
+                          Kunde
+                        </p>
+                        <p className={`${ibmPlexSerif.className} mt-1 text-[14px] text-[#f5e4c5] break-all`}>
+                          {order.customer_email}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}>
+                          Datum
+                        </p>
+                        <p className={`${ibmPlexSerif.className} mt-1 text-[14px] text-[#f5e4c5]`}>
+                          {formatDate(order.created_at)}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}>
+                          Status
+                        </p>
+                        <div className="mt-2 lg:mt-0">
+                          <StatusPill status={order.status} font2={font2} />
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}>
+                          Total
+                        </p>
+                        <p className={`${ibmPlexSerif.className} mt-1 text-[18px] text-[#f5dfb8]`}>
+                          €{Number(order.total ?? 0).toFixed(2)}
+                        </p>
+                      </div>
+
+                      <div className="lg:text-right">
+                        <button
+                          onClick={() => setSelectedOrder(order)}
+                          className={`${font2.className} inline-flex cursor-pointer items-center justify-center rounded-[16px] border border-[#6c4621] bg-[linear-gradient(180deg,#6a4526,#3f2818)] px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-[#f7e3bc] shadow-[0_10px_20px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,230,176,0.08)] transition hover:-translate-y-[1px] hover:brightness-110`}
+                        >
+                          Details
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <div className="mt-6 flex items-center justify-between gap-4">
+              <button
+                onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                disabled={page === 1}
+                className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border px-5 py-3 text-[11px] uppercase tracking-[0.18em] transition ${
+                  page === 1
+                    ? "cursor-not-allowed border-[#8d693b]/20 bg-[#2b1b12]/20 text-[#f4dfba]/35"
+                    : "cursor-pointer border-[#6c4621] bg-[linear-gradient(180deg,#6a4526,#3f2818)] text-[#f7e3bc] shadow-[0_10px_20px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,230,176,0.08)] hover:-translate-y-[1px] hover:brightness-110"
+                }`}
+              >
+                Previous
+              </button>
+
+              <p className={`${ibmPlexSerif.className} text-[20px] text-[#f1dcb8]`}>
+                Seite {page} von {totalPages}
+              </p>
+
+              <button
+                onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+                disabled={page >= totalPages}
+                className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border px-5 py-3 text-[11px] uppercase tracking-[0.18em] transition ${
+                  page >= totalPages
+                    ? "cursor-not-allowed border-[#8d693b]/20 bg-[#2b1b12]/20 text-[#f4dfba]/35"
+                    : "cursor-pointer border-[#6c4621] bg-[linear-gradient(180deg,#6a4526,#3f2818)] text-[#f7e3bc] shadow-[0_10px_20px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,230,176,0.08)] hover:-translate-y-[1px] hover:brightness-110"
+                }`}
+              >
+                Next
+              </button>
+            </div>
+          </section>
+        </div>
+      </main>
+    </>
+  );
+}
+
+async function loadOrdersPage({ supabase, activeFilter, page }) {
+  const from = (page - 1) * PAGE_SIZE;
+  const to = from + PAGE_SIZE - 1;
+
+  let paginatedOrdersQuery = supabase
+    .from("orders")
+    .select("*", { count: "exact" })
+    .in("status", OPERATIONAL_STATUSES)
+    .order("created_at", { ascending: false });
+
+  if (activeFilter !== "all") {
+    paginatedOrdersQuery = paginatedOrdersQuery.eq("status", activeFilter);
+  }
+
+  const {
+    data: ordersData,
+    error: ordersError,
+    count,
+  } = await paginatedOrdersQuery.range(from, to);
+
+  if (ordersError) throw ordersError;
+
+  let statsQuery = supabase
+    .from("orders")
+    .select("status,total")
+    .in("status", OPERATIONAL_STATUSES);
+
+  if (activeFilter !== "all") {
+    statsQuery = statsQuery.eq("status", activeFilter);
+  }
+
+  const { data: statsData, error: statsError } = await statsQuery;
+
+  if (statsError) throw statsError;
+
+  const safeOrders = ordersData ?? [];
+  const orderIds = safeOrders.map((order) => order.id);
+
+  let itemsData = [];
+
+  if (orderIds.length > 0) {
+    const { data: fetchedItems, error: itemsError } = await supabase
+      .from("order_items")
+      .select("*")
+      .in("order_id", orderIds)
+      .order("created_at", { ascending: true });
+
+    if (itemsError) throw itemsError;
+
+    itemsData = fetchedItems ?? [];
+  }
+
+  const safeStats = statsData ?? [];
+
+  return {
+    orders: safeOrders,
+    orderItems: itemsData,
+    totalCount: count ?? 0,
+    statsCount: safeStats.length,
+    statsRevenue: safeStats.reduce(
+      (sum, order) => sum + Number(order.total ?? 0),
+      0
+    ),
+  };
+}
+
+function OrderDetailsModal({ order, items, onClose, font2, ibmPlexSerif, setSelectedOrder }) {
+  return (
+    <div 
+    onClick={() => setSelectedOrder(null)}
+    className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
+      <div 
+      onClick={(e) => e.stopPropagation()}
+      className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-[30px] border border-[#8d693b]/55 bg-[linear-gradient(180deg,rgba(19,13,12,0.96),rgba(11,8,10,0.94))] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+        <button
+          onClick={onClose}
+          className={`${font2.className} absolute right-5 top-5 inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#8d693b]/45 bg-[#2b1b12]/70 text-[#f4dfba] transition hover:bg-[#3a2418]`}
+          aria-label="Close order details"
+        >
+          ✕
+        </button>
+
+        <div className="pr-14">
+          <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+            Order ID
+          </p>
+          <h2 className={`${ibmPlexSerif.className} mt-2 text-[30px] leading-[1.2] text-[#f4dfba] break-all`}>
+            {order.id}
+          </h2>
+        </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <MiniStat
+            label="Kunde"
+            value={order.customer_email}
+            font2={font2}
+            ibmPlexSerif={ibmPlexSerif}
+          />
+          <MiniStat
+            label="Status"
+            value={String(order.status || "unknown")}
+            font2={font2}
+            ibmPlexSerif={ibmPlexSerif}
+          />
+          <MiniStat
+            label="Total"
+            value={`€${Number(order.total ?? 0).toFixed(2)}`}
+            font2={font2}
+            ibmPlexSerif={ibmPlexSerif}
+          />
+        </div>
+
+        <div className="mt-8">
+          <p className={`${ibmPlexSerif.className} text-[28px] text-[#f1dcb8]`}>
+            Bestellpositionen
+          </p>
+
+          <div className="mt-5 grid gap-4">
+            {items.length === 0 ? (
+              <p className={`${font2.className} text-sm text-[#e1cfb6]/70`}>
+                Keine Bestellpositionen gefunden.
+              </p>
+            ) : (
+              items.map((item) => (
+                <div
+                  key={item.id}
+                  className="grid gap-4 rounded-[24px] border border-[#8d693b]/35 bg-[linear-gradient(180deg,rgba(25,17,13,0.68),rgba(13,9,9,0.62))] p-4 md:grid-cols-[120px_1fr]"
+                >
+                  <div className="overflow-hidden rounded-[16px] border border-[#6d4823]/45">
+                    {item.product_image ? (
+                      <Image
+                        src={item.product_image}
+                        alt={item.product_name}
+                        width={320}
+                        height={320}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-[120px] w-full bg-[#1a1414]" />
+                    )}
+                  </div>
+
+                  <div>
+                    <h3 className={`${ibmPlexSerif.className} text-[24px] leading-[1.15] text-[#f5dfb8]`}>
+                      {item.product_name}
+                    </h3>
+
+                    <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                      <MiniStat
+                        label="Menge"
+                        value={String(item.quantity)}
+                        font2={font2}
+                        ibmPlexSerif={ibmPlexSerif}
+                      />
+                      <MiniStat
+                        label="Einzelpreis"
+                        value={`€${Number(item.unit_price ?? 0).toFixed(2)}`}
+                        font2={font2}
+                        ibmPlexSerif={ibmPlexSerif}
+                      />
+                      <MiniStat
+                        label="Subtotal"
+                        value={`€${Number(item.subtotal ?? 0).toFixed(2)}`}
+                        font2={font2}
+                        ibmPlexSerif={ibmPlexSerif}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        <div className="mt-8 border-t border-[#8c6a40]/22 pt-6">
+          <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+            Shipping Address
+          </p>
+          <p className={`${ibmPlexSerif.className} mt-2 whitespace-pre-line text-[20px] leading-[1.5] text-[#f5e4c5]`}>
+  {order.shipping_address || "Keine Adresse vorhanden."}
+</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatCard({ label, value, icon, ibmPlexSerif }) {
+  return (
+    <div className="rounded-[26px] border border-[#8d693b]/60 bg-[linear-gradient(180deg,rgba(222,198,160,0.9),rgba(173,140,96,0.78))] p-5 text-[#2f1f15] shadow-[0_16px_28px_rgba(0,0,0,0.18),inset_0_0_0_1px_rgba(255,247,223,0.12)]">
+      <div className="flex items-start gap-3">
+        <span className="text-[26px] leading-none text-[#7a5328]">{icon}</span>
+        <div>
+          <p className={`${ibmPlexSerif.className} text-[22px] leading-[1.05] text-[#392518]`}>
+            {label}
+          </p>
+          <p className={`${ibmPlexSerif.className} mt-4 text-[44px] leading-none text-[#23160f]`}>
+            {value}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MiniStat({ label, value, font2, ibmPlexSerif }) {
+  return (
+    <div className="rounded-[18px] border border-[#8d693b]/35 bg-[linear-gradient(180deg,rgba(31,20,15,0.82),rgba(18,12,10,0.72))] p-3">
+      <p className={`${font2.className} text-[10px] uppercase tracking-[0.18em] text-[#d6c2a0]/55`}>
+        {label}
+      </p>
+      <p className={`${ibmPlexSerif.className} mt-2 text-[20px] break-words text-[#f5dfb8]`}>
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function StatusPill({ status, font2 }) {
+  const normalized = String(status || "").toLowerCase();
+
+  const statusStyles = {
+  paid: "border-emerald-400/30 bg-emerald-950/50 text-emerald-200",
+  shipped: "border-sky-400/30 bg-sky-950/50 text-sky-200",
+  delivered: "border-violet-400/30 bg-violet-950/50 text-violet-200",
+  cancelled: "border-rose-400/30 bg-rose-950/50 text-rose-200",
+};
+
+  return (
+    <span
+      className={`${font2.className} inline-flex rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.18em] ${
+        statusStyles[normalized] ||
+        "border-[#8d693b]/45 bg-[#2b1b12]/75 text-[#f4dfba]"
+      }`}
+    >
+      {normalized || "unknown"}
+    </span>
+  );
+}
+
+function formatDate(value) {
+  if (!value) return "—";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+
+  return date.toLocaleString();
+}

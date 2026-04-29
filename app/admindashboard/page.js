@@ -203,7 +203,7 @@ export default function AdminDashboardPage() {
 
         <section className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="relative overflow-hidden rounded-[32px] border border-[#8d693b]/60 bg-[linear-gradient(180deg,rgba(33,22,15,0.82),rgba(18,12,10,0.72))] p-4 shadow-[0_24px_55px_rgba(0,0,0,0.42),inset_0_0_0_1px_rgba(212,174,111,0.08)] sm:p-5">
-            <div className="pointer-events-none absolute left-4 top-4 text-[#caa05f]/70 text-[40px]">
+            <div className="pointer-events-none absolute left-10 top-11 text-[#caa05f]/70 text-[40px]">
               ❦
             </div>
 
