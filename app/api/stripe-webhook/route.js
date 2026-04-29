@@ -63,10 +63,6 @@ async function fulfillCheckout(sessionId) {
     throw new Error("Missing order_id in Stripe session metadata.");
   }
 
-  console.log("shipping_address_collection:", session.shipping_address_collection);
-    console.log("shipping_details:", session.shipping_details);
-    console.log("customer_details:", session.customer_details);
-
   const shipping = session.shipping_details;
 const customer = session.customer_details;
 
