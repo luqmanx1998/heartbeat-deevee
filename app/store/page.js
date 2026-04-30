@@ -18,6 +18,16 @@ const font2 = localFont({
   src: "../fonts/NeueMontreal-Regular.woff2",
 });
 
+const PRODUCT_SLUGS = {
+  buchbox: "heartbeat_1_buchbox",
+  book: "heartbeat_die_andere_seite",
+};
+
+function formatPrice(value) {
+  const number = Number(value ?? 0);
+  return `€${number.toFixed(2)}`;
+}
+
 export default function HeartbeatStorePage() {
   const book = {
     title: "Heartbeat",
@@ -65,6 +75,8 @@ export default function HeartbeatStorePage() {
   const [showSignOutOverlay, setShowSignOutOverlay] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [cartToast, setCartToast] = useState(false);
+  const [productsBySlug, setProductsBySlug] = useState({});
+  const [productsLoading, setProductsLoading] = useState(true);
 
   const userMenuRef = useRef(null);
   const isSigningOutRef = useRef(false);
@@ -72,6 +84,44 @@ export default function HeartbeatStorePage() {
   const toastTimerRef = useRef(null);
 
   const supabase = useMemo(() => createClient(), []);
+
+  useEffect(() => {
+  let ignore = false;
+
+  async function loadProducts() {
+    setProductsLoading(true);
+
+    const { data, error } = await supabase
+      .from("products")
+      .select("id, name, slug, type, price, stock, image, active")
+      .in("slug", Object.values(PRODUCT_SLUGS))
+      .eq("active", true);
+
+    if (error) {
+      console.error("Failed to load store products:", error.message);
+      if (!ignore) setProductsBySlug({});
+      setProductsLoading(false);
+      return;
+    }
+
+    const map = {};
+
+    for (const product of data ?? []) {
+      map[product.slug] = product;
+    }
+
+    if (!ignore) {
+      setProductsBySlug(map);
+      setProductsLoading(false);
+    }
+  }
+
+  loadProducts();
+
+  return () => {
+    ignore = true;
+  };
+}, [supabase]);
 
   useEffect(() => {
     function handleKeyDown(e) {
@@ -111,6 +161,33 @@ export default function HeartbeatStorePage() {
       setCartToast(false);
     }, 2400);
   }
+
+  function addProductBySlug(slug) {
+  const product = productsBySlug[slug];
+
+  if (!product) {
+    console.error(`Product not found for slug: ${slug}`);
+    return;
+  }
+
+  if (!product.active) {
+    console.error(`${product.name} is not active.`);
+    return;
+  }
+
+  if (Number(product.stock ?? 0) <= 0) {
+    console.error(`${product.name} is out of stock.`);
+    return;
+  }
+
+  addToCart({
+    id: product.id,
+    name: product.name,
+    image: product.image,
+    price: Number(product.price),
+    type: product.type,
+  });
+}
 
   function addToCart(product) {
     const cart = JSON.parse(localStorage.getItem("heartbeat_cart") || "[]");
@@ -532,7 +609,7 @@ export default function HeartbeatStorePage() {
                           <div
                             className={`${ibmPlexSerif.className} mt-3 text-4xl text-[#fff5e8] sm:text-5xl`}
                           >
-                            €29.99
+                            {formatPrice(productsBySlug[PRODUCT_SLUGS.buchbox]?.price ?? 29.99)}
                           </div>
                         </div>
                       </div>
@@ -595,20 +672,13 @@ export default function HeartbeatStorePage() {
 
                     <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                       <button
-                        onClick={() =>
-                          addToCart({
-                            id: "heartbeat_buchbox",
-                            name: "Heartbeat I Buchbox",
-                            image: "/buchbox2.jpg",
-                            price: 29.99,
-                            type: "bundle",
-                          })
-                        }
-                        className={`${primaryButton} ${font2.className} bg-[#f2e6d7] text-black hover:bg-white shadow-[0_10px_30px_rgba(242,230,215,0.18)] flex-1 transition duration-200 cursor-pointer`}
+                        onClick={() => addProductBySlug(PRODUCT_SLUGS.buchbox)}
+                        disabled={productsLoading || !productsBySlug[PRODUCT_SLUGS.buchbox]}
+                        className={`${primaryButton} ${font2.className} bg-[#f2e6d7] text-black hover:bg-white shadow-[0_10px_30px_rgba(242,230,215,0.18)] flex-1 transition duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
                       >
                         Buchbox sichern
                       </button>
-                    </div>
+                                          </div>
 
                     <p className="mt-5 text-center text-[12px] uppercase tracking-[0.24em] text-[#f1d3a5]/50">
                       Exklusiv für den Presale
@@ -689,27 +759,20 @@ export default function HeartbeatStorePage() {
                   <div
                     className={`${ibmPlexSerif.className} text-3xl sm:text-4xl mt-4`}
                   >
-                    {book.price}
+                    {formatPrice(productsBySlug[PRODUCT_SLUGS.book]?.price ?? 16.99)}
                   </div>
 
                   <div className="mt-6">
                     <button
-                      onClick={() =>
-                        addToCart({
-                          id: "heartbeat_book_1",
-                          name: "Heartbeat – Die andere Seite",
-                          image: "/book3.jpeg",
-                          price: 16.99,
-                          type: "book",
-                        })
-                      }
-                      className={`${primaryButton} ${font2.className} w-full bg-white text-black cursor-pointer`}
-                    >
-                      Jetzt kaufen
-                    </button>
-                  </div>
+                    onClick={() => addProductBySlug(PRODUCT_SLUGS.book)}
+                    disabled={productsLoading || !productsBySlug[PRODUCT_SLUGS.book]}
+                    className={`${primaryButton} ${font2.className} w-full bg-white text-black cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
+                  >
+                    Jetzt kaufen
+                  </button>
+                                    </div>
 
-                  <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/65">
+                                    <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/65">
                     Sicherer Checkout mit Stripe oder PayPal. Versand- und
                     Formatoptionen kannst du später leicht ergänzen.
                   </div>
