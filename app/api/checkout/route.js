@@ -30,9 +30,10 @@ export async function POST(request) {
       );
     }
 
-    const origin =
-      request.headers.get("origin") ||
-      process.env.NEXT_PUBLIC_SITE_URL;
+    const origin = request.headers.get("origin") || process.env.NEXT_PUBLIC_SITE_URL;
+
+const publicSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const imageBaseUrl = publicSiteUrl || origin;
 
     const cartProductIds = cart.map((item) => item.id);
 
@@ -132,18 +133,22 @@ export async function POST(request) {
     }
 
     const lineItems = validatedItems.map((item) => ({
-      price_data: {
-        currency: "eur",
-        product_data: {
-          name: item.name,
-          images: item.image
-            ? [`${origin}${item.image}`]
-            : [],
-        },
-        unit_amount: item.unitAmount,
-      },
-      quantity: item.quantity,
-    }));
+  price_data: {
+    currency: "eur",
+    product_data: {
+      name: item.name,
+      description:
+        item.type === "Bundle"
+          ? "Limitierte Buchbox aus dem offiziellen Deevee Store."
+          : "Paperback aus dem offiziellen Deevee Store.",
+      images: item.image
+        ? [new URL(item.image, imageBaseUrl).toString()]
+        : [],
+    },
+    unit_amount: item.unitAmount,
+  },
+  quantity: item.quantity,
+}));
 
     const session =
       await stripe.checkout.sessions.create({

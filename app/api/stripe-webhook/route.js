@@ -33,6 +33,10 @@ export async function POST(request) {
       await fulfillCheckout(event.data.object.id);
     }
 
+    if (event.type === "payment_intent.succeeded") {
+      await fulfillPaymentIntent(event.data.object);
+    }
+
     return NextResponse.json({ received: true });
   } catch (error) {
     console.error("Webhook fulfillment failed:", error.message);
@@ -159,5 +163,88 @@ const formattedShippingAddress = address
   }
 
   console.log("Order fulfilled:", orderId);
+}
+
+async function fulfillPaymentIntent(paymentIntent) {
+  console.log("Fulfilling PaymentIntent:", paymentIntent.id);
+
+  const orderId = paymentIntent.metadata?.order_id;
+
+  if (!orderId) {
+    throw new Error("Missing order_id in PaymentIntent metadata.");
+  }
+
+  const { data: existingOrder, error: existingOrderError } = await supabaseAdmin
+    .from("orders")
+    .select("id, fulfilled_at")
+    .eq("id", orderId)
+    .maybeSingle();
+
+  if (existingOrderError) {
+    throw new Error(existingOrderError.message);
+  }
+
+  if (!existingOrder) {
+    throw new Error("Order not found.");
+  }
+
+  if (existingOrder.fulfilled_at) {
+    console.log("Order already fulfilled:", orderId);
+    return;
+  }
+
+  const { data: order, error: updateOrderError } = await supabaseAdmin
+    .from("orders")
+    .update({
+      status: "paid",
+      stripe_payment_intent_id: paymentIntent.id,
+      fulfilled_at: new Date().toISOString(),
+    })
+    .eq("id", orderId)
+    .select("id")
+    .single();
+
+  if (updateOrderError) {
+    throw new Error(updateOrderError.message);
+  }
+
+  const { data: items, error: itemsError } = await supabaseAdmin
+    .from("order_items")
+    .select("product_id, quantity")
+    .eq("order_id", order.id);
+
+  if (itemsError) {
+    throw new Error(itemsError.message);
+  }
+
+  for (const item of items ?? []) {
+    if (!item.product_id) continue;
+
+    const { data: product, error: productError } = await supabaseAdmin
+      .from("products")
+      .select("stock")
+      .eq("id", item.product_id)
+      .single();
+
+    if (productError) {
+      throw new Error(productError.message);
+    }
+
+    const nextStock = Math.max(
+      0,
+      Number(product.stock ?? 0) - Number(item.quantity ?? 0)
+    );
+
+    const { error: stockError } = await supabaseAdmin
+      .from("products")
+      .update({ stock: nextStock })
+      .eq("id", item.product_id);
+
+    if (stockError) {
+      throw new Error(stockError.message);
+    }
+  }
+
+  console.log("PaymentIntent order fulfilled:", orderId);
 }
 
