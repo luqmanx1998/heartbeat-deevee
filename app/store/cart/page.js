@@ -70,25 +70,6 @@ export default function Page() {
   }, 2200);
 }
 
-async function handleCheckout() {
-  const res = await fetch("/api/checkout", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ cart }),
-  });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    console.error(data.error);
-    return;
-  }
-
-  window.location.href = data.url;
-}
-
   return (   
     <main className={`${font2.className} min-h-screen bg-[#090909] text-white`}>
         {cartNotice && (
@@ -252,12 +233,12 @@ async function handleCheckout() {
                   </p>
                 </div>
 
-                <button
-                  onClick={handleCheckout}
+                <Link
+                  href="/store/checkout"
                   className="mt-8 inline-flex w-full cursor-pointer items-center justify-center rounded-full bg-[#f2e6d7] px-6 py-3 text-sm font-medium text-black shadow-[0_10px_30px_rgba(242,230,215,0.18)] transition hover:-translate-y-0.5 hover:bg-white"
                 >
                   Checkout
-                </button>
+                </Link>
 
                 {cart.length > 0 && (
                 <button
