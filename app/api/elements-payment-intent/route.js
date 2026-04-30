@@ -110,6 +110,10 @@ export async function POST(request) {
         receipt_email: user.email,
         payment_method_types: ["card"],
 
+        description: validatedItems
+        .map((item) => `${item.name} x${item.quantity}`)
+        .join(", "),
+
         metadata: {
             source: "custom_checkout",
             order_id: order.id,
