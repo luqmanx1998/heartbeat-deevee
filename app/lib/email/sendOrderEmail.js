@@ -20,7 +20,7 @@ export async function sendOrderEmail({
     )
     .join("");
 
-  await resend.emails.send({
+  return await resend.emails.send({
     from: process.env.RESEND_FROM_EMAIL,
     to,
     subject: "Your Deevee order is confirmed ✦",

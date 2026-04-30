@@ -210,9 +210,9 @@ async function fulfillPaymentIntent(paymentIntent) {
   }
 
   const { data: items, error: itemsError } = await supabaseAdmin
-    .from("order_items")
-    .select("product_id, quantity")
-    .eq("order_id", order.id);
+  .from("order_items")
+  .select("product_id, product_name, quantity, unit_price, subtotal")
+  .eq("order_id", order.id);
 
   if (itemsError) {
     throw new Error(itemsError.message);
@@ -248,12 +248,18 @@ async function fulfillPaymentIntent(paymentIntent) {
 
   console.log("PaymentIntent order fulfilled:", orderId);
 
-    await sendOrderEmail({
+    try {
+  const emailResult = await sendOrderEmail({
     to: existingOrder.customer_email,
     orderId,
     items,
     total: existingOrder.total,
     shippingAddress: existingOrder.shipping_address,
   });
+
+  console.log("Order email sent:", emailResult);
+} catch (emailError) {
+  console.error("Order email failed:", emailError);
+}
 }
 
