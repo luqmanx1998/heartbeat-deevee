@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { supabaseAdmin } from "@/app/lib/supabase/admin";
+import { sendOrderEmail } from "@/app/lib/email/sendOrderEmail";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -176,7 +177,7 @@ async function fulfillPaymentIntent(paymentIntent) {
 
   const { data: existingOrder, error: existingOrderError } = await supabaseAdmin
     .from("orders")
-    .select("id, fulfilled_at")
+    .select("id, customer_email, total, shipping_address, fulfilled_at")
     .eq("id", orderId)
     .maybeSingle();
 
@@ -246,5 +247,13 @@ async function fulfillPaymentIntent(paymentIntent) {
   }
 
   console.log("PaymentIntent order fulfilled:", orderId);
+
+    await sendOrderEmail({
+    to: existingOrder.customer_email,
+    orderId,
+    items,
+    total: existingOrder.total,
+    shippingAddress: existingOrder.shipping_address,
+  });
 }
 
