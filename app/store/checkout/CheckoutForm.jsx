@@ -93,7 +93,7 @@ export default function CheckoutForm({ total }) {
       >
         {isPaying
           ? "Processing..."
-          : `Complete purchase — €${Number(total || 0).toFixed(2)}`}
+          : `Complete purchase - €${Number(total || 0).toFixed(2)}`}
       </button>
     </form>
   );

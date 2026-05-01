@@ -11,49 +11,41 @@ export async function sendOrderEmail({
 }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
   const logoUrl = `${siteUrl}/DeeveeLogo4.png`;
-  const heroUrl = `${siteUrl}/book1email.jpeg`;
+  const heroUrl = `${siteUrl}/book1email2.jpeg`;
 
   const itemsHtml = items
-  .map(
-    (item) => {
-      const imageUrl = item.product_image
-        ? `${process.env.NEXT_PUBLIC_SITE_URL}${item.product_image}`
-        : `${process.env.NEXT_PUBLIC_SITE_URL}/book3.jpeg`;
+  .map((item) => {
+    const imageUrl = item.product_image
+      ? `${siteUrl}${item.product_image.startsWith("/") ? "" : "/"}${item.product_image}`
+      : `${siteUrl}/book3.jpeg`;
 
-      return `
-        <div style="display:flex; gap:14px; margin-bottom:16px; align-items:center;">
-          
+    return `
+      <tr>
+        <td style="padding:16px 0; border-bottom:1px solid rgba(20,20,20,0.08); width:74px;">
           <img
             src="${imageUrl}"
             alt="${item.product_name}"
-            style="
-              width:58px;
-              height:76px;
-              object-fit:cover;
-              border-radius:10px;
-              display:block;
-              box-shadow:0 6px 18px rgba(0,0,0,0.15);
-            "
+            style="width:58px; height:76px; object-fit:cover; border-radius:10px; display:block;"
           />
+        </td>
 
-          <div style="flex:1;">
-            <div style="font-weight:600; font-size:14px; color:#111;">
-              ${item.product_name}
-            </div>
-            <div style="font-size:12px; color:#666; margin-top:4px;">
-              Quantity ${item.quantity}
-            </div>
+        <td style="padding:16px 0; border-bottom:1px solid rgba(20,20,20,0.08);">
+          <div style="font-size:16px; font-weight:700; color:#161616;">
+            ${item.product_name}
           </div>
-
-          <div style="font-weight:600; font-size:14px; color:#111;">
-            €${item.subtotal}
+          <div style="margin-top:5px; font-size:13px; color:#777;">
+            Quantity ${item.quantity}
           </div>
+        </td>
 
-        </div>
-      `;
-    }
-  )
+        <td style="padding:16px 0; border-bottom:1px solid rgba(20,20,20,0.08); text-align:right; font-size:15px; color:#161616;">
+          €${Number(item.subtotal || 0).toFixed(2)}
+        </td>
+      </tr>
+    `;
+  })
   .join("");
+
   return await resend.emails.send({
     from: process.env.RESEND_FROM_EMAIL,
     to,
@@ -71,11 +63,13 @@ export async function sendOrderEmail({
               />
             </div>
 
-            <img
+            <div style="margin:0; padding:0; background:#130d29;">>
+               <img
                 src="${heroUrl}"
                 alt="Heartbeat"
-                style="width:100%; height:280px; object-fit:cover; display:block;"
+                style="width:100%; height:auto; display:block;"
                 />
+            </div>
 
             <div style="padding:34px 30px 30px;">
               <p style="margin:0 0 10px; font-size:11px; letter-spacing:0.28em; text-transform:uppercase; color:#b8924f;">
