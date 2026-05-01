@@ -64,6 +64,7 @@ export async function POST(request) {
         product_id: product.id,
         name: product.name,
         quantity,
+        image:product.image,
         unitPrice,
         subtotal,
       };
@@ -97,6 +98,7 @@ export async function POST(request) {
         order_id: order.id,
         product_id: item.product_id,
         product_name: item.name,
+        product_image: item.image,
         quantity: item.quantity,
         unit_price: item.unitPrice,
         subtotal: item.subtotal,

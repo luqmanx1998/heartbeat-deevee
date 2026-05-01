@@ -10,36 +10,48 @@ export async function sendOrderEmail({
   shippingAddress,
 }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-  const logoUrl = `${siteUrl}/deeveelogo4.png`;
-  const heroUrl = `${siteUrl}/book1.jpeg`;
+  const logoUrl = `${siteUrl}/DeeveeLogo4.png`;
+  const heroUrl = `${siteUrl}/book1email.jpeg`;
 
   const itemsHtml = items
-    .map(
-      (item) => `
-        <tr>
-          <td style="padding:16px 0; border-bottom:1px solid rgba(20,20,20,0.08);">
-            <div style="font-size:16px; font-weight:700; color:#161616;">
-              ${item.product_name}
-            </div>
-            <div style="margin-top:5px; font-size:13px; color:#777;">
-              Quantity ${item.quantity}
-            </div>
-          </td>
+  .map((item) => {
+    const imageUrl = item.product_image
+      ? `${siteUrl}${item.product_image.startsWith("/") ? "" : "/"}${item.product_image}`
+      : `${siteUrl}/book3.jpeg`;
 
-          <td style="padding:16px 0; border-bottom:1px solid rgba(20,20,20,0.08); text-align:right; font-size:15px; color:#161616;">
-            €${Number(item.subtotal || 0).toFixed(2)}
-          </td>
-        </tr>
-      `
-    )
-    .join("");
+    return `
+      <tr>
+        <td style="padding:16px 0; border-bottom:1px solid rgba(20,20,20,0.08); width:74px;">
+          <img
+            src="${imageUrl}"
+            alt="${item.product_name}"
+            style="width:58px; height:76px; object-fit:cover; border-radius:10px; display:block;"
+          />
+        </td>
+
+        <td style="padding:16px 0; border-bottom:1px solid rgba(20,20,20,0.08);">
+          <div style="font-size:16px; font-weight:700; color:#161616;">
+            ${item.product_name}
+          </div>
+          <div style="margin-top:5px; font-size:13px; color:#777;">
+            Quantity ${item.quantity}
+          </div>
+        </td>
+
+        <td style="padding:16px 0; border-bottom:1px solid rgba(20,20,20,0.08); text-align:right; font-size:15px; color:#161616;">
+          €${Number(item.subtotal || 0).toFixed(2)}
+        </td>
+      </tr>
+    `;
+  })
+  .join("");
 
   return await resend.emails.send({
     from: process.env.RESEND_FROM_EMAIL,
     to,
     subject: "Your Deevee order is confirmed ✦",
     html: `
-      <div style="margin:0; padding:0; background:#f4efe8; font-family:Arial, Helvetica, sans-serif;">
+      <div style="margin:0; padding:0; background:#130d29; font-family:Arial, Helvetica, sans-serif;">
         <div style="max-width:640px; margin:0 auto; padding:32px 16px;">
           <div style="overflow:hidden; border-radius:28px; background:#ffffff; box-shadow:0 24px 70px rgba(20,12,6,0.12);">
             
@@ -52,10 +64,10 @@ export async function sendOrderEmail({
             </div>
 
             <img
-              src="${heroUrl}"
-              alt="Heartbeat"
-              style="width:100%; max-height:300px; object-fit:cover; display:block;"
-            />
+                src="${heroUrl}"
+                alt="Heartbeat"
+                style="width:100%; height:auto; display:block;"
+                />
 
             <div style="padding:34px 30px 30px;">
               <p style="margin:0 0 10px; font-size:11px; letter-spacing:0.28em; text-transform:uppercase; color:#b8924f;">

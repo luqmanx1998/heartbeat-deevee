@@ -211,7 +211,7 @@ async function fulfillPaymentIntent(paymentIntent) {
 
   const { data: items, error: itemsError } = await supabaseAdmin
   .from("order_items")
-  .select("product_id, product_name, quantity, unit_price, subtotal")
+  .select("product_id, product_name, product_image, quantity, unit_price, subtotal")
   .eq("order_id", order.id);
 
   if (itemsError) {
