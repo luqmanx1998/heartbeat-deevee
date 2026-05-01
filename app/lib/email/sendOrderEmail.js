@@ -119,7 +119,7 @@ export async function sendOrderEmail({
               <p style="margin:26px 0 0; font-size:13px; line-height:1.7; color:#777;">
                 If you have any questions, contact us at
                 <a href="mailto:xdeevee@gmail.com" style="color:#8b6cff; text-decoration:none;">
-                  xdeevee@gmail.com
+                  xdeeveee@gmail.com
                 </a>.
               </p>
             </div>
