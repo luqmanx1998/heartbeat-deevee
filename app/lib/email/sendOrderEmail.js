@@ -11,7 +11,7 @@ export async function sendOrderEmail({
 }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
   const logoUrl = `${siteUrl}/DeeveeLogo4.png`;
-  const heroUrl = `${siteUrl}/book1email2.jpeg`;
+  const heroUrl = `${siteUrl}/book1email.jpeg`;
 
   const itemsHtml = items
   .map((item) => {
@@ -51,7 +51,7 @@ export async function sendOrderEmail({
     to,
     subject: "Your Deevee order is confirmed ✦",
     html: `
-      <div style="margin:0; padding:0; background:#130d29; font-family:Arial, Helvetica, sans-serif;">
+      <div style="margin:0; padding:0; background:#0b0b0d; font-family:Arial, Helvetica, sans-serif;">
         <div style="max-width:640px; margin:0 auto; padding:32px 16px;">
           <div style="overflow:hidden; border-radius:28px; background:#ffffff; box-shadow:0 24px 70px rgba(20,12,6,0.12);">
             
@@ -63,11 +63,11 @@ export async function sendOrderEmail({
               />
             </div>
 
-            <div style="margin:0; padding:0; background:#130d29;">>
+            <div style="margin:0; padding:0; background:#0b0b0d;">>
                <img
                 src="${heroUrl}"
                 alt="Heartbeat"
-                style="width:100%; height:auto; display:block;"
+                style="max-width:80%; height:auto; display:block; margin:0 auto;"
                 />
             </div>
 
