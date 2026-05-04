@@ -22,12 +22,6 @@ export default function CheckoutForm({ total }) {
       radios: "always",
       spacedAccordionItems: true,
     },
-    paymentMethodOrder: ["card"],
-     wallets: {
-    applePay: "never",
-    googlePay: "never",
-    link: "never",
-  },
   };
 
   async function handleSubmit(e) {
