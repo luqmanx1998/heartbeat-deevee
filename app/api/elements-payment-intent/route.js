@@ -110,7 +110,7 @@ export async function POST(request) {
          amount,
         currency: "eur",
         receipt_email: user.email,
-        payment_method_types: ["card"],
+        payment_method_types: ["card", "paypal"],
 
         description: validatedItems
         .map((item) => `${item.name} x${item.quantity}`)
