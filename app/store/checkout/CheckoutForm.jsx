@@ -24,9 +24,7 @@ export default function CheckoutForm({ total }) {
     },
   };
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
+  async function confirmPayment() {
     if (!stripe || !elements) return;
 
     setIsPaying(true);
@@ -55,6 +53,15 @@ export default function CheckoutForm({ total }) {
     setIsPaying(false);
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    await confirmPayment();
+  }
+
+  async function handleExpressConfirm() {
+    await confirmPayment();
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <h3 className="mb-5 text-[18px] font-semibold text-white">
@@ -62,7 +69,7 @@ export default function CheckoutForm({ total }) {
       </h3>
 
       <div className="rounded-[18px] border border-white/10 bg-white/[0.035] p-4">
-        <ExpressCheckoutElement />
+        <ExpressCheckoutElement onConfirm={handleExpressConfirm} />
 
         <div className="my-5 flex items-center gap-3">
           <div className="h-px flex-1 bg-white/10" />
