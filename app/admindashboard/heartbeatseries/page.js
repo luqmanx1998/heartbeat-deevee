@@ -24,6 +24,8 @@ export default function HeartbeatSeriesPage() {
   const [series, setSeries] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [savingId, setSavingId] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const supabase = useMemo(() => createClient(), []);
 
@@ -43,13 +45,13 @@ export default function HeartbeatSeriesPage() {
         console.error("Failed to load Heartbeat series:", seriesError.message);
         setLoading(false);
         return;
-        }
+      }
 
-        if (!seriesData) {
+      if (!seriesData) {
         console.error("No Heartbeat series found.");
         setLoading(false);
         return;
-        }
+      }
 
       if (ignore) return;
       setSeries(seriesData);
@@ -82,191 +84,327 @@ export default function HeartbeatSeriesPage() {
   const totalProducts = products.length;
   const totalStock = products.reduce(
     (sum, product) => sum + Number(product.stock ?? 0),
-    0
+    0,
   );
 
+  async function updateProduct(productId, updates) {
+    setSavingId(productId);
+
+    const { data, error } = await supabase
+      .from("products")
+      .update(updates)
+      .eq("id", productId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Failed to update product:", error.message);
+      setSavingId(null);
+      return;
+    }
+
+    setProducts((prev) =>
+      prev.map((product) => (product.id === productId ? data : product)),
+    );
+
+    setSavingId(null);
+  }
+
+  async function deleteProduct(productId) {
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", productId);
+
+    if (error) {
+      console.error("Failed to delete product:", error.message);
+      return;
+    }
+
+    setProducts((prev) => prev.filter((product) => product.id !== productId));
+    setDeleteTarget(null);
+  }
+
   return (
-    <main className="relative min-h-screen overflow-hidden text-[#f3e7d3]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(68,48,22,0.42),transparent_26%),radial-gradient(circle_at_top_right,rgba(40,64,98,0.22),transparent_22%),radial-gradient(circle_at_bottom_left,rgba(120,74,20,0.18),transparent_20%),linear-gradient(to_bottom,#0a0910,#0d0a12_35%,#120d12_70%,#0a090d)]" />
-
-      <div className="pointer-events-none absolute inset-0 opacity-[0.75] bg-[url('/bgimage2.png')] bg-cover bg-center mix-blend-screen" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:radial-gradient(rgba(255,235,200,0.8)_0.7px,transparent_0.7px)] [background-size:22px_22px]" />
-      <div className="pointer-events-none absolute inset-3 rounded-[30px] border border-[#8f6a37]/55 shadow-[inset_0_0_0_1px_rgba(217,182,115,0.16),0_0_40px_rgba(0,0,0,0.35)] sm:inset-5 lg:inset-6" />
-
-      <div className="relative mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <Link
-            href="/admindashboard"
-            className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border border-[#6c4621] bg-[linear-gradient(180deg,#6a4526,#3f2818)] px-5 py-3 text-[12px] uppercase tracking-[0.16em] text-[#f7e3bc] shadow-[0_10px_18px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,230,176,0.06)] transition hover:-translate-y-[1px] hover:brightness-110`}
-          >
-            ← Dashboard
-          </Link>
-
-          <Link
-            href="/store"
-            className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border border-[#6c4621] bg-[linear-gradient(180deg,#6a4526,#3f2818)] px-5 py-3 text-[12px] uppercase tracking-[0.16em] text-[#f7e3bc] shadow-[0_10px_18px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,230,176,0.06)] transition hover:-translate-y-[1px] hover:brightness-110`}
-          >
-            Open Store ↗
-          </Link>
-        </div>
-
-        <header className="mb-10 text-center">
-          <h1
-            className={`${segamoriz.className} text-[clamp(42px,5vw,72px)] leading-[0.96] tracking-[0.01em] text-[#f3dfb7] drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]`}
-          >
-            Heartbeat Series
-          </h1>
-
-          <div className="mx-auto mt-4 flex items-center justify-center gap-4">
-            <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#b89154]/60" />
-            <span className="text-[#d2aa6a]">☾</span>
-            <span className="h-px w-12 bg-gradient-to-l from-transparent to-[#b89154]/60" />
-          </div>
-
-          <p
-            className={`${ibmPlexSerif.className} mx-auto mt-5 max-w-3xl text-[18px] leading-[1.7] text-[#e4d4be]/82`}
-          >
-            Verwalte alle Produkte und den Bestand des Heartbeat-Universums an
-            einem Ort.
-          </p>
-        </header>
-
-        <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="overflow-hidden rounded-[30px] border border-[#8d693b]/55 bg-[linear-gradient(180deg,rgba(19,13,12,0.78),rgba(11,8,10,0.7))] p-5 shadow-[0_22px_45px_rgba(0,0,0,0.32),inset_0_0_0_1px_rgba(205,171,114,0.06)]">
-            <div className="overflow-hidden rounded-[18px] border border-[#6d4823]/45 shadow-[0_10px_22px_rgba(0,0,0,0.28)]">
-              {series?.cover_image ? (
-                <Image
-                  src={series.cover_image}
-                  alt={series.name}
-                  width={700}
-                  height={900}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="h-[420px] w-full bg-[#1a1414]" />
-              )}
-            </div>
-          </div>
-
-          <div className="rounded-[30px] border border-[#8d693b]/55 bg-[linear-gradient(180deg,rgba(19,13,12,0.78),rgba(11,8,10,0.7))] p-6 shadow-[0_22px_45px_rgba(0,0,0,0.32),inset_0_0_0_1px_rgba(205,171,114,0.06)] self-center">
-            <div className="flex flex-wrap gap-3">
-              {series?.featured && (
-                <span className={`${font2.className} rounded-full border border-[#8d693b]/55 bg-[#2b1b12]/75 px-4 py-2 text-[11px] uppercase tracking-[0.16em] text-[#f4dfba]`}>
-                  Featured
-                </span>
-              )}
-              {series?.active && (
-                <span className={`${font2.className} rounded-full border border-[#8d693b]/55 bg-[#2b1b12]/75 px-4 py-2 text-[11px] uppercase tracking-[0.16em] text-[#f4dfba]`}>
-                  Active
-                </span>
-              )}
-            </div>
-
-            <h2
-              className={`${segamoriz.className} mt-5 text-[clamp(34px,4vw,58px)] leading-[0.98] text-[#f1ddb8]`}
-            >
-              {loading ? "Loading..." : series?.name ?? "No series"}
-            </h2>
+    <>
+      {deleteTarget && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm">
+          <div className="max-w-md rounded-[28px] border border-[#8d693b]/45 bg-[#120d12] p-6 text-center shadow-2xl">
+            <h3 className={`${segamoriz.className} text-[34px] text-[#f1ddb8]`}>
+              Produkt löschen?
+            </h3>
 
             <p
-              className={`${ibmPlexSerif.className} mt-5 text-[19px] leading-[1.75] text-[#decbb0]/85`}
+              className={`${font2.className} mt-4 text-sm leading-6 text-[#e1cfb6]/70`}
             >
-              {loading
-                ? "Lade Serieninformationen..."
-                : series?.description || "Noch keine Beschreibung verfügbar."}
+              Möchtest du{" "}
+              <span className="text-[#f4dfba]">{deleteTarget.name}</span>{" "}
+              wirklich löschen? Diese Aktion kann nicht rückgängig gemacht
+              werden.
             </p>
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <SeriesStatCard
-                label="Produkte"
-                value={loading ? "—" : String(totalProducts)}
-                font2={font2}
-                ibmPlexSerif={ibmPlexSerif}
-              />
-              <SeriesStatCard
-                label="Gesamtbestand"
-                value={loading ? "—" : String(totalStock)}
-                font2={font2}
-                ibmPlexSerif={ibmPlexSerif}
-              />
+            <div className="mt-7 flex gap-3">
+              <button
+                onClick={() => setDeleteTarget(null)}
+                className={`${font2.className} flex-1 rounded-full border border-white/10 px-5 py-3 text-xs uppercase tracking-[0.16em] text-white/70 cursor-pointer hover:bg-[#8d693b] transition-colors duration-200`}
+              >
+                Abbrechen
+              </button>
+
+              <button
+                onClick={() => deleteProduct(deleteTarget.id)}
+                className={`${font2.className} flex-1 rounded-full bg-red-900 hover:bg-red-400 transition-colors duration-200 px-5 py-3 text-xs uppercase tracking-[0.16em] text-red-50 cursor-pointer`}
+              >
+                Löschen
+              </button>
             </div>
           </div>
-        </section>
+        </div>
+      )}
+      <main className="relative min-h-screen overflow-hidden text-[#f3e7d3]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(68,48,22,0.42),transparent_26%),radial-gradient(circle_at_top_right,rgba(40,64,98,0.22),transparent_22%),radial-gradient(circle_at_bottom_left,rgba(120,74,20,0.18),transparent_20%),linear-gradient(to_bottom,#0a0910,#0d0a12_35%,#120d12_70%,#0a090d)]" />
 
-        <section className="mt-10">
-          <div className="mb-6 flex items-center justify-center gap-4">
-            <span className="h-px w-16 bg-gradient-to-r from-transparent to-[#b89154]/55" />
-            <h3
-              className={`${ibmPlexSerif.className} text-[clamp(34px,3vw,48px)] italic text-[#f1ddb8]`}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.75] bg-[url('/bgimage2.png')] bg-cover bg-center mix-blend-screen" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:radial-gradient(rgba(255,235,200,0.8)_0.7px,transparent_0.7px)] [background-size:22px_22px]" />
+        <div className="pointer-events-none absolute inset-3 rounded-[30px] border border-[#8f6a37]/55 shadow-[inset_0_0_0_1px_rgba(217,182,115,0.16),0_0_40px_rgba(0,0,0,0.35)] sm:inset-5 lg:inset-6" />
+
+        <div className="relative mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+            <Link
+              href="/admindashboard"
+              className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border border-[#6c4621] bg-[linear-gradient(180deg,#6a4526,#3f2818)] px-5 py-3 text-[12px] uppercase tracking-[0.16em] text-[#f7e3bc] shadow-[0_10px_18px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,230,176,0.06)] transition hover:-translate-y-[1px] hover:brightness-110`}
             >
-              Produkte im Universum
-            </h3>
-            <span className="h-px w-16 bg-gradient-to-l from-transparent to-[#b89154]/55" />
+              ← Dashboard
+            </Link>
+
+            <Link
+              href="/store"
+              className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border border-[#6c4621] bg-[linear-gradient(180deg,#6a4526,#3f2818)] px-5 py-3 text-[12px] uppercase tracking-[0.16em] text-[#f7e3bc] shadow-[0_10px_18px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,230,176,0.06)] transition hover:-translate-y-[1px] hover:brightness-110`}
+            >
+              Open Store ↗
+            </Link>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
-            {loading ? (
-              <p className={`${font2.className} text-sm text-[#e1cfb6]/70`}>
-                Lade Produkte...
-              </p>
-            ) : products.length === 0 ? (
-              <p className={`${font2.className} text-sm text-[#e1cfb6]/70`}>
-                Noch keine Produkte vorhanden.
-              </p>
-            ) : (
-              products.map((product) => (
-                <div
-                  key={product.id}
-                  className="grid gap-5 rounded-[30px] border border-[#8d693b]/55 bg-[linear-gradient(180deg,rgba(19,13,12,0.78),rgba(11,8,10,0.7))] p-5 shadow-[0_22px_45px_rgba(0,0,0,0.32),inset_0_0_0_1px_rgba(205,171,114,0.06)] sm:grid-cols-[220px_1fr]"
-                >
-                  <div className="overflow-hidden rounded-[18px] border border-[#6d4823]/45 shadow-[0_10px_22px_rgba(0,0,0,0.28)]">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      width={500}
-                      height={650}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
+          <header className="mb-10 text-center">
+            <h1
+              className={`${segamoriz.className} text-[clamp(42px,5vw,72px)] leading-[0.96] tracking-[0.01em] text-[#f3dfb7] drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]`}
+            >
+              Heartbeat Series
+            </h1>
 
-                  <div className="flex flex-col justify-center">
-                    <div className="flex flex-wrap items-center gap-3">
-                      <span className={`${font2.className} rounded-full border border-[#8d693b]/45 bg-[#2b1b12]/75 px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] text-[#f4dfba]`}>
-                        {product.type}
-                      </span>
-                      <span className={`${font2.className} rounded-full border border-[#8d693b]/45 bg-[#2b1b12]/75 px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] text-[#f4dfba]`}>
-                        {product.active ? "Active" : "Hidden"}
-                      </span>
+            <div className="mx-auto mt-4 flex items-center justify-center gap-4">
+              <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#b89154]/60" />
+              <span className="text-[#d2aa6a]">☾</span>
+              <span className="h-px w-12 bg-gradient-to-l from-transparent to-[#b89154]/60" />
+            </div>
+
+            <p
+              className={`${ibmPlexSerif.className} mx-auto mt-5 max-w-3xl text-[18px] leading-[1.7] text-[#e4d4be]/82`}
+            >
+              Verwalte alle Produkte und den Bestand des Heartbeat-Universums an
+              einem Ort.
+            </p>
+          </header>
+
+          <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="overflow-hidden rounded-[30px] border border-[#8d693b]/55 bg-[linear-gradient(180deg,rgba(19,13,12,0.78),rgba(11,8,10,0.7))] p-5 shadow-[0_22px_45px_rgba(0,0,0,0.32),inset_0_0_0_1px_rgba(205,171,114,0.06)]">
+              <div className="overflow-hidden rounded-[18px] border border-[#6d4823]/45 shadow-[0_10px_22px_rgba(0,0,0,0.28)]">
+                {series?.cover_image ? (
+                  <Image
+                    src={series.cover_image}
+                    alt={series.name}
+                    width={700}
+                    height={900}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="h-[420px] w-full bg-[#1a1414]" />
+                )}
+              </div>
+            </div>
+
+            <div className="rounded-[30px] border border-[#8d693b]/55 bg-[linear-gradient(180deg,rgba(19,13,12,0.78),rgba(11,8,10,0.7))] p-6 shadow-[0_22px_45px_rgba(0,0,0,0.32),inset_0_0_0_1px_rgba(205,171,114,0.06)] self-center">
+              <div className="flex flex-wrap gap-3">
+                {series?.featured && (
+                  <span
+                    className={`${font2.className} rounded-full border border-[#8d693b]/55 bg-[#2b1b12]/75 px-4 py-2 text-[11px] uppercase tracking-[0.16em] text-[#f4dfba]`}
+                  >
+                    Featured
+                  </span>
+                )}
+                {series?.active && (
+                  <span
+                    className={`${font2.className} rounded-full border border-[#8d693b]/55 bg-[#2b1b12]/75 px-4 py-2 text-[11px] uppercase tracking-[0.16em] text-[#f4dfba]`}
+                  >
+                    Active
+                  </span>
+                )}
+              </div>
+
+              <h2
+                className={`${segamoriz.className} mt-5 text-[clamp(34px,4vw,58px)] leading-[0.98] text-[#f1ddb8]`}
+              >
+                {loading ? "Loading..." : (series?.name ?? "No series")}
+              </h2>
+
+              <p
+                className={`${ibmPlexSerif.className} mt-5 text-[19px] leading-[1.75] text-[#decbb0]/85`}
+              >
+                {loading
+                  ? "Lade Serieninformationen..."
+                  : series?.description || "Noch keine Beschreibung verfügbar."}
+              </p>
+
+              <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                <SeriesStatCard
+                  label="Produkte"
+                  value={loading ? "—" : String(totalProducts)}
+                  font2={font2}
+                  ibmPlexSerif={ibmPlexSerif}
+                />
+                <SeriesStatCard
+                  label="Gesamtbestand"
+                  value={loading ? "—" : String(totalStock)}
+                  font2={font2}
+                  ibmPlexSerif={ibmPlexSerif}
+                />
+              </div>
+            </div>
+          </section>
+
+          <section className="mt-10">
+            <div className="mb-6 flex items-center justify-center gap-4">
+              <span className="h-px w-16 bg-gradient-to-r from-transparent to-[#b89154]/55" />
+              <h3
+                className={`${ibmPlexSerif.className} text-[clamp(34px,3vw,48px)] italic text-[#f1ddb8]`}
+              >
+                Produkte im Universum
+              </h3>
+              <span className="h-px w-16 bg-gradient-to-l from-transparent to-[#b89154]/55" />
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {loading ? (
+                <p className={`${font2.className} text-sm text-[#e1cfb6]/70`}>
+                  Lade Produkte...
+                </p>
+              ) : products.length === 0 ? (
+                <p className={`${font2.className} text-sm text-[#e1cfb6]/70`}>
+                  Noch keine Produkte vorhanden.
+                </p>
+              ) : (
+                products.map((product) => (
+                  <div
+                    key={product.id}
+                    className={`relative grid gap-5 rounded-[30px] border p-5 shadow-[0_22px_45px_rgba(0,0,0,0.32),inset_0_0_0_1px_rgba(205,171,114,0.06)] transition sm:grid-cols-[220px_1fr]
+    ${
+      !product.active
+        ? "border-white/10 bg-black/50 opacity-55 grayscale"
+        : Number(product.stock) <= 0
+          ? "border-red-400/45 bg-[linear-gradient(180deg,rgba(42,9,9,0.82),rgba(11,8,10,0.7))]"
+          : "border-[#8d693b]/55 bg-[linear-gradient(180deg,rgba(19,13,12,0.78),rgba(11,8,10,0.7))]"
+    }`}
+                  >
+                    {Number(product.stock) <= 0 && (
+                      <div className="absolute right-5 top-5 z-10 rotate-[-8deg] rounded-full border border-red-300/40 bg-red-950/80 px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-red-100 shadow-xl">
+                        Sold Out
+                      </div>
+                    )}
+
+                    <div className="overflow-hidden rounded-[18px] border border-[#6d4823]/45 shadow-[0_10px_22px_rgba(0,0,0,0.28)]">
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        width={500}
+                        height={650}
+                        className="h-full w-full object-cover"
+                      />
                     </div>
 
-                    <h4
-                      className={`${segamoriz.className} mt-5 text-[clamp(26px,3vw,42px)] leading-[0.98] text-[#f1ddb8]`}
-                    >
-                      {prettyName(product.name)}
-                    </h4>
+                    <div className="flex flex-col justify-center">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span
+                          className={`${font2.className} rounded-full border border-[#8d693b]/45 bg-[#2b1b12]/75 px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] text-[#f4dfba]`}
+                        >
+                          {product.type}
+                        </span>
 
-                    <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                      <SeriesStatCard
-                        label="Preis"
-                        value={`€${Number(product.price).toFixed(2)}`}
-                        font2={font2}
-                        ibmPlexSerif={ibmPlexSerif}
-                      />
-                      <SeriesStatCard
-                        label="Bestand"
-                        value={String(product.stock)}
-                        font2={font2}
-                        ibmPlexSerif={ibmPlexSerif}
-                      />
+                        <button
+                          onClick={() =>
+                            updateProduct(product.id, {
+                              active: !product.active,
+                            })
+                          }
+                          disabled={savingId === product.id}
+                          className={`${font2.className} rounded-full border border-[#8d693b]/45 bg-[#2b1b12]/75 px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] text-[#f4dfba] transition hover:bg-[#5a351f] disabled:opacity-50`}
+                        >
+                          {product.active ? "Active" : "Hidden"}
+                        </button>
+                      </div>
+
+                      <h4
+                        className={`${segamoriz.className} mt-5 text-[clamp(26px,3vw,42px)] leading-[0.98] text-[#f1ddb8]`}
+                      >
+                        {prettyName(product.name)}
+                      </h4>
+
+                      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                        <label className="rounded-[22px] border border-[#8d693b]/45 bg-[linear-gradient(180deg,rgba(31,20,15,0.82),rgba(18,12,10,0.72))] p-4">
+                          <p
+                            className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/55`}
+                          >
+                            Preis
+                          </p>
+
+                          <input
+                            type="number"
+                            step="0.01"
+                            defaultValue={product.price}
+                            onBlur={(e) =>
+                              updateProduct(product.id, {
+                                price: Number(e.target.value),
+                              })
+                            }
+                            className={`${ibmPlexSerif.className} mt-3 w-full bg-transparent text-[28px] text-[#f5dfb8] outline-none`}
+                          />
+                        </label>
+
+                        <label className="rounded-[22px] border border-[#8d693b]/45 bg-[linear-gradient(180deg,rgba(31,20,15,0.82),rgba(18,12,10,0.72))] p-4">
+                          <p
+                            className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/55`}
+                          >
+                            Bestand
+                          </p>
+
+                          <input
+                            type="number"
+                            min="0"
+                            defaultValue={product.stock}
+                            onBlur={(e) =>
+                              updateProduct(product.id, {
+                                stock: Number(e.target.value),
+                              })
+                            }
+                            className={`${ibmPlexSerif.className} mt-3 w-full bg-transparent text-[28px] text-[#f5dfb8] outline-none`}
+                          />
+                        </label>
+                      </div>
+
+                      <button
+                        onClick={() => setDeleteTarget(product)}
+                        className={`${font2.className} mt-5 w-fit rounded-full border border-red-300/25 bg-red-950/30 px-4 py-2 text-[10px] uppercase tracking-[0.18em] text-red-100 transition hover:bg-red-900/50`}
+                      >
+                        Produkt löschen
+                      </button>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
-          </div>
-        </section>
-      </div>
-    </main>
+                ))
+              )}
+            </div>
+          </section>
+        </div>
+      </main>
+    </>
   );
 }
 

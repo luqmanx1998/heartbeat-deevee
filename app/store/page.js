@@ -86,42 +86,42 @@ export default function HeartbeatStorePage() {
   const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
-  let ignore = false;
+    let ignore = false;
 
-  async function loadProducts() {
-    setProductsLoading(true);
+    async function loadProducts() {
+      setProductsLoading(true);
 
-    const { data, error } = await supabase
-      .from("products")
-      .select("id, name, slug, type, price, stock, image, active")
-      .in("slug", Object.values(PRODUCT_SLUGS))
-      .eq("active", true);
+      const { data, error } = await supabase
+        .from("products")
+        .select("id, name, slug, type, price, stock, image, active")
+        .in("slug", Object.values(PRODUCT_SLUGS))
+        .eq("active", true);
 
-    if (error) {
-      console.error("Failed to load store products:", error.message);
-      if (!ignore) setProductsBySlug({});
-      setProductsLoading(false);
-      return;
+      if (error) {
+        console.error("Failed to load store products:", error.message);
+        if (!ignore) setProductsBySlug({});
+        setProductsLoading(false);
+        return;
+      }
+
+      const map = {};
+
+      for (const product of data ?? []) {
+        map[product.slug] = product;
+      }
+
+      if (!ignore) {
+        setProductsBySlug(map);
+        setProductsLoading(false);
+      }
     }
 
-    const map = {};
+    loadProducts();
 
-    for (const product of data ?? []) {
-      map[product.slug] = product;
-    }
-
-    if (!ignore) {
-      setProductsBySlug(map);
-      setProductsLoading(false);
-    }
-  }
-
-  loadProducts();
-
-  return () => {
-    ignore = true;
-  };
-}, [supabase]);
+    return () => {
+      ignore = true;
+    };
+  }, [supabase]);
 
   useEffect(() => {
     function handleKeyDown(e) {
@@ -163,31 +163,31 @@ export default function HeartbeatStorePage() {
   }
 
   function addProductBySlug(slug) {
-  const product = productsBySlug[slug];
+    const product = productsBySlug[slug];
 
-  if (!product) {
-    console.error(`Product not found for slug: ${slug}`);
-    return;
+    if (!product) {
+      console.error(`Product not found for slug: ${slug}`);
+      return;
+    }
+
+    if (!product.active) {
+      console.error(`${product.name} is not active.`);
+      return;
+    }
+
+    if (Number(product.stock ?? 0) <= 0) {
+      console.error(`${product.name} is out of stock.`);
+      return;
+    }
+
+    addToCart({
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      price: Number(product.price),
+      type: product.type,
+    });
   }
-
-  if (!product.active) {
-    console.error(`${product.name} is not active.`);
-    return;
-  }
-
-  if (Number(product.stock ?? 0) <= 0) {
-    console.error(`${product.name} is out of stock.`);
-    return;
-  }
-
-  addToCart({
-    id: product.id,
-    name: product.name,
-    image: product.image,
-    price: Number(product.price),
-    type: product.type,
-  });
-}
 
   function addToCart(product) {
     const cart = JSON.parse(localStorage.getItem("heartbeat_cart") || "[]");
@@ -352,6 +352,13 @@ export default function HeartbeatStorePage() {
 
   const primaryButton =
     "inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition hover:-translate-y-0.5";
+
+  const buchboxProduct = productsBySlug[PRODUCT_SLUGS.buchbox];
+  const bookProduct = productsBySlug[PRODUCT_SLUGS.book];
+
+  const isBuchboxSoldOut =
+    !!buchboxProduct && Number(buchboxProduct.stock ?? 0) <= 0;
+  const isBookSoldOut = !!bookProduct && Number(bookProduct.stock ?? 0) <= 0;
 
   if (authLoading) {
     return (
@@ -544,257 +551,316 @@ export default function HeartbeatStorePage() {
           <div className="absolute inset-0 bg-[url('/book4.jpeg')] bg-cover bg-center opacity-[0.08]" />
 
           <div className="relative mx-auto max-w-7xl px-6 py-12 sm:px-8 lg:px-10 lg:py-16">
-            <div
-              id="buchbox"
-              className="mb-12 rounded-[34px] border border-[#f3d4a2]/15 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-6 shadow-2xl shadow-black/40 backdrop-blur-sm sm:p-8"
-            >
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div className="inline-flex items-center rounded-full border border-[#ffcf88]/20 bg-[#8c4e17]/18 px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-[#ffdca8]">
-                  Exklusiver Vorverkauf
-                </div>
-                <div className="inline-flex items-center rounded-full border border-[#ffcf88]/20 bg-[#a7521d] px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-white shadow-[0_0_25px_rgba(167,82,29,0.35)]">
-                  Verkauft sich schnell
-                </div>
-              </div>
+            {buchboxProduct && (
+              <div
+                id="buchbox"
+                className={`relative mb-12 overflow-hidden rounded-[34px] border border-[#f3d4a2]/15 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-6 shadow-xl shadow-black/30 sm:p-8 ${
+                  isBuchboxSoldOut ? "opacity-85" : ""
+                }`}
+                              >
+                {isBuchboxSoldOut && (
+  <>
+    <div className="pointer-events-none absolute inset-0 z-20 rounded-[34px] bg-black/70" />
 
-              <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-                <div className="overflow-hidden rounded-[28px] border border-white/10 bg-black/20">
-                  <div className="relative aspect-[1/1] w-full">
-                    <Image
-                      src="/buchbox2.jpg"
-                      alt="Heartbeat Buchbox"
-                      fill
-                      priority
-                      className="object-cover transition duration-500 hover:scale-[1.02]"
-                    />
+    <div className="pointer-events-none absolute left-[52%] top-[45%] z-40 w-[400px] -translate-x-1/2 -translate-y-1/2 rotate-[-12deg] opacity-85 mix-blend-luminosity">
+      <Image
+        src="/circlestamp5.png"
+        alt="Ausverkauft stamp"
+        width={900}
+        height={900}
+        className="h-auto w-full drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]"
+        priority
+      />
+    </div>
+  </>
+)}
+
+                <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                  <div className="inline-flex items-center rounded-full border border-[#ffcf88]/20 bg-[#8c4e17]/18 px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-[#ffdca8]">
+                    Exklusiver Vorverkauf
                   </div>
+                 {!isBuchboxSoldOut && (
+                  <div className="inline-flex items-center rounded-full border border-[#ffcf88]/20 bg-[#a7521d] px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-white shadow-[0_0_25px_rgba(167,82,29,0.35)]">
+                    Verkauft sich schnell
+                  </div>
+                )}
                 </div>
 
-                <div>
-                  <p className="text-[11px] uppercase tracking-[0.32em] text-white/45">
-                    Limitierte Buchbox
-                  </p>
-
-                  <h1
-                    className={`${ibmPlexSerif.className} mt-4 text-4xl leading-[0.95] tracking-tight sm:text-5xl`}
-                  >
-                    Heartbeat I
-                    <br />
-                    Buchbox
-                  </h1>
-
-                  <p
-                    className={`${ibmPlexSerif.className} mt-6 max-w-[640px] text-[20px] leading-[1.55] text-white/88 sm:text-[24px]`}
-                  >
-                    Die besondere Presale-Edition für alle, die mehr als nur das
-                    Buch wollen.
-                  </p>
-
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[12px] uppercase tracking-[0.18em] text-white/72">
-                      Limitierte Stückzahl
-                    </span>
-                    <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[12px] uppercase tracking-[0.18em] text-white/72">
-                      Auf Wunsch signiert
-                    </span>
+                <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+                  <div className="overflow-hidden rounded-[28px] border border-white/10 bg-black/20">
+                    <div className="relative aspect-[1/1] w-full">
+                      <Image
+                        src="/buchbox2.jpg"
+                        alt="Heartbeat Buchbox"
+                        fill
+                        priority
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
 
-                  <div className="mt-8 rounded-[30px] border border-[#f3d4a2]/16 bg-[linear-gradient(180deg,rgba(109,59,17,0.38),rgba(41,19,6,0.2))] p-6 shadow-[0_18px_55px_rgba(0,0,0,0.35)]">
-                    <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#f3d4a2]/12 pb-5">
-                      <div>
-                        <p className="text-[11px] uppercase tracking-[0.28em] text-[#f1d3a5]/55">
-                          Buchbox Preis
-                        </p>
-                        <div className="flex items-center gap-4">
-                          <div
-                            className={`${ibmPlexSerif.className} mt-3 text-4xl text-[#fff5e8] sm:text-5xl`}
-                          >
-                            {formatPrice(productsBySlug[PRODUCT_SLUGS.buchbox]?.price ?? 29.99)}
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.32em] text-white/45">
+                      Limitierte Buchbox
+                    </p>
+
+                    <h1
+                      className={`${ibmPlexSerif.className} mt-4 text-4xl leading-[0.95] tracking-tight sm:text-5xl`}
+                    >
+                      Heartbeat I
+                      <br />
+                      Buchbox
+                    </h1>
+
+                    <p
+                      className={`${ibmPlexSerif.className} mt-6 max-w-[640px] text-[20px] leading-[1.55] text-white/88 sm:text-[24px]`}
+                    >
+                      Die besondere Presale-Edition für alle, die mehr als nur
+                      das Buch wollen.
+                    </p>
+
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[12px] uppercase tracking-[0.18em] text-white/72">
+                        Limitierte Stückzahl
+                      </span>
+                      <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[12px] uppercase tracking-[0.18em] text-white/72">
+                        Auf Wunsch signiert
+                      </span>
+                    </div>
+
+                    <div className="mt-8 rounded-[30px] border border-[#f3d4a2]/16 bg-[linear-gradient(180deg,rgba(109,59,17,0.38),rgba(41,19,6,0.2))] p-6 shadow-[0_18px_55px_rgba(0,0,0,0.35)]">
+                      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#f3d4a2]/12 pb-5">
+                        <div>
+                          <p className="text-[11px] uppercase tracking-[0.28em] text-[#f1d3a5]/55">
+                            Buchbox Preis
+                          </p>
+                          <div className="flex items-center gap-4">
+                            <div
+                              className={`${ibmPlexSerif.className} mt-3 text-4xl text-[#fff5e8] sm:text-5xl`}
+                            >
+                              {formatPrice(buchboxProduct.price)}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                      <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                        <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">
-                          Inhalt
-                        </p>
-                        <p
-                          className={`${ibmPlexSerif.className} mt-2 text-[17px] text-white/90`}
-                        >
-                          Buchbox Bundle
-                        </p>
+                      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                        <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                          <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">
+                            Inhalt
+                          </p>
+                          <p
+                            className={`${ibmPlexSerif.className} mt-2 text-[17px] text-white/90`}
+                          >
+                            Buchbox Bundle
+                          </p>
+                        </div>
+                        <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                          <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">
+                            Status
+                          </p>
+                          <p
+                            className={`${ibmPlexSerif.className} mt-2 text-[17px] text-white/90`}
+                          >
+                            {isBuchboxSoldOut ? "Ausverkauft" : "Presale"}
+                          </p>
+                        </div>
+                        <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                          <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">
+                            Verfügbarkeit
+                          </p>
+                          <p
+                            className={`${ibmPlexSerif.className} mt-2 text-[17px] text-white/90`}
+                          >
+                            {isBuchboxSoldOut ? "Nicht verfügbar" : "Verfügbar"}
+                          </p>
+                        </div>
                       </div>
-                      <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                        <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">
-                          Status
-                        </p>
-                        <p
-                          className={`${ibmPlexSerif.className} mt-2 text-[17px] text-white/90`}
-                        >
-                          Presale
-                        </p>
-                      </div>
-                      <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                        <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">
-                          Verfügbarkeit
-                        </p>
-                        <p
-                          className={`${ibmPlexSerif.className} mt-2 text-[17px] text-white/90`}
-                        >
-                          Fast ausverkauft
-                        </p>
-                      </div>
-                    </div>
 
-                    <div className="mt-6 rounded-2xl border border-[#f3d4a2]/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] p-4">
-                      <p className="text-[11px] uppercase tracking-[0.28em] text-[#f1d3a5]/55">
-                        Was ist in der Buchbox?
+                      <div className="mt-6 rounded-2xl border border-[#f3d4a2]/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] p-4">
+                        <p className="text-[11px] uppercase tracking-[0.28em] text-[#f1d3a5]/55">
+                          Was ist in der Buchbox?
+                        </p>
+                        <ul
+                          className={`${ibmPlexSerif.className} mt-3 text-[18px] leading-[1.65] text-[#f7ead8] flex flex-wrap gap-x-4 gap-y-2`}
+                        >
+                          {[
+                            "Taschenbuch",
+                            "Metall-Lesezeichen",
+                            "4 Charakterkarten (beidseitig bedruckt)",
+                            "Schlüsselanhänger",
+                            "Acryl-Aufsteller",
+                          ].map((item) => (
+                            <li key={item} className="flex items-center">
+                              <span className="mx-3 text-white/40">•</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                        <button
+                          onClick={() =>
+                            addProductBySlug(PRODUCT_SLUGS.buchbox)
+                          }
+                          disabled={
+                            productsLoading ||
+                            !buchboxProduct ||
+                            isBuchboxSoldOut
+                          }
+                          className={`${primaryButton} ${font2.className} bg-[#f2e6d7] text-black hover:bg-white shadow-[0_10px_30px_rgba(242,230,215,0.18)] flex-1 transition duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
+                        >
+                          {isBuchboxSoldOut
+                            ? "Ausverkauft"
+                            : "Buchbox sichern"}
+                        </button>
+                      </div>
+
+                      <p className="mt-5 text-center text-[12px] uppercase tracking-[0.24em] text-[#f1d3a5]/50">
+                        Exklusiv für den Presale
                       </p>
-                      <ul
-                        className={`${ibmPlexSerif.className} mt-3 text-[18px] leading-[1.65] text-[#f7ead8] flex flex-wrap gap-x-4 gap-y-2`}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {bookProduct && (
+              
+              <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start relative">
+                {isBookSoldOut && (
+  <>
+    <div className="pointer-events-none absolute inset-0 z-20 rounded-[34px] bg-black/70" />
+
+    <div className="pointer-events-none absolute left-[52%] top-[45%] z-40 w-[400px] -translate-x-1/2 -translate-y-1/2 rotate-[-12deg] opacity-85 mix-blend-luminosity">
+      <Image
+        src="/circlestamp5.png"
+        alt="Ausverkauft stamp"
+        width={900}
+        height={900}
+        className="h-auto w-full drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]"
+        priority
+      />
+    </div>
+  </>
+)}
+                <div
+                  className={`grid gap-4 sm:grid-cols-[1fr_120px] ${
+                    isBookSoldOut ? "grayscale-[0.35]" : ""
+                  }`}
+                >
+                  <div className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 shadow-2xl shadow-black/40">
+                    <img
+                      src={book.images[1]}
+                      alt={`${book.title} cover`}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
+                    {book.images
+                      .filter((_, idx) => idx !== 1)
+                      .map((src, index) => (
+                        <div
+                          key={src}
+                          className="overflow-hidden rounded-2xl border border-white/10 bg-white/5"
+                        >
+                          <img
+                            src={src}
+                            alt={`${book.title} preview ${index + 2}`}
+                            className="h-full w-full object-cover transition duration-300 hover:scale-[1.03]"
+                          />
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="lg:sticky lg:top-8">
+                  <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.22em] text-white/70">
+                    {book.badge}
+                  </div>
+
+                  <h1
+                    className={`${ibmPlexSerif.className} mt-5 text-4xl tracking-tight sm:text-5xl`}
+                  >
+                    {book.title}
+                  </h1>
+                  <p
+                    className={`${ibmPlexSerif.className} mt-2 text-xl text-white/75 sm:text-2xl`}
+                  >
+                    {book.subtitle}
+                  </p>
+                  <p className="mt-3 text-sm uppercase tracking-[0.3em] text-white/45">
+                    by {book.author}
+                  </p>
+
+                  <p
+                    className={`${ibmPlexSerif.className} mt-6 max-w-xl text-base leading-7 text-white/76 sm:text-lg`}
+                  >
+                    {book.description}
+                  </p>
+
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {book.features.map((feature) => (
+                      <span
+                        key={feature}
+                        className={`${font2.className} rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/75`}
                       >
-                        {[
-                          "Taschenbuch",
-                          "Metall-Lesezeichen",
-                          "4 Charakterkarten (beidseitig bedruckt)",
-                          "Schlüsselanhänger",
-                          "Acryl-Aufsteller",
-                        ].map((item) => (
-                          <li key={item} className="flex items-center">
-                            <span className="mx-3 text-white/40">•</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div
+                    className={`relative mt-8 overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-xl shadow-black/30 backdrop-blur`}
+                  >
+
+                    <p className="text-[11px] uppercase tracking-[0.28em]">
+                      Buch Preis
+                    </p>
+                    <div
+                      className={`${ibmPlexSerif.className} text-3xl sm:text-4xl mt-4`}
+                    >
+                      {formatPrice(bookProduct.price)}
                     </div>
 
-                    <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                    <div className="mt-6">
                       <button
-                        onClick={() => addProductBySlug(PRODUCT_SLUGS.buchbox)}
-                        disabled={productsLoading || !productsBySlug[PRODUCT_SLUGS.buchbox]}
-                        className={`${primaryButton} ${font2.className} bg-[#f2e6d7] text-black hover:bg-white shadow-[0_10px_30px_rgba(242,230,215,0.18)] flex-1 transition duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
+                        onClick={() => addProductBySlug(PRODUCT_SLUGS.book)}
+                        disabled={productsLoading || !bookProduct || isBookSoldOut}
+                        className={`${primaryButton} ${font2.className} w-full bg-white text-black cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
                       >
-                        Buchbox sichern
+                        {isBookSoldOut ? "Ausverkauft" : "Jetzt kaufen"}
                       </button>
-                                          </div>
+                    </div>
 
-                    <p className="mt-5 text-center text-[12px] uppercase tracking-[0.24em] text-[#f1d3a5]/50">
-                      Exklusiv für den Presale
+                    <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/65">
+                      Sicherer Checkout mit Stripe oder PayPal. Versand- und
+                      Formatoptionen kannst du später leicht ergänzen.
+                    </div>
+                  </div>
+
+                  <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-4">
+                    <p
+                      className={`${font2.className} text-[11px] uppercase tracking-[0.26em] text-white/45`}
+                    >
+                      Triggerwarnungen
+                    </p>
+
+                    <p
+                      className={`${ibmPlexSerif.className} mt-3 flex flex-wrap text-[16px] leading-[1.6] text-white/78`}
+                    >
+                      Dieses Buch enthält Extreme Gewalt, Tod, psychische
+                      Erkrankungen, Entführung, Stalking, Mord, Panikattacken,
+                      emotionaler Missbrauch, Gaslighting, Vernachlässigung von
+                      Kindern, Tod eines Elternteils, blutige oder grafische
+                      Gewalt.
                     </p>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-              <div className="grid gap-4 sm:grid-cols-[1fr_120px]">
-                <div className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 shadow-2xl shadow-black/40">
-                  <img
-                    src={book.images[1]}
-                    alt={`${book.title} cover`}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-
-                <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
-                  {book.images
-                    .filter((_, idx) => idx !== 1)
-                    .map((src, index) => (
-                      <div
-                        key={src}
-                        className="overflow-hidden rounded-2xl border border-white/10 bg-white/5"
-                      >
-                        <img
-                          src={src}
-                          alt={`${book.title} preview ${index + 2}`}
-                          className="h-full w-full object-cover transition duration-300 hover:scale-[1.03]"
-                        />
-                      </div>
-                    ))}
-                </div>
-              </div>
-
-              <div className="lg:sticky lg:top-8">
-                <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.22em] text-white/70">
-                  {book.badge}
-                </div>
-
-                <h1
-                  className={`${ibmPlexSerif.className} mt-5 text-4xl tracking-tight sm:text-5xl`}
-                >
-                  {book.title}
-                </h1>
-                <p
-                  className={`${ibmPlexSerif.className} mt-2 text-xl text-white/75 sm:text-2xl`}
-                >
-                  {book.subtitle}
-                </p>
-                <p className="mt-3 text-sm uppercase tracking-[0.3em] text-white/45">
-                  by {book.author}
-                </p>
-
-                <p
-                  className={`${ibmPlexSerif.className} mt-6 max-w-xl text-base leading-7 text-white/76 sm:text-lg`}
-                >
-                  {book.description}
-                </p>
-
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {book.features.map((feature) => (
-                    <span
-                      key={feature}
-                      className={`${font2.className} rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/75`}
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-8 rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-xl shadow-black/30 backdrop-blur">
-                  <p className="text-[11px] uppercase tracking-[0.28em]">
-                    Buch Preis
-                  </p>
-                  <div
-                    className={`${ibmPlexSerif.className} text-3xl sm:text-4xl mt-4`}
-                  >
-                    {formatPrice(productsBySlug[PRODUCT_SLUGS.book]?.price ?? 16.99)}
-                  </div>
-
-                  <div className="mt-6">
-                    <button
-                    onClick={() => addProductBySlug(PRODUCT_SLUGS.book)}
-                    disabled={productsLoading || !productsBySlug[PRODUCT_SLUGS.book]}
-                    className={`${primaryButton} ${font2.className} w-full bg-white text-black cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
-                  >
-                    Jetzt kaufen
-                  </button>
-                                    </div>
-
-                                    <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/65">
-                    Sicherer Checkout mit Stripe oder PayPal. Versand- und
-                    Formatoptionen kannst du später leicht ergänzen.
-                  </div>
-                </div>
-                <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-4">
-                  <p
-                    className={`${font2.className} text-[11px] uppercase tracking-[0.26em] text-white/45`}
-                  >
-                    Triggerwarnungen
-                  </p>
-
-                  <p
-                    className={`${ibmPlexSerif.className} mt-3 flex flex-wrap text-[16px] leading-[1.6] text-white/78`}
-                  >
-                    Dieses Buch enthält Extreme Gewalt, Tod, psychische
-                    Erkrankungen, Entführung, Stalking, Mord, Panikattacken,
-                    emotionaler Missbrauch, Gaslighting, Vernachlässigung von
-                    Kindern, Tod eines Elternteils, blutige oder grafische Gewalt.
-                  </p>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </section>
 
@@ -950,7 +1016,8 @@ export default function HeartbeatStorePage() {
                               .getElementById("buchbox")
                               ?.scrollIntoView({ behavior: "smooth" });
                           }}
-                          className={`${primaryButton} ${font2.className} bg-[#f2e6d7] text-black hover:bg-white shadow-[0_10px_30px_rgba(242,230,215,0.18)] cursor-pointer w-[50%] btn btn-background-slide`}
+                          disabled={!buchboxProduct}
+                          className={`${primaryButton} ${font2.className} bg-[#f2e6d7] text-black hover:bg-white shadow-[0_10px_30px_rgba(242,230,215,0.18)] cursor-pointer w-[50%] btn btn-background-slide disabled:cursor-not-allowed disabled:opacity-50`}
                         >
                           Jetzt eintauchen
                         </button>
