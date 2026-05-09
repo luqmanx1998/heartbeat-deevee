@@ -146,7 +146,7 @@ export default function HeartbeatStorePage() {
 
     const count = cart.reduce(
       (sum, item) => sum + Number(item.quantity || 0),
-      0
+      0,
     );
 
     setCartCount(count);
@@ -557,33 +557,33 @@ export default function HeartbeatStorePage() {
                 className={`relative mb-12 overflow-hidden rounded-[34px] border border-[#f3d4a2]/15 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-6 shadow-xl shadow-black/30 sm:p-8 ${
                   isBuchboxSoldOut ? "opacity-85" : ""
                 }`}
-                              >
+              >
                 {isBuchboxSoldOut && (
-  <>
-    <div className="pointer-events-none absolute inset-0 z-20 rounded-[34px] bg-black/70" />
+                  <>
+                    <div className="pointer-events-none absolute inset-0 z-20 rounded-[34px] bg-black/70" />
 
-    <div className="pointer-events-none absolute left-[52%] top-[45%] z-40 w-[400px] -translate-x-1/2 -translate-y-1/2 rotate-[-12deg] opacity-85 mix-blend-luminosity">
-      <Image
-        src="/circlestamp5.png"
-        alt="Ausverkauft stamp"
-        width={900}
-        height={900}
-        className="h-auto w-full drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]"
-        priority
-      />
-    </div>
-  </>
-)}
+                    <div className="pointer-events-none absolute left-[52%] top-[45%] z-40 w-[400px] -translate-x-1/2 -translate-y-1/2 rotate-[-12deg] opacity-85 mix-blend-luminosity">
+                      <Image
+                        src="/circlestamp5.png"
+                        alt="Ausverkauft stamp"
+                        width={900}
+                        height={900}
+                        className="h-auto w-full drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]"
+                        priority
+                      />
+                    </div>
+                  </>
+                )}
 
                 <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                   <div className="inline-flex items-center rounded-full border border-[#ffcf88]/20 bg-[#8c4e17]/18 px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-[#ffdca8]">
                     Exklusiver Vorverkauf
                   </div>
-                 {!isBuchboxSoldOut && (
-                  <div className="inline-flex items-center rounded-full border border-[#ffcf88]/20 bg-[#a7521d] px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-white shadow-[0_0_25px_rgba(167,82,29,0.35)]">
-                    Verkauft sich schnell
-                  </div>
-                )}
+                  {!isBuchboxSoldOut && (
+                    <div className="inline-flex items-center rounded-full border border-[#ffcf88]/20 bg-[#a7521d] px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-white shadow-[0_0_25px_rgba(167,82,29,0.35)]">
+                      Verkauft sich schnell
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
@@ -711,9 +711,7 @@ export default function HeartbeatStorePage() {
                           }
                           className={`${primaryButton} ${font2.className} bg-[#f2e6d7] text-black hover:bg-white shadow-[0_10px_30px_rgba(242,230,215,0.18)] flex-1 transition duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
                         >
-                          {isBuchboxSoldOut
-                            ? "Ausverkauft"
-                            : "Buchbox sichern"}
+                          {isBuchboxSoldOut ? "Ausverkauft" : "Buchbox sichern"}
                         </button>
                       </div>
 
@@ -727,24 +725,23 @@ export default function HeartbeatStorePage() {
             )}
 
             {bookProduct && (
-              
               <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start relative">
                 {isBookSoldOut && (
-  <>
-    <div className="pointer-events-none absolute inset-0 z-20 rounded-[34px] bg-black/70" />
+                  <>
+                    <div className="pointer-events-none absolute inset-0 z-20 rounded-[34px] bg-black/70" />
 
-    <div className="pointer-events-none absolute left-[52%] top-[45%] z-40 w-[400px] -translate-x-1/2 -translate-y-1/2 rotate-[-12deg] opacity-85 mix-blend-luminosity">
-      <Image
-        src="/circlestamp5.png"
-        alt="Ausverkauft stamp"
-        width={900}
-        height={900}
-        className="h-auto w-full drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]"
-        priority
-      />
-    </div>
-  </>
-)}
+                    <div className="pointer-events-none absolute left-[52%] top-[45%] z-40 w-[340px] -translate-x-1/2 -translate-y-1/2 rotate-[-12deg] opacity-85 mix-blend-luminosity">
+                      <Image
+                        src="/circlestamp5.png"
+                        alt="Ausverkauft stamp"
+                        width={900}
+                        height={900}
+                        className="h-auto w-full drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]"
+                        priority
+                      />
+                    </div>
+                  </>
+                )}
                 <div
                   className={`grid gap-4 sm:grid-cols-[1fr_120px] ${
                     isBookSoldOut ? "grayscale-[0.35]" : ""
@@ -815,7 +812,6 @@ export default function HeartbeatStorePage() {
                   <div
                     className={`relative mt-8 overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-xl shadow-black/30 backdrop-blur`}
                   >
-
                     <p className="text-[11px] uppercase tracking-[0.28em]">
                       Buch Preis
                     </p>
@@ -828,7 +824,9 @@ export default function HeartbeatStorePage() {
                     <div className="mt-6">
                       <button
                         onClick={() => addProductBySlug(PRODUCT_SLUGS.book)}
-                        disabled={productsLoading || !bookProduct || isBookSoldOut}
+                        disabled={
+                          productsLoading || !bookProduct || isBookSoldOut
+                        }
                         className={`${primaryButton} ${font2.className} w-full bg-white text-black cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
                       >
                         {isBookSoldOut ? "Ausverkauft" : "Jetzt kaufen"}
