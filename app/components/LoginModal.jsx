@@ -1,10 +1,7 @@
 import Image from "next/image"
-import { useEffect } from "react";
 import { createClient } from "../lib/supabase/client";
 
 function LoginModal({ ibmPlexSerif, font2, setShowLoginModal, showLoginModal }) {
-
-const supabase = createClient()
 
 const handleOAuthLogin = async () => {
     const supabase = createClient();

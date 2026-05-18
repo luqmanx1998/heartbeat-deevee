@@ -8,28 +8,57 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function validateEmail(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  function handleSubscribe() {
-    setError("");
-    setMessage("");
+  async function handleSubscribe() {
+  setError("");
+  setMessage("");
 
-    if (!email.trim()) {
-      setError("Bitte gib deine E-Mail-Adresse ein.");
-      return;
-    }
+  const trimmedEmail = email.trim();
 
-    if (!validateEmail(email)) {
-      setError("Bitte gib eine gültige E-Mail-Adresse ein.");
+  if (!trimmedEmail) {
+    setError("Bitte gib deine E-Mail-Adresse ein.");
+    return;
+  }
+
+  if (!validateEmail(trimmedEmail)) {
+    setError("Bitte gib eine gültige E-Mail-Adresse ein.");
+    return;
+  }
+
+  try {
+    setIsSubmitting(true);
+
+    const res = await fetch("/api/subscribe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: trimmedEmail,
+        source: "footer",
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.error || "Anmeldung fehlgeschlagen.");
       return;
     }
 
     setMessage("Danke! Du wirst über Updates informiert.");
     setEmail("");
+  } catch (err) {
+    setError("Etwas ist schiefgelaufen.");
+  } finally {
+    setIsSubmitting(false);
   }
+}
 
   return (
     <footer className="min-h-screen w-full bg-[url('/footerlogo.png')] bg-cover bg-center">
@@ -123,11 +152,18 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
               />
 
               <button
-                onClick={handleSubscribe}
-                className={`${ibmPlexSerif.className} rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm uppercase transition hover:border-white/40 hover:bg-white/15`}
-              >
-                Anmelden
-              </button>
+              disabled={isSubmitting}
+              onClick={handleSubscribe}
+              className={`${ibmPlexSerif.className} rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm uppercase transition hover:border-white/40 hover:bg-white/15 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60`}
+            >
+              <span className="flex items-center justify-center gap-2">
+                {isSubmitting && (
+                  <span className="h-3.5 w-3.5 animate-spin rounded-full border border-white/25 border-t-white" />
+                )}
+
+                {isSubmitting ? "Wird gesendet..." : "Anmelden"}
+              </span>
+            </button>
             </div>
 
             {error && (

@@ -7,6 +7,7 @@ import localFont from "next/font/local";
 import { Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "@/app/lib/stripe/client";
 import CheckoutForm from "./CheckoutForm";
+import { createClient } from "@/app/lib/supabase/client";
 
 const font2 = localFont({
   src: "../../fonts/NeueMontreal-Regular.woff2",
@@ -21,6 +22,8 @@ export default function CustomCheckoutPage() {
   const [serverTotal, setServerTotal] = useState(null);
   const [orderLoading, setOrderLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [user, setUser] = useState(null);
+  const [guestEmail, setGuestEmail] = useState("");
 
   const [shipping, setShipping] = useState({
     fullName: "",
@@ -29,6 +32,20 @@ export default function CustomCheckoutPage() {
     postalCode: "",
     city: "",
   });
+
+  useEffect(() => {
+  async function loadUser() {
+    const supabase = createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    setUser(user);
+  }
+
+  loadUser();
+}, []);
 
   useEffect(() => {
     const storedCart = JSON.parse(
@@ -53,7 +70,7 @@ export default function CustomCheckoutPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ cart, shipping }),
+      body: JSON.stringify({ cart, shipping, guestEmail }),
     });
 
     const data = await res.json();
@@ -230,6 +247,26 @@ export default function CustomCheckoutPage() {
             </h2>
 
             <div className="mt-8 rounded-[30px] border border-[#7c5cff]/55 bg-[#302c42]/95 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur">
+
+            {!user && (
+            <div className="mb-6 rounded-[22px] border border-white/10 bg-white/[0.035] p-5">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-[#f3d4a2]/55">
+                Guest checkout
+              </p>
+
+              <p className="mt-3 text-[15px] leading-6 text-white/58">
+                Enter your email to receive your receipt and shipping updates.
+              </p>
+
+              <input
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+                placeholder="Email address"
+                type="email"
+                className={`${inputClass} mt-4`}
+              />
+            </div>
+          )}
               <h3 className="text-[18px] font-semibold">
                 Shipping information
               </h3>

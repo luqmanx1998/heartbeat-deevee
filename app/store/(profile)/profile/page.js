@@ -99,13 +99,30 @@ export default function Page() {
       .update({
         display_name: form.display_name,
         phone: form.phone,
-        marketing_emails: form.marketing_emails,
         updated_at: new Date().toISOString(),
       })
       .eq("id", user.id);
 
     if (error) {
       console.error("Failed to save profile:", error.message);
+      setSaving(false);
+      return;
+    }
+
+    const res = await fetch("/api/update-marketing-preference", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        marketingEmails: form.marketing_emails,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error(data.error || "Failed to update marketing preference.");
       setSaving(false);
       return;
     }

@@ -256,7 +256,7 @@ export default function HeartbeatStorePage() {
 
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
-      .select("id, email, role")
+      .select("id, email, role, display_name")
       .eq("id", user.id)
       .maybeSingle();
 
@@ -465,7 +465,7 @@ export default function HeartbeatStorePage() {
                   >
                     <span className="inline-block h-2 w-2 rounded-full bg-[#f3d4a2]" />
                     <span className="truncate normal-case tracking-normal text-[12px]">
-                      {user.email}
+                      {profile.display_name ?? profile.email}
                     </span>
                   </button>
 

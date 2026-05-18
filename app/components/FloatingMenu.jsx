@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { FiInstagram } from "react-icons/fi";
 import { SiTiktok } from "react-icons/si";
 import { gsap } from "gsap";
+import Link from "next/link";
 
 export default function FloatingMenu({
   ibmPlexSerif,
@@ -16,6 +17,7 @@ export default function FloatingMenu({
   const [email, setEmail] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const overlayRef = useRef(null);
   const topBlindRef = useRef(null);
@@ -70,7 +72,7 @@ export default function FloatingMenu({
       {
         autoAlpha: 0,
         y: 24,
-      }
+      },
     );
 
     gsap.set(navLineRefs.current, {
@@ -109,7 +111,7 @@ export default function FloatingMenu({
         duration: 0.8,
         ease: "power3.out",
       },
-      0
+      0,
     )
       .to(
         toggleBottomRef.current,
@@ -120,7 +122,7 @@ export default function FloatingMenu({
           duration: 0.8,
           ease: "power3.out",
         },
-        0
+        0,
       )
       .to(
         topPaintRef.current,
@@ -129,7 +131,7 @@ export default function FloatingMenu({
           duration: 0.85,
           ease: "power3.inOut",
         },
-        0
+        0,
       )
       .to(
         bottomPaintRef.current,
@@ -138,14 +140,14 @@ export default function FloatingMenu({
           duration: 0.85,
           ease: "power3.inOut",
         },
-        0
+        0,
       )
       .set(
         contentBgRef.current,
         {
           autoAlpha: 1,
         },
-        0.5
+        0.5,
       )
       .to(
         topBlindRef.current,
@@ -154,7 +156,7 @@ export default function FloatingMenu({
           duration: 0.85,
           ease: "power4.inOut",
         },
-        0.5
+        0.5,
       )
       .to(
         bottomBlindRef.current,
@@ -163,10 +165,14 @@ export default function FloatingMenu({
           duration: 0.85,
           ease: "power4.inOut",
         },
-        0.5
+        0.5,
       )
       .to(
-        [leftBlockRef.current, subscribeBlockRef.current, rightFooterRef.current],
+        [
+          leftBlockRef.current,
+          subscribeBlockRef.current,
+          rightFooterRef.current,
+        ],
         {
           autoAlpha: 1,
           y: 0,
@@ -174,7 +180,7 @@ export default function FloatingMenu({
           ease: "power3.out",
           stagger: 0.04,
         },
-        0.82
+        0.82,
       )
       .to(
         navLineRefs.current,
@@ -184,7 +190,7 @@ export default function FloatingMenu({
           stagger: 0.08,
           ease: "power3.out",
         },
-        0.78
+        0.78,
       )
       .to(
         footerLineRefs.current,
@@ -194,7 +200,7 @@ export default function FloatingMenu({
           stagger: 0.05,
           ease: "power3.out",
         },
-        0.88
+        0.88,
       );
 
     timelineRef.current = tl;
@@ -215,22 +221,50 @@ export default function FloatingMenu({
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  function handleSubscribe() {
+  async function handleSubscribe() {
     setEmailError("");
     setEmailMessage("");
 
-    if (!email.trim()) {
-      setEmailError("Bitte gib deine E-Mail-Adresse ein.");
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail) {
+      setError("Bitte gib deine E-Mail-Adresse ein.");
       return;
     }
 
-    if (!validateEmail(email)) {
-      setEmailError("Bitte gib eine gültige E-Mail-Adresse ein.");
+    if (!validateEmail(trimmedEmail)) {
+      setError("Bitte gib eine gültige E-Mail-Adresse ein.");
       return;
     }
 
-    setEmailMessage("Danke! Du bist auf der Liste.");
-    setEmail("");
+    try {
+      setIsSubmitting(true);
+
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: trimmedEmail,
+          source: "footer",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setEmailError(data.error || "Anmeldung fehlgeschlagen.");
+        return;
+      }
+
+      setEmailMessage("Danke! Du wirst über Updates informiert.");
+      setEmail("");
+    } catch (err) {
+      setError("Etwas ist schiefgelaufen.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const navItems = [
@@ -347,24 +381,43 @@ export default function FloatingMenu({
           </div>
 
           <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center justify-center gap-1 md:gap-3 lg:mb-4">
-            {navItems.map(([label, id], index) => (
-              <div key={id} className="overflow-hidden">
-                <button
-                  onClick={() => scrollToId(id)}
-                  className="menu-link group relative cursor-pointer text-center text-[clamp(56px,7vw,128px)] uppercase leading-[0.9] tracking-[-0.04em] text-white/95"
-                >
-                  <span
-                    ref={(el) => (navLineRefs.current[index] = el)}
-                    className="inline-block will-change-transform"
-                  >
-                    <span className="menu-link-label relative inline-block">
-                      {label}
-                      <span className="menu-link-underline" />
-                    </span>
-                  </span>
-                </button>
-              </div>
-            ))}
+            {navItems.map(([label, id], index) => {
+              const sharedClass =
+              "menu-link group relative inline-block cursor-pointer text-center text-[clamp(56px,7vw,128px)] uppercase leading-[0.9] tracking-[-0.04em] text-white/95";
+
+              return (
+                <div key={id} className="overflow-hidden">
+                  {id === "store" ? (
+                    <Link href="/store" className={sharedClass}>
+                      <span
+                        ref={(el) => (navLineRefs.current[index] = el)}
+                        className="block will-change-transform"
+                      >
+                        <span className="menu-link-label relative inline-block">
+                          {label}
+                          <span className="menu-link-underline" />
+                        </span>
+                      </span>
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => scrollToId(id)}
+                      className={sharedClass}
+                    >
+                      <span
+                        ref={(el) => (navLineRefs.current[index] = el)}
+                        className="block will-change-transform"
+                      >
+                        <span className="menu-link-label relative inline-block">
+                          {label}
+                          <span className="menu-link-underline" />
+                        </span>
+                      </span>
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <div
@@ -398,10 +451,17 @@ export default function FloatingMenu({
                 />
 
                 <button
+                  disabled={isSubmitting}
                   onClick={handleSubscribe}
-                  className={`${font2.className} shrink-0 rounded-full border border-white/18 bg-white/[0.06] px-4 py-2.5 text-[10px] uppercase tracking-[0.2em] text-white transition duration-300 hover:border-white/35 hover:bg-white/[0.1]`}
+                  className={`${ibmPlexSerif.className} rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm uppercase transition hover:border-white/40 hover:bg-white/15 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60`}
                 >
-                  Join
+                  <span className="flex items-center justify-center gap-2 text-white/82">
+                    {isSubmitting && (
+                      <span className="h-3.5 w-3.5 animate-spin rounded-full border border-white/25 border-t-white" />
+                    )}
+
+                    {isSubmitting ? "Wird gesendet..." : "Anmelden"}
+                  </span>
                 </button>
               </div>
 

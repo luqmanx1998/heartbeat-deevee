@@ -6,7 +6,7 @@ import { IBM_Plex_Serif } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "../../lib/supabase/client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -30,20 +30,20 @@ const FILTERS = [
 ];
 
 const OPERATIONAL_STATUSES = ["paid", "shipped", "delivered", "cancelled"];
-
 const PAGE_SIZE = 5;
 
 export default function OrdersPage() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const supabase = useMemo(() => createClient(), []);
   const queryClient = useQueryClient();
 
   useEffect(() => {
     setPage(1);
-  }, [activeFilter]);
+  }, [activeFilter, searchTerm]);
 
   useEffect(() => {
     const channel = supabase
@@ -57,7 +57,7 @@ export default function OrdersPage() {
         },
         () => {
           queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
-        }
+        },
       )
       .subscribe();
 
@@ -66,14 +66,30 @@ export default function OrdersPage() {
     };
   }, [supabase, queryClient]);
 
-  const {
-    data,
-    isLoading,
-    isFetching,
-    error,
-  } = useQuery({
-    queryKey: ["admin-orders", activeFilter, page],
-    queryFn: () => loadOrdersPage({ supabase, activeFilter, page }),
+  const updateOrderStatusMutation = useMutation({
+    mutationFn: async ({ orderId, status }) => {
+      const { error } = await supabase
+        .from("orders")
+        .update({ status })
+        .eq("id", orderId);
+
+      if (error) throw error;
+    },
+
+   onSuccess: (_, variables) => {
+  queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
+
+  setSelectedOrder((prev) =>
+    prev?.id === variables.orderId
+      ? { ...prev, status: variables.status }
+      : prev
+  );
+},
+  });
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["admin-orders", activeFilter, page, searchTerm],
+    queryFn: () => loadOrdersPage({ supabase, activeFilter, page, searchTerm }),
     keepPreviousData: true,
     refetchOnWindowFocus: true,
     staleTime: 1000 * 15,
@@ -102,6 +118,7 @@ export default function OrdersPage() {
   const totalCount = data?.totalCount ?? 0;
   const statsCount = data?.statsCount ?? 0;
   const statsRevenue = data?.statsRevenue ?? 0;
+  const pendingShipmentCount = data?.pendingShipmentCount ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   function getItemsForOrder(orderId) {
@@ -118,14 +135,9 @@ export default function OrdersPage() {
           font2={font2}
           ibmPlexSerif={ibmPlexSerif}
           setSelectedOrder={setSelectedOrder}
+          updateOrderStatusMutation={updateOrderStatusMutation}
         />
       )}
-
-      <main className="relative min-h-screen overflow-hidden text-[#f3e7d3]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(68,48,22,0.42),transparent_26%),radial-gradient(circle_at_top_right,rgba(40,64,98,0.22),transparent_22%),radial-gradient(circle_at_bottom_left,rgba(120,74,20,0.18),transparent_20%),linear-gradient(to_bottom,#0a0910,#0d0a12_35%,#120d12_70%,#0a090d)]" />
-        <div className="pointer-events-none absolute inset-0 opacity-[0.75] bg-[url('/bgimage2.png')] bg-cover bg-center mix-blend-screen" />
-        <div className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:radial-gradient(rgba(255,235,200,0.8)_0.7px,transparent_0.7px)] [background-size:22px_22px]" />
-        <div className="pointer-events-none absolute inset-3 rounded-[30px] border border-[#8f6a37]/55 shadow-[inset_0_0_0_1px_rgba(217,182,115,0.16),0_0_40px_rgba(0,0,0,0.35)] sm:inset-5 lg:inset-6" />
 
         <div className="relative mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
@@ -179,8 +191,8 @@ export default function OrdersPage() {
               ibmPlexSerif={ibmPlexSerif}
             />
             <StatCard
-              label="Aktualisierung"
-              value={isFetching && !isLoading ? "Live" : "Bereit"}
+              label="Ausstehender Versand"
+              value={isLoading ? "—" : String(pendingShipmentCount)}
               icon="❦"
               ibmPlexSerif={ibmPlexSerif}
             />
@@ -193,46 +205,69 @@ export default function OrdersPage() {
           </section>
 
           <section className="mt-8">
-            <div className="flex flex-wrap gap-3">
-              {FILTERS.map((filter) => {
-                const active = activeFilter === filter.key;
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap gap-3">
+                {FILTERS.map((filter) => {
+                  const active = activeFilter === filter.key;
 
-                return (
-                  <button
-                    key={filter.key}
-                    onClick={() => setActiveFilter(filter.key)}
-                    className={`${font2.className} cursor-pointer rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.18em] transition ${
-                      active
-                        ? "border-[#b89154]/45 bg-[#4a2d14]/60 text-[#f3d4a2]"
-                        : "border-[#8d693b]/35 bg-[#2b1b12]/45 text-[#f4dfba]/75 hover:bg-[#2b1b12]/70"
-                    }`}
-                  >
-                    {filter.label}
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      key={filter.key}
+                      onClick={() => setActiveFilter(filter.key)}
+                      className={`${font2.className} cursor-pointer rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.18em] transition ${
+                        active
+                          ? "border-[#b89154]/45 bg-[#4a2d14]/60 text-[#f3d4a2]"
+                          : "border-[#8d693b]/35 bg-[#2b1b12]/45 text-[#f4dfba]/75 hover:bg-[#2b1b12]/70"
+                      }`}
+                    >
+                      {filter.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="w-full sm:w-[360px]">
+                <input
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search email or order ID..."
+                  className={`${font2.className} w-full rounded-full border border-[#8d693b]/35 bg-[#120d12]/75 px-5 py-3 text-[13px] text-[#f4dfba] outline-none placeholder:text-[#f4dfba]/35 focus:border-[#b89154]/60`}
+                />
+              </div>
             </div>
           </section>
 
           <section className="mt-8">
             <div className="overflow-hidden rounded-[26px] border border-[#8d693b]/45 bg-[linear-gradient(180deg,rgba(19,13,12,0.78),rgba(11,8,10,0.7))] shadow-[0_22px_45px_rgba(0,0,0,0.32),inset_0_0_0_1px_rgba(205,171,114,0.06)]">
               <div className="hidden grid-cols-[1.7fr_1.1fr_1fr_1fr_1.1fr_0.8fr] gap-4 border-b border-[#8c6a40]/22 px-6 py-4 lg:grid">
-                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+                <p
+                  className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}
+                >
                   Order ID
                 </p>
-                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+                <p
+                  className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}
+                >
                   Kunde
                 </p>
-                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+                <p
+                  className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}
+                >
                   Datum
                 </p>
-                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+                <p
+                  className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}
+                >
                   Status
                 </p>
-                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+                <p
+                  className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}
+                >
                   Total
                 </p>
-                <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 text-right`}>
+                <p
+                  className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 text-right`}
+                >
                   Aktion
                 </p>
               </div>
@@ -252,7 +287,7 @@ export default function OrdersPage() {
               ) : orders.length === 0 ? (
                 <div className="px-6 py-6">
                   <p className={`${font2.className} text-sm text-[#e1cfb6]/70`}>
-                    Keine Bestellungen für diesen Filter.
+                    Keine Bestellungen gefunden.
                   </p>
                 </div>
               ) : (
@@ -263,34 +298,48 @@ export default function OrdersPage() {
                   >
                     <div className="grid gap-4 lg:grid-cols-[1.7fr_1.1fr_1fr_1fr_1.1fr_0.8fr] lg:items-center">
                       <div>
-                        <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}>
+                        <p
+                          className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}
+                        >
                           Order ID
                         </p>
-                        <p className={`${ibmPlexSerif.className} mt-1 text-[16px] leading-[1.2] text-[#f4dfba] break-all`}>
+                        <p
+                          className={`${ibmPlexSerif.className} mt-1 text-[16px] leading-[1.2] text-[#f4dfba] break-all`}
+                        >
                           {order.id}
                         </p>
                       </div>
 
                       <div>
-                        <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}>
+                        <p
+                          className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}
+                        >
                           Kunde
                         </p>
-                        <p className={`${ibmPlexSerif.className} mt-1 text-[14px] text-[#f5e4c5] break-all`}>
+                        <p
+                          className={`${ibmPlexSerif.className} mt-1 text-[14px] text-[#f5e4c5] break-all`}
+                        >
                           {order.customer_email}
                         </p>
                       </div>
 
                       <div>
-                        <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}>
+                        <p
+                          className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}
+                        >
                           Datum
                         </p>
-                        <p className={`${ibmPlexSerif.className} mt-1 text-[14px] text-[#f5e4c5]`}>
+                        <p
+                          className={`${ibmPlexSerif.className} mt-1 text-[14px] text-[#f5e4c5]`}
+                        >
                           {formatDate(order.created_at)}
                         </p>
                       </div>
 
                       <div>
-                        <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}>
+                        <p
+                          className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}
+                        >
                           Status
                         </p>
                         <div className="mt-2 lg:mt-0">
@@ -299,10 +348,14 @@ export default function OrdersPage() {
                       </div>
 
                       <div>
-                        <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}>
+                        <p
+                          className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48 lg:hidden`}
+                        >
                           Total
                         </p>
-                        <p className={`${ibmPlexSerif.className} mt-1 text-[18px] text-[#f5dfb8]`}>
+                        <p
+                          className={`${ibmPlexSerif.className} mt-1 text-[18px] text-[#f5dfb8]`}
+                        >
                           €{Number(order.total ?? 0).toFixed(2)}
                         </p>
                       </div>
@@ -334,12 +387,16 @@ export default function OrdersPage() {
                 Previous
               </button>
 
-              <p className={`${ibmPlexSerif.className} text-[20px] text-[#f1dcb8]`}>
+              <p
+                className={`${ibmPlexSerif.className} text-[20px] text-[#f1dcb8]`}
+              >
                 Seite {page} von {totalPages}
               </p>
 
               <button
-                onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+                onClick={() =>
+                  setPage((prev) => Math.min(totalPages, prev + 1))
+                }
                 disabled={page >= totalPages}
                 className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border px-5 py-3 text-[11px] uppercase tracking-[0.18em] transition ${
                   page >= totalPages
@@ -352,48 +409,52 @@ export default function OrdersPage() {
             </div>
           </section>
         </div>
-      </main>
     </>
   );
 }
 
-async function loadOrdersPage({ supabase, activeFilter, page }) {
-  const from = (page - 1) * PAGE_SIZE;
-  const to = from + PAGE_SIZE - 1;
+async function loadOrdersPage({ supabase, activeFilter, page, searchTerm }) {
+  const normalizedSearch = String(searchTerm || "")
+    .trim()
+    .toLowerCase();
 
-  let paginatedOrdersQuery = supabase
+  const { data: allOrdersData, error: allOrdersError } = await supabase
     .from("orders")
-    .select("*", { count: "exact" })
+    .select("*")
     .in("status", OPERATIONAL_STATUSES)
     .order("created_at", { ascending: false });
 
-  if (activeFilter !== "all") {
-    paginatedOrdersQuery = paginatedOrdersQuery.eq("status", activeFilter);
-  }
+  if (allOrdersError) throw allOrdersError;
 
-  const {
-    data: ordersData,
-    error: ordersError,
-    count,
-  } = await paginatedOrdersQuery.range(from, to);
+  const allOrders = allOrdersData ?? [];
 
-  if (ordersError) throw ordersError;
+  const pendingShipmentCount = allOrders.filter(
+    (order) => String(order.status).toLowerCase() === "paid",
+  ).length;
 
-  let statsQuery = supabase
-    .from("orders")
-    .select("status,total")
-    .in("status", OPERATIONAL_STATUSES);
+  let filteredOrders = allOrders;
 
   if (activeFilter !== "all") {
-    statsQuery = statsQuery.eq("status", activeFilter);
+    filteredOrders = filteredOrders.filter(
+      (order) => String(order.status).toLowerCase() === activeFilter,
+    );
   }
 
-  const { data: statsData, error: statsError } = await statsQuery;
+  if (normalizedSearch) {
+    filteredOrders = filteredOrders.filter((order) => {
+      const email = String(order.customer_email || "").toLowerCase();
+      const id = String(order.id || "").toLowerCase();
 
-  if (statsError) throw statsError;
+      return email.includes(normalizedSearch) || id.includes(normalizedSearch);
+    });
+  }
 
-  const safeOrders = ordersData ?? [];
-  const orderIds = safeOrders.map((order) => order.id);
+  const totalCount = filteredOrders.length;
+  const from = (page - 1) * PAGE_SIZE;
+  const to = from + PAGE_SIZE;
+  const paginatedOrders = filteredOrders.slice(from, to);
+
+  const orderIds = paginatedOrders.map((order) => order.id);
 
   let itemsData = [];
 
@@ -409,28 +470,37 @@ async function loadOrdersPage({ supabase, activeFilter, page }) {
     itemsData = fetchedItems ?? [];
   }
 
-  const safeStats = statsData ?? [];
-
   return {
-    orders: safeOrders,
+    orders: paginatedOrders,
     orderItems: itemsData,
-    totalCount: count ?? 0,
-    statsCount: safeStats.length,
-    statsRevenue: safeStats.reduce(
+    totalCount,
+    statsCount: filteredOrders.length,
+    statsRevenue: filteredOrders.reduce(
       (sum, order) => sum + Number(order.total ?? 0),
-      0
+      0,
     ),
+    pendingShipmentCount,
   };
 }
 
-function OrderDetailsModal({ order, items, onClose, font2, ibmPlexSerif, setSelectedOrder }) {
+function OrderDetailsModal({
+  order,
+  items,
+  onClose,
+  font2,
+  ibmPlexSerif,
+  setSelectedOrder,
+  updateOrderStatusMutation,
+}) {
   return (
-    <div 
-    onClick={() => setSelectedOrder(null)}
-    className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
-      <div 
-      onClick={(e) => e.stopPropagation()}
-      className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-[30px] border border-[#8d693b]/55 bg-[linear-gradient(180deg,rgba(19,13,12,0.96),rgba(11,8,10,0.94))] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+    <div
+      onClick={() => setSelectedOrder(null)}
+      className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-[30px] border border-[#8d693b]/55 bg-[linear-gradient(180deg,rgba(19,13,12,0.96),rgba(11,8,10,0.94))] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.55)]"
+      >
         <button
           onClick={onClose}
           className={`${font2.className} absolute right-5 top-5 inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#8d693b]/45 bg-[#2b1b12]/70 text-[#f4dfba] transition hover:bg-[#3a2418]`}
@@ -440,10 +510,14 @@ function OrderDetailsModal({ order, items, onClose, font2, ibmPlexSerif, setSele
         </button>
 
         <div className="pr-14">
-          <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+          <p
+            className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}
+          >
             Order ID
           </p>
-          <h2 className={`${ibmPlexSerif.className} mt-2 text-[30px] leading-[1.2] text-[#f4dfba] break-all`}>
+          <h2
+            className={`${ibmPlexSerif.className} mt-2 text-[30px] leading-[1.2] text-[#f4dfba] break-all`}
+          >
             {order.id}
           </h2>
         </div>
@@ -500,7 +574,9 @@ function OrderDetailsModal({ order, items, onClose, font2, ibmPlexSerif, setSele
                   </div>
 
                   <div>
-                    <h3 className={`${ibmPlexSerif.className} text-[24px] leading-[1.15] text-[#f5dfb8]`}>
+                    <h3
+                      className={`${ibmPlexSerif.className} text-[24px] leading-[1.15] text-[#f5dfb8]`}
+                    >
                       {item.product_name}
                     </h3>
 
@@ -531,13 +607,76 @@ function OrderDetailsModal({ order, items, onClose, font2, ibmPlexSerif, setSele
           </div>
         </div>
 
+        
+
         <div className="mt-8 border-t border-[#8c6a40]/22 pt-6">
-          <p className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}>
+          <p
+            className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}
+          >
             Shipping Address
           </p>
-          <p className={`${ibmPlexSerif.className} mt-2 whitespace-pre-line text-[20px] leading-[1.5] text-[#f5e4c5]`}>
-  {order.shipping_address || "Keine Adresse vorhanden."}
-</p>
+          <p
+            className={`${ibmPlexSerif.className} mt-2 whitespace-pre-line text-[20px] leading-[1.5] text-[#f5e4c5]`}
+          >
+            {order.shipping_address || "Keine Adresse vorhanden."}
+          </p>
+        </div>
+        
+              <div className="mt-8 rounded-[24px] border border-[#8d693b]/35 bg-[linear-gradient(180deg,rgba(25,17,13,0.68),rgba(13,9,9,0.62))] p-5">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p
+                className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}
+              >
+                Fulfillment
+              </p>
+
+              <p
+                className={`${ibmPlexSerif.className} mt-2 text-[24px] text-[#f4dfba]`}
+              >
+                Bestellung verwalten
+              </p>
+
+              <p
+                className={`${ibmPlexSerif.className} mt-2 max-w-xl text-[16px] leading-[1.6] text-[#e6d5bc]/72`}
+              >
+                {order.status === "paid" &&
+                  "Diese Bestellung wartet auf den Versand."}
+
+                {order.status === "shipped" &&
+                  "Diese Bestellung wurde bereits versendet."}
+
+                {order.status === "cancelled" &&
+                  "Diese Bestellung wurde storniert."}
+              </p>
+                          </div>
+
+            <div className="flex flex-wrap gap-3">
+              {order.status === "paid" && (
+                <button
+                  disabled={updateOrderStatusMutation.isPending}
+                  onClick={() =>
+                    updateOrderStatusMutation.mutate({
+                      orderId: order.id,
+                      status: "shipped",
+                    })
+                  }
+                  className={`${font2.className} inline-flex cursor-pointer items-center justify-center rounded-[16px] border border-sky-400/30 bg-sky-950/40 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-sky-100 transition hover:-translate-y-[1px] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50`}
+                >
+                  {updateOrderStatusMutation.isPending
+                    ? "Updating..."
+                    : "Als versandt markieren"}
+                </button>
+              )}
+              {order.status === "shipped" && (
+                <div
+                  className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border border-sky-400/30 bg-sky-950/30 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-sky-100`}
+                >
+                  Versandt ✓
+                </div>
+              )}
+                          </div>
+          </div>
         </div>
       </div>
     </div>
@@ -550,10 +689,14 @@ function StatCard({ label, value, icon, ibmPlexSerif }) {
       <div className="flex items-start gap-3">
         <span className="text-[26px] leading-none text-[#7a5328]">{icon}</span>
         <div>
-          <p className={`${ibmPlexSerif.className} text-[22px] leading-[1.05] text-[#392518]`}>
+          <p
+            className={`${ibmPlexSerif.className} text-[22px] leading-[1.05] text-[#392518]`}
+          >
             {label}
           </p>
-          <p className={`${ibmPlexSerif.className} mt-4 text-[44px] leading-none text-[#23160f]`}>
+          <p
+            className={`${ibmPlexSerif.className} mt-4 text-[44px] leading-none text-[#23160f]`}
+          >
             {value}
           </p>
         </div>
@@ -565,10 +708,14 @@ function StatCard({ label, value, icon, ibmPlexSerif }) {
 function MiniStat({ label, value, font2, ibmPlexSerif }) {
   return (
     <div className="rounded-[18px] border border-[#8d693b]/35 bg-[linear-gradient(180deg,rgba(31,20,15,0.82),rgba(18,12,10,0.72))] p-3">
-      <p className={`${font2.className} text-[10px] uppercase tracking-[0.18em] text-[#d6c2a0]/55`}>
+      <p
+        className={`${font2.className} text-[10px] uppercase tracking-[0.18em] text-[#d6c2a0]/55`}
+      >
         {label}
       </p>
-      <p className={`${ibmPlexSerif.className} mt-2 text-[20px] break-words text-[#f5dfb8]`}>
+      <p
+        className={`${ibmPlexSerif.className} mt-2 text-[20px] break-words text-[#f5dfb8]`}
+      >
         {value}
       </p>
     </div>
@@ -579,11 +726,11 @@ function StatusPill({ status, font2 }) {
   const normalized = String(status || "").toLowerCase();
 
   const statusStyles = {
-  paid: "border-emerald-400/30 bg-emerald-950/50 text-emerald-200",
-  shipped: "border-sky-400/30 bg-sky-950/50 text-sky-200",
-  delivered: "border-violet-400/30 bg-violet-950/50 text-violet-200",
-  cancelled: "border-rose-400/30 bg-rose-950/50 text-rose-200",
-};
+    paid: "border-emerald-400/30 bg-emerald-950/50 text-emerald-200",
+    shipped: "border-sky-400/30 bg-sky-950/50 text-sky-200",
+    delivered: "border-violet-400/30 bg-violet-950/50 text-violet-200",
+    cancelled: "border-rose-400/30 bg-rose-950/50 text-rose-200",
+  };
 
   return (
     <span

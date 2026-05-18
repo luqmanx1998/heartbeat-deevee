@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request) {
   try {
-    const { cart, shipping } = await request.json();
+    const { cart, shipping, guestEmail } = await request.json();
 
     if (!Array.isArray(cart) || cart.length === 0) {
       return NextResponse.json(
@@ -23,12 +23,14 @@ export async function POST(request) {
       error: userError,
     } = await supabase.auth.getUser();
 
-    if (userError || !user) {
-      return NextResponse.json(
-        { error: "You must be logged in." },
-        { status: 401 }
-      );
-    }
+    const customerEmail = user?.email || guestEmail;
+
+        if (!customerEmail) {
+        return NextResponse.json(
+            { error: "Email is required." },
+            { status: 400 }
+        );
+        }
 
     // 🔍 Get products from DB
     const cartProductIds = cart.map((item) => item.id);
@@ -82,8 +84,8 @@ export async function POST(request) {
       await supabaseAdmin
         .from("orders")
         .insert({
-          user_id: user.id,
-          customer_email: user.email,
+          user_id: user?.id ?? null,
+          customer_email: customerEmail,
           status: "pending",
           total,
         })
@@ -109,7 +111,7 @@ export async function POST(request) {
     const paymentIntent = await stripe.paymentIntents.create({
          amount,
         currency: "eur",
-        receipt_email: user.email,
+        receipt_email: customerEmail,
         payment_method_types: ["card", "paypal"],
 
         description: validatedItems
@@ -119,7 +121,7 @@ export async function POST(request) {
         metadata: {
             source: "custom_checkout",
             order_id: order.id,
-            user_id: user.id,
+            user_id: user?.id ?? "guest",
         },
 
         shipping: shipping
