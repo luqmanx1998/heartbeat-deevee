@@ -67,25 +67,47 @@ export default function OrdersPage() {
   }, [supabase, queryClient]);
 
   const updateOrderStatusMutation = useMutation({
-    mutationFn: async ({ orderId, status }) => {
-      const { error } = await supabase
-        .from("orders")
-        .update({ status })
-        .eq("id", orderId);
+  mutationFn: async ({ orderId, status, order, items }) => {
+    const { error } = await supabase
+      .from("orders")
+      .update({ status })
+      .eq("id", orderId);
 
-      if (error) throw error;
-    },
+    if (error) throw error;
 
-   onSuccess: (_, variables) => {
-  queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
+    if (status === "shipped") {
+      const res = await fetch("/api/send-shipping-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          order: {
+            ...order,
+            status,
+          },
+          items,
+        }),
+      });
 
-  setSelectedOrder((prev) =>
-    prev?.id === variables.orderId
-      ? { ...prev, status: variables.status }
-      : prev
-  );
-},
-  });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Shipping email failed.");
+      }
+    }
+  },
+
+  onSuccess: (_, variables) => {
+    queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
+
+    setSelectedOrder((prev) =>
+      prev?.id === variables.orderId
+        ? { ...prev, status: variables.status }
+        : prev
+    );
+  },
+});
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin-orders", activeFilter, page, searchTerm],
@@ -656,11 +678,13 @@ function OrderDetailsModal({
                 <button
                   disabled={updateOrderStatusMutation.isPending}
                   onClick={() =>
-                    updateOrderStatusMutation.mutate({
-                      orderId: order.id,
-                      status: "shipped",
-                    })
-                  }
+                  updateOrderStatusMutation.mutate({
+                    orderId: order.id,
+                    status: "shipped",
+                    order,
+                    items,
+                  })
+                }
                   className={`${font2.className} inline-flex cursor-pointer items-center justify-center rounded-[16px] border border-sky-400/30 bg-sky-950/40 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-sky-100 transition hover:-translate-y-[1px] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50`}
                 >
                   {updateOrderStatusMutation.isPending

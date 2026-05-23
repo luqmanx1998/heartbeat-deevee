@@ -25,6 +25,68 @@ export default function EmailsPage() {
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
 
+  function escapePreviewHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function formatPreviewMessage(value) {
+  return escapePreviewHtml(value)
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" style="color:#b8924f; text-decoration:underline;">$1</a>')
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/__(.*?)__/g, "<u>$1</u>")
+    .replace(/_(.*?)_/g, "<em>$1</em>")
+    .replace(/~~(.*?)~~/g, "<s>$1</s>")
+    .replaceAll("\n", "<br/>");
+}
+
+  function wrapSelection(before, after = before) {
+  const textarea = document.getElementById("newsletter-message");
+  if (!textarea) return;
+
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selectedText = message.slice(start, end);
+
+  const nextMessage =
+    message.slice(0, start) +
+    before +
+    selectedText +
+    after +
+    message.slice(end);
+
+  setMessage(nextMessage);
+
+  requestAnimationFrame(() => {
+    textarea.focus();
+    textarea.setSelectionRange(
+      start + before.length,
+      end + before.length
+    );
+  });
+}
+
+function insertLink() {
+  const url = prompt("Link URL:");
+  if (!url) return;
+
+  const textarea = document.getElementById("newsletter-message");
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selectedText = message.slice(start, end) || "Link";
+
+  const markdownLink = `[${selectedText}](${url})`;
+
+  const nextMessage =
+    message.slice(0, start) + markdownLink + message.slice(end);
+
+  setMessage(nextMessage);
+}
+
   async function handleSendNewsletter(e) {
     e.preventDefault();
 
@@ -166,13 +228,97 @@ export default function EmailsPage() {
               Nachricht
             </p>
 
-            <textarea
+            <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => wrapSelection("**")}
+            className={`${font2.className} rounded-full border border-[#8d693b]/35 bg-[#120d12]/75 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-[#f4dfba] hover:bg-[#2b1b12]`}
+          >
+            Bold
+          </button>
+
+          <button
+            type="button"
+            onClick={() => wrapSelection("_")}
+            className={`${font2.className} rounded-full border border-[#8d693b]/35 bg-[#120d12]/75 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-[#f4dfba] hover:bg-[#2b1b12]`}
+          >
+            Italic
+          </button>
+
+          <button
+            type="button"
+            onClick={() => wrapSelection("__")}
+            className={`${font2.className} rounded-full border border-[#8d693b]/35 bg-[#120d12]/75 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-[#f4dfba] hover:bg-[#2b1b12]`}
+          >
+            Underline
+          </button>
+
+          <button
+            type="button"
+            onClick={() => wrapSelection("~~")}
+            className={`${font2.className} rounded-full border border-[#8d693b]/35 bg-[#120d12]/75 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-[#f4dfba] hover:bg-[#2b1b12]`}
+          >
+            Strike
+          </button>
+
+          <button
+            type="button"
+            onClick={insertLink}
+            className={`${font2.className} rounded-full border border-[#8d693b]/35 bg-[#120d12]/75 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-[#f4dfba] hover:bg-[#2b1b12]`}
+          >
+            Link
+          </button>
+        </div>
+
+                    <textarea
+                    id="newsletter-message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Schreibe hier die Nachricht an deine Leser:innen..."
+              placeholder="Schreiben Sie hier Ihre Nachricht an Ihre Leser..."
               rows={12}
               className={`${ibmPlexSerif.className} mt-3 w-full resize-none rounded-[20px] border border-[#8d693b]/35 bg-[rgba(18,12,10,0.72)] px-5 py-4 text-[18px] leading-[1.65] text-[#f5dfb8] outline-none placeholder:text-[#d6c2a0]/35 focus:border-[#b89154]/65`}
             />
+
+            <div className="mt-6 rounded-[24px] border border-[#8d693b]/35 bg-white p-5 text-black">
+  <p
+    className={`${font2.className} mb-4 text-[10px] uppercase tracking-[0.22em] text-[#9b7a43]`}
+  >
+    Email Preview
+  </p>
+
+  <div className="overflow-hidden rounded-[22px] bg-[#0b0b0d] textbox">
+    <img
+      src="/deeveeemaildark.png"
+      alt="Deevee"
+      className="block w-full"
+    />
+
+    <div className="bg-white p-6">
+      <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-[#b8924f]">
+        Deevee Newsletter
+      </p>
+
+      <h2 className="text-[28px] font-bold leading-[1.1] text-[#151515]">
+        {subject || "Dein Betreff erscheint hier"}
+      </h2>
+
+      <div className="mt-6 rounded-[22px] bg-[#111111] p-6 text-[#f4efe8]">
+        <div
+          className="text-[15px] leading-[1.5]"
+          dangerouslySetInnerHTML={{
+            __html:
+              formatPreviewMessage(message) ||
+              "Deine Nachricht erscheint hier...",
+          }}
+        />
+      </div>
+
+      <p className="mt-6 text-[13px] leading-[1.7] text-[#777]">
+        Du erhältst diese E-Mail, weil du Deevee Updates abonniert hast.
+      </p>
+    </div>
+  </div>
+</div>
           </label>
 
           {error && (

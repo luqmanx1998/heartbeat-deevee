@@ -19,11 +19,7 @@ export async function POST(request) {
     );
   } catch (error) {
     console.error("Stripe webhook signature failed:", error.message);
-
-    return NextResponse.json(
-      { error: "Invalid signature" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
   try {
@@ -41,7 +37,6 @@ export async function POST(request) {
     return NextResponse.json({ received: true });
   } catch (error) {
     console.error("Webhook fulfillment failed:", error.message);
-
     return NextResponse.json(
       { error: "Webhook fulfillment failed" },
       { status: 500 }
@@ -49,6 +44,23 @@ export async function POST(request) {
   }
 }
 
+async function checkLowStock(productId) {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/send-low-stock-warning`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-low-stock-secret": process.env.LOW_STOCK_SECRET,
+      },
+      body: JSON.stringify({
+        productId,
+        threshold: 5,
+      }),
+    });
+  } catch (error) {
+    console.error("Low stock warning failed:", error);
+  }
+}
 
 async function fulfillCheckout(sessionId) {
   console.log("Fulfilling checkout:", sessionId);
@@ -57,35 +69,28 @@ async function fulfillCheckout(sessionId) {
     expand: ["line_items"],
   });
 
-  if (session.payment_status !== "paid") {
-    console.log("Payment not paid yet:", session.payment_status);
-    return;
-  }
+  if (session.payment_status !== "paid") return;
 
   const orderId = session.metadata?.order_id;
-
-  if (!orderId) {
-    throw new Error("Missing order_id in Stripe session metadata.");
-  }
+  if (!orderId) throw new Error("Missing order_id in Stripe session metadata.");
 
   const shipping = session.shipping_details;
-const customer = session.customer_details;
+  const customer = session.customer_details;
+  const address = shipping?.address || customer?.address;
+  const name = shipping?.name || customer?.name;
 
-const address = shipping?.address || customer?.address;
-const name = shipping?.name || customer?.name;
-
-const formattedShippingAddress = address
-  ? [
-      name,
-      address.line1,
-      address.line2,
-      `${address.postal_code || ""} ${address.city || ""}`.trim(),
-      address.state,
-      address.country,
-    ]
-      .filter(Boolean)
-      .join("\n")
-  : null;
+  const formattedShippingAddress = address
+    ? [
+        name,
+        address.line1,
+        address.line2,
+        `${address.postal_code || ""} ${address.city || ""}`.trim(),
+        address.state,
+        address.country,
+      ]
+        .filter(Boolean)
+        .join("\n")
+    : null;
 
   const { data: existingOrder, error: existingOrderError } = await supabaseAdmin
     .from("orders")
@@ -93,47 +98,34 @@ const formattedShippingAddress = address
     .eq("id", orderId)
     .maybeSingle();
 
-  if (existingOrderError) {
-    throw new Error(existingOrderError.message);
-  }
-
-  if (!existingOrder) {
-    throw new Error("Order not found.");
-  }
-
-  if (existingOrder.fulfilled_at) {
-    console.log("Order already fulfilled:", orderId);
-    return;
-  }
+  if (existingOrderError) throw new Error(existingOrderError.message);
+  if (!existingOrder) throw new Error("Order not found.");
+  if (existingOrder.fulfilled_at) return;
 
   const { data: order, error: updateOrderError } = await supabaseAdmin
     .from("orders")
     .update({
-  status: "paid",
-  stripe_session_id: session.id,
-  stripe_payment_intent_id:
-    typeof session.payment_intent === "string"
-      ? session.payment_intent
-      : session.payment_intent?.id ?? null,
-  shipping_address: formattedShippingAddress,
-  fulfilled_at: new Date().toISOString(),
-})
+      status: "paid",
+      stripe_session_id: session.id,
+      stripe_payment_intent_id:
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : session.payment_intent?.id ?? null,
+      shipping_address: formattedShippingAddress,
+      fulfilled_at: new Date().toISOString(),
+    })
     .eq("id", orderId)
     .select("id")
     .single();
 
-  if (updateOrderError) {
-    throw new Error(updateOrderError.message);
-  }
+  if (updateOrderError) throw new Error(updateOrderError.message);
 
   const { data: items, error: itemsError } = await supabaseAdmin
     .from("order_items")
     .select("product_id, quantity")
     .eq("order_id", order.id);
 
-  if (itemsError) {
-    throw new Error(itemsError.message);
-  }
+  if (itemsError) throw new Error(itemsError.message);
 
   for (const item of items ?? []) {
     if (!item.product_id) continue;
@@ -144,9 +136,7 @@ const formattedShippingAddress = address
       .eq("id", item.product_id)
       .single();
 
-    if (productError) {
-      throw new Error(productError.message);
-    }
+    if (productError) throw new Error(productError.message);
 
     const nextStock = Math.max(
       0,
@@ -158,9 +148,9 @@ const formattedShippingAddress = address
       .update({ stock: nextStock })
       .eq("id", item.product_id);
 
-    if (stockError) {
-      throw new Error(stockError.message);
-    }
+    if (stockError) throw new Error(stockError.message);
+
+    await checkLowStock(item.product_id);
   }
 
   console.log("Order fulfilled:", orderId);
@@ -170,10 +160,7 @@ async function fulfillPaymentIntent(paymentIntent) {
   console.log("Fulfilling PaymentIntent:", paymentIntent.id);
 
   const orderId = paymentIntent.metadata?.order_id;
-
-  if (!orderId) {
-    throw new Error("Missing order_id in PaymentIntent metadata.");
-  }
+  if (!orderId) throw new Error("Missing order_id in PaymentIntent metadata.");
 
   const { data: existingOrder, error: existingOrderError } = await supabaseAdmin
     .from("orders")
@@ -181,18 +168,9 @@ async function fulfillPaymentIntent(paymentIntent) {
     .eq("id", orderId)
     .maybeSingle();
 
-  if (existingOrderError) {
-    throw new Error(existingOrderError.message);
-  }
-
-  if (!existingOrder) {
-    throw new Error("Order not found.");
-  }
-
-  if (existingOrder.fulfilled_at) {
-    console.log("Order already fulfilled:", orderId);
-    return;
-  }
+  if (existingOrderError) throw new Error(existingOrderError.message);
+  if (!existingOrder) throw new Error("Order not found.");
+  if (existingOrder.fulfilled_at) return;
 
   const { data: order, error: updateOrderError } = await supabaseAdmin
     .from("orders")
@@ -205,18 +183,16 @@ async function fulfillPaymentIntent(paymentIntent) {
     .select("id")
     .single();
 
-  if (updateOrderError) {
-    throw new Error(updateOrderError.message);
-  }
+  if (updateOrderError) throw new Error(updateOrderError.message);
 
   const { data: items, error: itemsError } = await supabaseAdmin
-  .from("order_items")
-  .select("product_id, product_name, product_image, quantity, unit_price, subtotal")
-  .eq("order_id", order.id);
+    .from("order_items")
+    .select(
+      "product_id, product_name, product_image, quantity, unit_price, subtotal"
+    )
+    .eq("order_id", order.id);
 
-  if (itemsError) {
-    throw new Error(itemsError.message);
-  }
+  if (itemsError) throw new Error(itemsError.message);
 
   for (const item of items ?? []) {
     if (!item.product_id) continue;
@@ -227,9 +203,7 @@ async function fulfillPaymentIntent(paymentIntent) {
       .eq("id", item.product_id)
       .single();
 
-    if (productError) {
-      throw new Error(productError.message);
-    }
+    if (productError) throw new Error(productError.message);
 
     const nextStock = Math.max(
       0,
@@ -241,25 +215,24 @@ async function fulfillPaymentIntent(paymentIntent) {
       .update({ stock: nextStock })
       .eq("id", item.product_id);
 
-    if (stockError) {
-      throw new Error(stockError.message);
-    }
+    if (stockError) throw new Error(stockError.message);
+
+    await checkLowStock(item.product_id);
   }
 
   console.log("PaymentIntent order fulfilled:", orderId);
 
-    try {
-  const emailResult = await sendOrderEmail({
-    to: existingOrder.customer_email,
-    orderId,
-    items,
-    total: existingOrder.total,
-    shippingAddress: existingOrder.shipping_address,
-  });
+  try {
+    const emailResult = await sendOrderEmail({
+      to: existingOrder.customer_email,
+      orderId,
+      items,
+      total: existingOrder.total,
+      shippingAddress: existingOrder.shipping_address,
+    });
 
-  console.log("Order email sent:", emailResult);
-} catch (emailError) {
-  console.error("Order email failed:", emailError);
+    console.log("Order email sent:", emailResult);
+  } catch (emailError) {
+    console.error("Order email failed:", emailError);
+  }
 }
-}
-

@@ -46,7 +46,7 @@ export default function CheckoutForm({ total }) {
 
     if (paymentIntent?.status === "succeeded") {
       localStorage.removeItem("heartbeat_cart");
-      window.location.href = `/store/success?payment_intent=${paymentIntent.id}`;
+      window.location.href = "/store/success";
       return;
     }
 
