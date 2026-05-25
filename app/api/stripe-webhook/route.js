@@ -94,7 +94,7 @@ async function fulfillCheckout(sessionId) {
 
   const { data: existingOrder, error: existingOrderError } = await supabaseAdmin
     .from("orders")
-    .select("id, fulfilled_at")
+    .select("id, fulfilled_at, customer_email, total")
     .eq("id", orderId)
     .maybeSingle();
 
@@ -121,9 +121,9 @@ async function fulfillCheckout(sessionId) {
   if (updateOrderError) throw new Error(updateOrderError.message);
 
   const { data: items, error: itemsError } = await supabaseAdmin
-    .from("order_items")
-    .select("product_id, quantity")
-    .eq("order_id", order.id);
+  .from("order_items")
+  .select("product_id, product_name, product_image, quantity, unit_price, subtotal")
+  .eq("order_id", order.id);
 
   if (itemsError) throw new Error(itemsError.message);
 
@@ -154,6 +154,20 @@ async function fulfillCheckout(sessionId) {
   }
 
   console.log("Order fulfilled:", orderId);
+
+   try {
+    const emailResult = await sendOrderEmail({
+      to: existingOrder.customer_email,
+      orderId,
+      items,
+      total: existingOrder.total,
+      shippingAddress: formattedShippingAddress,
+    });
+
+    console.log("Order email sent:", emailResult);
+  } catch (emailError) {
+    console.error("Order email failed:", emailError);
+  }
 }
 
 async function fulfillPaymentIntent(paymentIntent) {
