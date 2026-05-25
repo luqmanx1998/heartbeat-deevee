@@ -55,11 +55,11 @@ export async function sendOrderEmail({
         <div style="max-width:640px; margin:0 auto; padding:32px 16px;">
           <div style="overflow:hidden; border-radius:28px; background:#ffffff; box-shadow:0 24px 70px rgba(20,12,6,0.12);">
             
-            <div style="background:#090909; padding:34px 24px; text-align:center;">
+            <div style="padding:34px 24px; text-align:center;">
               <img
                 src="${logoUrl}"
                 alt="Deevee"
-                style="width:190px; max-width:80%; height:auto; display:block; margin:0 auto;"
+                style="width:250px; max-width:100%; height:auto; display:block; margin:0 auto;"
               />
             </div>
 
