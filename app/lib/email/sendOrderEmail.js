@@ -10,7 +10,7 @@ export async function sendOrderEmail({
   shippingAddress,
 }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-  const logoUrl = `${siteUrl}/DeeveeLogo5.png`;
+  const logoUrl = `${siteUrl}/deeveeemaildark.png`;
   const heroUrl = `${siteUrl}/book1email.jpeg`;
 
   const itemsHtml = items
