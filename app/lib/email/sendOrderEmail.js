@@ -10,7 +10,7 @@ export async function sendOrderEmail({
   shippingAddress,
 }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-  const logoUrl = `${siteUrl}/deeveeemaildark.png`;
+  const logoUrl = `${siteUrl}/DeeveeLogo5.png`;
   const heroUrl = `${siteUrl}/book1email.jpeg`;
 
   const itemsHtml = items
@@ -55,11 +55,11 @@ export async function sendOrderEmail({
         <div style="max-width:640px; margin:0 auto; padding:32px 16px;">
           <div style="overflow:hidden; border-radius:28px; background:#ffffff; box-shadow:0 24px 70px rgba(20,12,6,0.12);">
             
-            <div style="padding:34px 24px; text-align:center;">
+            <div style="text-align:center;">
               <img
                 src="${logoUrl}"
                 alt="Deevee"
-                style="width:250px; max-width:100%; height:auto; display:block; margin:0 auto;"
+                style="width:640px; max-width:100%; height:auto; display:block; margin:0 auto;"
               />
             </div>
 
