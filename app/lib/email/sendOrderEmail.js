@@ -97,14 +97,14 @@ export async function sendOrderEmail({
                 ${itemsHtml}
 
                 <tr>
-                  <td style="padding-top:20px; font-size:17px; font-weight:700; color:#161616;">
-                    Total paid
-                  </td>
-                  <td style="padding-top:20px; text-align:right; font-size:20px; font-weight:700; color:#161616;">
-                    €${Number(total || 0).toFixed(2)}
-                  </td>
-                </tr>
-              </table>
+                <td colspan="2" style="padding-top:20px; font-size:17px; font-weight:700; color:#161616;">
+                  Total paid
+                </td>
+                <td style="padding-top:20px; text-align:right; font-size:20px; font-weight:700; color:#161616;">
+                  €${Number(total || 0).toFixed(2)}
+                </td>
+              </tr>
+                            </table>
 
               <div style="margin-top:30px; padding:20px; border-radius:22px; background:#111111; color:#ffffff;">
                 <div style="font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:#c8a96b;">
