@@ -49,7 +49,7 @@ export async function POST(request) {
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-    const logoUrl = `${siteUrl}/deeveeemaildark.png`;
+    const logoUrl = `${siteUrl}/deeveeemaildark2.png`;
     const productImageUrl = product.image
       ? `${siteUrl}${product.image.startsWith("/") ? "" : "/"}${product.image}`
       : `${siteUrl}/book3.jpeg`;
