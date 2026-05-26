@@ -55,7 +55,7 @@ export async function POST(request) {
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-    const logoUrl = `${siteUrl}/DeeveeLogo5.png`;
+    const logoUrl = `${siteUrl}/deeveeemaildark2.png`;
 
     const itemsHtml = items
   .map((item) => {
