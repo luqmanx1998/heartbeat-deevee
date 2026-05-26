@@ -11,7 +11,7 @@ export async function sendOrderEmail({
 }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
   const logoUrl = `${siteUrl}/deeveeemaildark2.png`;
-  const heroUrl = `${siteUrl}/book1email.jpeg`;
+  const heroUrl = `${siteUrl}/emailhero.jpg`;
 
   const itemsHtml = items
   .map((item) => {
@@ -67,7 +67,7 @@ export async function sendOrderEmail({
                <img
                 src="${heroUrl}"
                 alt="Heartbeat"
-                style="max-width:80%; height:auto; display:block; margin:0 auto;"
+                style="width:640px; max-width:100%; height:auto; display:block; margin:0 auto;"
                 />
             </div>
 
