@@ -111,7 +111,7 @@ export async function sendOrderEmail({
                   Shipping to
                 </div>
 
-                <div style="margin-top:12px; white-space:pre-line; font-size:14px; line-height:1.7; color:#f4efe8;">
+                <div style="white-space:pre-line; font-size:14px; line-height:1.7; color:#f4efe8;">
                   ${shippingAddress || "No shipping address provided"}
                 </div>
               </div>
