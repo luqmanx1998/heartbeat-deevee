@@ -677,7 +677,7 @@ export default function Home() {
           </h2>
         </div>
       </section> */}
-       <ReadySection />
+       <ReadySection font2={font2}/>
         
         <div id="store">
         <BookRevealSection

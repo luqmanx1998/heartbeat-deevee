@@ -27,9 +27,10 @@ const FILTERS = [
   { key: "shipped", label: "Versandt" },
   { key: "delivered", label: "Geliefert" },
   { key: "cancelled", label: "Storniert" },
+  { key: "refunded", label: "Zurückerstattet"}
 ];
 
-const OPERATIONAL_STATUSES = ["paid", "shipped", "delivered", "cancelled"];
+const OPERATIONAL_STATUSES = ["paid", "shipped", "delivered", "cancelled", "refunded"];
 const PAGE_SIZE = 5;
 
 export default function OrdersPage() {
@@ -514,11 +515,117 @@ function OrderDetailsModal({
   setSelectedOrder,
   updateOrderStatusMutation,
 }) {
+  const [showRefundConfirm, setShowRefundConfirm] = useState(false);
+  const [isRefunding, setIsRefunding] = useState(false);
+  const [refundError, setRefundError] = useState("");
+  const [refundNotice, setRefundNotice] = useState("");
+
+  const canRefund =
+    order.status !== "refunded" &&
+    order.status !== "cancelled" &&
+    Boolean(order.stripe_payment_intent_id);
+
+  async function handleRefundOrder() {
+    try {
+      setIsRefunding(true);
+      setRefundError("");
+      setRefundNotice("");
+
+      const res = await fetch("/api/refund-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId: order.id,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setRefundError(data.error || "Rückerstattung fehlgeschlagen.");
+        return;
+      }
+
+      setRefundNotice("Die Bestellung wurde erfolgreich zurückerstattet.");
+      setShowRefundConfirm(false);
+
+      setSelectedOrder((prev) =>
+        prev?.id === order.id
+          ? {
+              ...prev,
+              status: "refunded",
+              refunded_at: new Date().toISOString(),
+              stripe_refund_id: data.refund?.id,
+            }
+          : prev,
+      );
+    } catch {
+      setRefundError("Etwas ist schiefgelaufen.");
+    } finally {
+      setIsRefunding(false);
+    }
+  }
+
   return (
     <div
       onClick={() => setSelectedOrder(null)}
       className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm"
     >
+      {showRefundConfirm && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/75 px-4 backdrop-blur-sm">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md rounded-[28px] border border-red-300/25 bg-[linear-gradient(180deg,rgba(35,12,12,0.98),rgba(13,8,9,0.98))] p-6 text-center shadow-[0_30px_80px_rgba(0,0,0,0.65)]"
+          >
+            <p
+              className={`${font2.className} text-[10px] uppercase tracking-[0.24em] text-red-200/65`}
+            >
+              Rückerstattung bestätigen
+            </p>
+
+            <h3
+              className={`${ibmPlexSerif.className} mt-4 text-[32px] leading-[1.05] text-red-100`}
+            >
+              Bestellung wirklich erstatten?
+            </h3>
+
+            <p
+              className={`${ibmPlexSerif.className} mt-4 text-[16px] leading-[1.65] text-red-50/72`}
+            >
+              Dadurch wird die Zahlung über Stripe an die ursprüngliche
+              Zahlungsmethode zurückerstattet. Diese Aktion sollte nur nach
+              Prüfung der Rückgabe ausgeführt werden.
+            </p>
+
+            {refundError && (
+              <p className={`${font2.className} mt-4 text-sm text-red-200`}>
+                {refundError}
+              </p>
+            )}
+
+            <div className="mt-7 flex gap-3">
+              <button
+                disabled={isRefunding}
+                onClick={() => setShowRefundConfirm(false)}
+                className={`${font2.className} flex-1 cursor-pointer rounded-[16px] border border-white/10 bg-white/[0.04] px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-white/70 transition hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-50`}
+              >
+                Abbrechen
+              </button>
+
+              <button
+                disabled={isRefunding}
+                onClick={handleRefundOrder}
+                className={`${font2.className} flex-1 cursor-pointer rounded-[16px] border border-red-300/30 bg-red-950/60 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-red-100 transition hover:-translate-y-[1px] hover:bg-red-900/70 disabled:cursor-not-allowed disabled:opacity-50`}
+              >
+                {isRefunding ? "Erstatte..." : "Ja, erstatten"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div
         onClick={(e) => e.stopPropagation()}
         className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-[30px] border border-[#8d693b]/55 bg-[linear-gradient(180deg,rgba(19,13,12,0.96),rgba(11,8,10,0.94))] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.55)]"
@@ -629,8 +736,6 @@ function OrderDetailsModal({
           </div>
         </div>
 
-        
-
         <div className="mt-8 border-t border-[#8c6a40]/22 pt-6">
           <p
             className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}
@@ -643,8 +748,8 @@ function OrderDetailsModal({
             {order.shipping_address || "Keine Adresse vorhanden."}
           </p>
         </div>
-        
-              <div className="mt-8 rounded-[24px] border border-[#8d693b]/35 bg-[linear-gradient(180deg,rgba(25,17,13,0.68),rgba(13,9,9,0.62))] p-5">
+
+        <div className="mt-8 rounded-[24px] border border-[#8d693b]/35 bg-[linear-gradient(180deg,rgba(25,17,13,0.68),rgba(13,9,9,0.62))] p-5">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p
@@ -664,27 +769,39 @@ function OrderDetailsModal({
               >
                 {order.status === "paid" &&
                   "Diese Bestellung wartet auf den Versand."}
-
                 {order.status === "shipped" &&
                   "Diese Bestellung wurde bereits versendet."}
-
                 {order.status === "cancelled" &&
                   "Diese Bestellung wurde storniert."}
+                {order.status === "refunded" &&
+                  "Diese Bestellung wurde zurückerstattet."}
               </p>
-                          </div>
+
+              {refundNotice && (
+                <p className={`${font2.className} mt-3 text-sm text-emerald-200`}>
+                  {refundNotice}
+                </p>
+              )}
+
+              {refundError && !showRefundConfirm && (
+                <p className={`${font2.className} mt-3 text-sm text-red-200`}>
+                  {refundError}
+                </p>
+              )}
+            </div>
 
             <div className="flex flex-wrap gap-3">
               {order.status === "paid" && (
                 <button
                   disabled={updateOrderStatusMutation.isPending}
                   onClick={() =>
-                  updateOrderStatusMutation.mutate({
-                    orderId: order.id,
-                    status: "shipped",
-                    order,
-                    items,
-                  })
-                }
+                    updateOrderStatusMutation.mutate({
+                      orderId: order.id,
+                      status: "shipped",
+                      order,
+                      items,
+                    })
+                  }
                   className={`${font2.className} inline-flex cursor-pointer items-center justify-center rounded-[16px] border border-sky-400/30 bg-sky-950/40 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-sky-100 transition hover:-translate-y-[1px] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50`}
                 >
                   {updateOrderStatusMutation.isPending
@@ -692,6 +809,7 @@ function OrderDetailsModal({
                     : "Als versandt markieren"}
                 </button>
               )}
+
               {order.status === "shipped" && (
                 <div
                   className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border border-sky-400/30 bg-sky-950/30 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-sky-100`}
@@ -699,7 +817,25 @@ function OrderDetailsModal({
                   Versandt ✓
                 </div>
               )}
-                          </div>
+
+              {order.status === "refunded" && (
+                <div
+                  className={`${font2.className} inline-flex items-center justify-center rounded-[16px] border border-emerald-400/30 bg-emerald-950/30 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-emerald-100`}
+                >
+                  Erstattet ✓
+                </div>
+              )}
+
+              {canRefund && (
+                <button
+                  disabled={isRefunding}
+                  onClick={() => setShowRefundConfirm(true)}
+                  className={`${font2.className} inline-flex cursor-pointer items-center justify-center rounded-[16px] border border-red-300/25 bg-red-950/35 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-red-100 transition hover:-translate-y-[1px] hover:bg-red-900/45 disabled:cursor-not-allowed disabled:opacity-50`}
+                >
+                  Rückerstatten
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

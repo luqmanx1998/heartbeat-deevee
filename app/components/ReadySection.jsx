@@ -2,56 +2,44 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function ReadySection() {
   const sectionRef = useRef(null);
-  const bgRef = useRef(null);
   const textRef = useRef(null);
+  const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
-    const ctx = gsap.context(() => {
-      gsap.set(textRef.current, {
-        opacity: 0,
-        y: 45,
-      });
+    gsap.set(textRef.current, {
+      opacity: 0,
+      y: 45,
+    });
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "+=120%",
-          scrub: 1.4,
-          pin: true,
-        },
-      });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || hasAnimatedRef.current) return;
 
-      tl.to(
-        bgRef.current,
-        {
-          scale: 1.1,
-          ease: "none",
-        },
-        0
-      ).to(
-        textRef.current,
-        {
+        hasAnimatedRef.current = true;
+
+        gsap.to(textRef.current, {
           opacity: 1,
           y: 0,
-          ease: "power2.out",
-        },
-        0.22
-      );
+          duration: 1.15,
+          ease: "power3.out",
+        });
 
-      ScrollTrigger.refresh();
-    }, section);
+        observer.disconnect();
+      },
+      {
+        threshold: 0.35,
+      },
+    );
 
-    return () => ctx.revert();
+    observer.observe(section);
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -60,8 +48,7 @@ export default function ReadySection() {
       className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-center"
     >
       <div
-        ref={bgRef}
-        className="absolute inset-0 scale-100 bg-[url('/gaze.png')] bg-cover bg-center"
+        className="absolute inset-0 bg-[url('/gaze.png')] bg-cover bg-center"
         aria-hidden
       />
 
