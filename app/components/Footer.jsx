@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { FiInstagram } from "react-icons/fi";
 import { SiTiktok } from "react-icons/si";
@@ -61,7 +62,7 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
 }
 
   return (
-    <footer className="min-h-screen w-full bg-[url('/footerlogo.png')] bg-cover bg-center">
+    <footer className="min-h-screen w-full bg-black">
       <div className="mx-auto grid min-h-screen max-w-[1440px] gap-16 px-6 pt-20 pb-12 text-white lg:grid-cols-[0.95fr_0.75fr] lg:px-15 lg:pb-15">
         <div className="flex min-h-full flex-col justify-between">
           <div>
@@ -117,9 +118,53 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
           </a>
             </div>
 
-            <div className={`${ibmPlexSerif.className} text-lg uppercase`}>
-              © 2026. All Rights Reserved.
-            </div>
+            <div className="space-y-4">
+  <div className={`${ibmPlexSerif.className} text-lg uppercase`}>
+    © 2026. All Rights Reserved.
+  </div>
+
+  <div
+    className={`${font2.className} flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.18em] text-white/60`}
+  >
+    <Link
+      href="/impressum"
+      className="transition hover:text-[#FFD281]"
+    >
+      Impressum
+    </Link>
+
+    <Link
+      href="/datenschutz"
+      className="transition hover:text-[#FFD281]"
+    >
+      Datenschutz
+    </Link>
+
+    <Link
+      href="/agb"
+      className="transition hover:text-[#FFD281]"
+    >
+      AGB
+    </Link>
+
+    <Link
+      href="/widerrufsrecht"
+      className="transition hover:text-[#FFD281]"
+    >
+      Widerrufsrecht
+    </Link>
+
+    <Link
+      href="/zahlung-und-versand"
+      className="transition hover:text-[#FFD281]"
+    >
+      Zahlung und Versand
+    </Link>
+    <Link href="/cookie-einstellungen"
+    className="transition hover:text-[#FFD281]"
+    >Cookie-Einstellungen</Link>
+  </div>
+</div>
           </div>
         </div>
 
