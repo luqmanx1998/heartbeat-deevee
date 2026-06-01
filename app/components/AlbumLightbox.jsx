@@ -71,13 +71,13 @@ export default function AlbumLightbox({
           <h2 className="text-2xl uppercase tracking-[0.18em] text-white">
             {title}
           </h2>
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-8 -translate-x-25">
             <p className="text-sm text-white/70">
               {currentIndex + 1} / {images.length}
             </p>
             <button
           onClick={onClose}
-          className="z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/85 transition hover:bg-white hover:text-black"
+          className="z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/85 transition hover:bg-white hover:text-black "
           aria-label="Close album"
         >
           <FiX size={24} strokeWidth={2.5} />

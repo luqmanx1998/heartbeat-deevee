@@ -426,7 +426,7 @@ export default function Home() {
         >
           <nav
             ref={heroNavRef}
-            className="absolute top-6 left-1/2 z-10 z-[100] flex w-full max-w-[1320px] -translate-x-1/2 items-center justify-between px-6"
+            className="absolute top-4 left-1/2 z-10 z-[100] flex w-full max-w-[1320px] -translate-x-1/2 items-center justify-between px-6"
           >
             {/* <h1 className="cursor-pointer text-[37px] leading-[31px] tracking-[-5%] text-white uppercase">
               Deevee
