@@ -428,13 +428,16 @@ export default function Home() {
             ref={heroNavRef}
             className="absolute top-6 left-1/2 z-10 z-[100] flex w-full max-w-[1320px] -translate-x-1/2 items-center justify-between px-6"
           >
-            <h1 className="cursor-pointer text-[37px] leading-[31px] tracking-[-5%] text-white uppercase">
+            {/* <h1 className="cursor-pointer text-[37px] leading-[31px] tracking-[-5%] text-white uppercase">
               Deevee
-            </h1>
+            </h1> */}
+            <Image src="/deeveelogoclear.png" alt="Deevee Logo" className="cursor-pointer lg:-translate-x-26"
+            width={350}
+            height={300}/>
 
             <div>
               <ul
-                className={`ml-14 flex gap-6.25 text-[14px] leading-[100%] tracking-[6%] text-white uppercase ${ibmPlexSerif.className}`}
+                className={`ml-14 flex gap-6.25 text-[14px] leading-[100%] tracking-[6%] text-white uppercase ${ibmPlexSerif.className} lg:-translate-x-20`}
               >
                 <li 
                 onClick={() => scrollToId("home")}
@@ -444,7 +447,7 @@ export default function Home() {
                 <li 
                 onClick={() => scrollToId("map")}
                 className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
-                  The World
+                  Die Welt
                 </li>
                 <li 
                 onClick={() => scrollToId("characters")}
@@ -588,12 +591,12 @@ export default function Home() {
 
           <div className="z-25 flex h-full w-full items-center">
             <div className="mx-auto grid w-[75%] max-w-[1440px] grid-cols-2 items-center gap-[15%]">
-              <div className="justify-self-end">
+              <div className="justify-self-end max-w-[380px] lg:translate-y-12 lg:translate-x-6">
                 <Image
-                  src="/g39.svg"
+                  src="/authorframe2.png"
                   alt="Author image"
-                  width={430}
-                  height={730}
+                  width={400}
+                  height={720}
                   className="h-auto w-[280px] object-contain brightness-110 contrast-75 sm:w-[340px] lg:w-[400px] xl:w-[430px]"
                 />
               </div>

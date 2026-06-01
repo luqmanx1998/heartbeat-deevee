@@ -749,6 +749,27 @@ function OrderDetailsModal({
           </p>
         </div>
 
+               <div className="mt-8 rounded-[24px] border border-[#b89154]/25 bg-[linear-gradient(180deg,rgba(48,30,18,0.72),rgba(18,12,10,0.72))] p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+  <p
+    className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-[#d6c2a0]/48`}
+  >
+    Signaturwunsch
+  </p>
+
+  {order.signature_request ? (
+    <p
+      className={`${ibmPlexSerif.className} mt-3 whitespace-pre-line text-[18px] leading-[1.7] text-[#f5e4c5]`}
+    >
+      {order.signature_request}
+    </p>
+  ) : (
+    <p
+      className={`${ibmPlexSerif.className} mt-3 text-[18px] italic text-[#e6d5bc]/45`}
+    >
+      Kein Signaturwunsch angegeben.
+    </p>
+  )}
+</div>
         <div className="mt-8 rounded-[24px] border border-[#8d693b]/35 bg-[linear-gradient(180deg,rgba(25,17,13,0.68),rgba(13,9,9,0.62))] p-5">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>

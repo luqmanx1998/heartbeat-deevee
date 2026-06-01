@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request) {
   try {
-    const { cart, shipping, guestEmail } = await request.json();
+    const { cart, shipping, guestEmail, signatureRequest } = await request.json();
 
     if (!Array.isArray(cart) || cart.length === 0) {
       return NextResponse.json(
@@ -86,6 +86,7 @@ export async function POST(request) {
         .insert({
           user_id: user?.id ?? null,
           customer_email: customerEmail,
+          signature_request: String(signatureRequest || "").trim() || null,
           status: "pending",
           total,
         })

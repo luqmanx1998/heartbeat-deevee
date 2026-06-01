@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { IBM_Plex_Serif } from "next/font/google";
 import localFont from "next/font/local";
+import { FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 // const ibmPlexSerif = IBM_Plex_Serif({
 //   subsets: ["latin"],
@@ -75,12 +76,12 @@ export default function AlbumLightbox({
               {currentIndex + 1} / {images.length}
             </p>
             <button
-              onClick={onClose}
-              className="z-20 text-3xl text-white/80 transition hover:text-white cursor-pointer"
-              aria-label="Close album"
-            >
-              ✕
-            </button>
+          onClick={onClose}
+          className="z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/85 transition hover:bg-white hover:text-black"
+          aria-label="Close album"
+        >
+          <FiX size={24} strokeWidth={2.5} />
+        </button>
           </div>
         </div>
 
@@ -96,19 +97,19 @@ export default function AlbumLightbox({
           </div>
 
           <button
-            onClick={goPrev}
-            className="absolute left-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-2xl text-white transition hover:bg-black/70 cursor-pointer"
-            aria-label="Previous image"
-          >
-            ‹
-          </button>
+          onClick={goPrev}
+          className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/60 text-white transition hover:bg-white hover:text-black"
+          aria-label="Previous image"
+        >
+          <FiChevronLeft size={30} strokeWidth={2.5} />
+        </button>
 
           <button
             onClick={goNext}
-            className="absolute right-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-2xl text-white transition hover:bg-black/70 cursor-pointer"
+            className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/60 text-white transition hover:bg-white hover:text-black"
             aria-label="Next image"
           >
-            ›
+            <FiChevronRight size={30} strokeWidth={2.5} />
           </button>
         </div>
 

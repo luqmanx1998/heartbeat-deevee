@@ -24,6 +24,7 @@ export default function CustomCheckoutPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState(null);
   const [guestEmail, setGuestEmail] = useState("");
+  const [signatureRequest, setSignatureRequest] = useState("");
 
   const [shipping, setShipping] = useState({
     fullName: "",
@@ -34,18 +35,18 @@ export default function CustomCheckoutPage() {
   });
 
   useEffect(() => {
-  async function loadUser() {
-    const supabase = createClient();
+    async function loadUser() {
+      const supabase = createClient();
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-    setUser(user);
-  }
+      setUser(user);
+    }
 
-  loadUser();
-}, []);
+    loadUser();
+  }, []);
 
   useEffect(() => {
     const storedCart = JSON.parse(
@@ -70,7 +71,7 @@ export default function CustomCheckoutPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ cart, shipping, guestEmail }),
+      body: JSON.stringify({ cart, shipping, guestEmail, signatureRequest }),
     });
 
     const data = await res.json();
@@ -156,7 +157,7 @@ export default function CustomCheckoutPage() {
             </Link>
 
             <div className="mt-10">
-              <div className="relative w-[220px] h-[60px] -translate-x-6">
+              <div className="relative h-[60px] w-[220px] -translate-x-6">
                 <Image
                   src="/DeeveeLogo4.png"
                   alt="Deevee logo"
@@ -205,7 +206,7 @@ export default function CustomCheckoutPage() {
                     </p>
                   </div>
 
-                  <p className="text-[17px] text-white/82 ">
+                  <p className="text-[17px] text-white/82">
                     €
                     {(
                       Number(item.price || 0) * Number(item.quantity || 0)
@@ -242,31 +243,32 @@ export default function CustomCheckoutPage() {
               Secure checkout
             </p>
 
-            <h2 className="mt-4 text-[42px] font-semibold leading-none tracking-[-0.06em]">
+            <h2 className="mt-4 text-[42px] font-semibold leading-none tracking-[-0.02em]">
               Shipping & Payment
             </h2>
 
             <div className="mt-8 rounded-[30px] border border-[#7c5cff]/55 bg-[#302c42]/95 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur">
+              {!user && (
+                <div className="mb-6 rounded-[22px] border border-white/10 bg-white/[0.035] p-5">
+                  <p className="text-[11px] uppercase tracking-[0.24em] text-[#f3d4a2]/55">
+                    Guest checkout
+                  </p>
 
-            {!user && (
-            <div className="mb-6 rounded-[22px] border border-white/10 bg-white/[0.035] p-5">
-              <p className="text-[11px] uppercase tracking-[0.24em] text-[#f3d4a2]/55">
-                Guest checkout
-              </p>
+                  <p className="mt-3 text-[15px] leading-6 text-white/58">
+                    Enter your email to receive your receipt and shipping
+                    updates.
+                  </p>
 
-              <p className="mt-3 text-[15px] leading-6 text-white/58">
-                Enter your email to receive your receipt and shipping updates.
-              </p>
+                  <input
+                    value={guestEmail}
+                    onChange={(e) => setGuestEmail(e.target.value)}
+                    placeholder="Email address"
+                    type="email"
+                    className={`${inputClass} mt-4`}
+                  />
+                </div>
+              )}
 
-              <input
-                value={guestEmail}
-                onChange={(e) => setGuestEmail(e.target.value)}
-                placeholder="Email address"
-                type="email"
-                className={`${inputClass} mt-4`}
-              />
-            </div>
-          )}
               <h3 className="text-[18px] font-semibold">
                 Shipping information
               </h3>
@@ -330,6 +332,31 @@ export default function CustomCheckoutPage() {
                 </div>
               </div>
 
+
+              <div className="mt-5">
+                <label className="text-[12px] uppercase tracking-[0.24em] text-white/45">
+                  Signierwunsch optional
+                </label>
+
+                <p className="mt-2 text-[13px] leading-6 text-white/45">
+                  Wenn du eine persönliche Signatur möchtest, schreibe hier den
+                  Namen oder kurzen Wunsch hinein. Dana signiert auf der ersten
+                  Seite des Buches.
+                </p>
+
+                <textarea
+                  value={signatureRequest}
+                  onChange={(e) => setSignatureRequest(e.target.value)}
+                  maxLength={220}
+                  placeholder="Zum Beispiel: Für Lena, alles Liebe"
+                  className="mt-4 min-h-[120px] w-full resize-y rounded-md border border-white/10 bg-white/[0.04] px-4 py-3 text-white outline-none transition placeholder:text-white/35 focus:border-[#9b80ff] focus:ring-2 focus:ring-[#7c5cff]/40"
+                />
+
+                <p className="mt-2 text-right text-[11px] text-white/32">
+                  {signatureRequest.length}/220
+                </p>
+              </div>
+
               {!clientSecret && (
                 <>
                   {errorMessage && (
@@ -349,6 +376,30 @@ export default function CustomCheckoutPage() {
                   </button>
                 </>
               )}
+
+              <div className="mt-7 rounded-[24px] border border-[#f3d4a2]/18 bg-white/[0.045] p-5">
+                <p className="text-[11px] uppercase tracking-[0.26em] text-[#f3d4a2]/62">
+                  Hinweis zu deiner Bestellung
+                </p>
+
+
+                <p className="mt-4 text-[14px] leading-7 text-white/62">
+                  Bücher können durch den Transport kleine Macken und
+                  abgestoßene Ecken aufweisen. Diese kleinen optischen Mängel
+                  sind von der Reklamation ausgeschlossen.
+                </p>
+
+                <p className="mt-3 text-[14px] leading-7 text-white/62">
+                  Mit Abgabe der Bestellung erklärst du dich damit
+                  einverstanden.{" "}
+                  <Link
+                    href="/agb"
+                    className="text-[#f3d4a2]/80 underline underline-offset-4 transition hover:text-[#f3d4a2]"
+                  >
+                    AGB
+                  </Link>
+                </p>
+              </div>
 
               {clientSecret && (
                 <div className="mt-8 border-t border-white/10 pt-7">
