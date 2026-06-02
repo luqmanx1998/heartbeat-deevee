@@ -37,7 +37,7 @@ function Characters() {
     },
     {
       name: "Jake",
-      image: "/characters/jake.jpg",
+      image: "/characters/jake.png",
     },
     {
       name: "Kylie",
@@ -45,7 +45,7 @@ function Characters() {
     },
     {
       name: "Liv & Mia",
-      image: "/characters/livmia.jpg",
+      image: "/characters/livmia.png",
     },
     {
       name: "Zac",
@@ -53,11 +53,11 @@ function Characters() {
     },
     {
       name: "Chloe",
-      image: "/characters/chloe.jpg",
+      image: "/characters/chloe.png",
     },
     {
       name: "Sofia",
-      image: "/characters/sofia.jpg",
+      image: "/characters/sofia.png",
     },
   ];
 

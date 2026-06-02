@@ -28,6 +28,10 @@ export default function Page() {
     );
   }, [cart]);
 
+  const shipping = cart.length > 0 ? 3.99 : 0;
+
+  const total = subtotal + shipping;
+
   function saveCart(nextCart) {
     setCart(nextCart);
     localStorage.setItem("heartbeat_cart", JSON.stringify(nextCart));
@@ -88,7 +92,7 @@ export default function Page() {
               href="/store"
               className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-white/80 backdrop-blur transition hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:text-[#fff4de]"
             >
-              ← Back to Store
+              ← Zurück zum Store
             </Link>
           </div>
 
@@ -102,11 +106,13 @@ export default function Page() {
             </p>
 
             <h1 className="mt-4 text-[clamp(42px,5vw,72px)] font-semibold leading-[0.95] tracking-[-0.04em] text-white">
-              Your Bag
+              
+            Ihr Warenkorb
+
             </h1>
 
             <p className="mx-auto mt-4 max-w-xl text-[16px] leading-7 text-white/58">
-              Review your items before moving to checkout.
+              Überprüfen Sie Ihre Artikel, bevor Sie zur Kasse gehen.
             </p>
           </header>
 
@@ -220,16 +226,24 @@ export default function Page() {
 
                 <div className="mt-6 space-y-4 border-b border-[#f3d4a2]/12 pb-6">
                   <SummaryRow label="Subtotal" value={`€${subtotal.toFixed(2)}`} />
-                  <SummaryRow label="Shipping" value="Calculated later" />
-                  <SummaryRow label="Tax" value="Calculated later" />
-                </div>
+
+                  <SummaryRow
+                    label="Shipping"
+                    value={shipping > 0 ? `€${shipping.toFixed(2)}` : "Free"}
+                  />
+
+                  <SummaryRow
+                    label="VAT"
+                    value="Included"
+                  />
+                                  </div>
 
                 <div className="mt-6 flex items-center justify-between gap-4">
                   <p className="text-[15px] uppercase tracking-[0.2em] text-white/55">
                     Total
                   </p>
                   <p className="text-[34px] font-semibold text-white">
-                    €{subtotal.toFixed(2)}
+                    €{total.toFixed(2)}
                   </p>
                 </div>
 

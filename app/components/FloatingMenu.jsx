@@ -269,10 +269,10 @@ export default function FloatingMenu({
 
   const navItems = [
     ["Home", "home"],
-    ["The World", "map"],
-    ["Characters", "characters"],
-    ["About", "about"],
-    ["Store", "store"],
+    ["Die Welt", "map"],
+    ["Charaktere", "characters"],
+    ["Autor", "about"],
+    ["Shop", "store"],
   ];
 
   return (

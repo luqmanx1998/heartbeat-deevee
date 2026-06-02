@@ -51,6 +51,7 @@ export default function HeartbeatStorePage() {
       "Entführung",
       "Abenteuer",
       "Parallelwelten",
+      "2 Charakterkarten"
     ],
     details: [
       ["Format", "Taschenbuch"],
@@ -612,7 +613,7 @@ export default function HeartbeatStorePage() {
                   <div className="overflow-hidden rounded-[28px] border border-white/10 bg-black/20">
                     <div className="relative aspect-[1/1] w-full">
                       <Image
-                        src="/buchbox3.jpg"
+                        src="/buchbox4.jpg"
                         alt="Heartbeat Buchbox"
                         fill
                         priority
@@ -710,7 +711,6 @@ export default function HeartbeatStorePage() {
                             "Taschenbuch",
                             "Metall-Lesezeichen",
                             "4 Charakterkarten (beidseitig bedruckt)",
-                            "Schlüsselanhänger",
                             "Acryl-Aufsteller",
                           ].map((item) => (
                             <li key={item} className="flex items-center">
@@ -856,9 +856,8 @@ export default function HeartbeatStorePage() {
                       </button>
                     </div>
 
-                    <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/65">
-                      Sicherer Checkout mit Stripe oder PayPal. Versand- und
-                      Formatoptionen kannst du später leicht ergänzen.
+                    <div className={`${font2.className} mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/65`}>
+                      Sicherer Checkout mit Stripe oder PayPal.
                     </div>
                   </div>
 

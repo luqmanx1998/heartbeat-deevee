@@ -464,7 +464,7 @@ export default function Home() {
                 <li 
                 onClick={() => scrollToId("about")}
                 className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
-                  About
+                  Autor
                 </li>
               </ul>
             </div>
