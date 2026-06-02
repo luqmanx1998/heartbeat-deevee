@@ -81,12 +81,12 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
               <li 
               onClick={() => scrollToId("map")}
               className="cursor-pointer transition hover:text-[#FFD281]">
-                The World
+                Die Welt
               </li>
               <li 
               onClick={() => scrollToId("characters")}
               className="cursor-pointer transition hover:text-[#FFD281]">
-                Characters
+                Charaktere
               </li>
               <li 
               onClick={() => scrollToId("about")}

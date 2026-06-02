@@ -42,7 +42,7 @@ export default function HeartbeatStorePage() {
       "Auf der Suche nach ihrer Schwester betritt sie die andere Seite, ein Reich aus tödlicher Magie, uralten Bündnissen und Intrigen, die niemals in Vergessenheit geraten sind. Doch je näher sie der Wahrheit kommt, desto mehr beginnt alles zu zerbrechen.",
       "An der Seite eines Feenprinzen gerät Kylie in einen Strudel aus Machtkämpfen und dunklen Entscheidungen, die der Auslöser eines apokalyptischen Krieges werden. Und während Schatten näher rücken, muss Kylie sich fragen: Wie viel ist sie bereit zu opfern, um die zu retten, die sie liebt?",
     ],
-    images: ["/book1.jpeg", "/book3.jpeg", "/book4.jpeg", "/backcover.jpg"],
+    images: ["/book1.jpeg", "/book.jpg", "/book4.jpeg", "/backcover.jpg"],
     features: [
       "Slow Burn",
       "Magische Welt",
@@ -77,6 +77,7 @@ export default function HeartbeatStorePage() {
   const [cartToast, setCartToast] = useState(false);
   const [productsBySlug, setProductsBySlug] = useState({});
   const [productsLoading, setProductsLoading] = useState(true);
+  const [cartIsFloating, setCartIsFloating] = useState(false);
 
   const userMenuRef = useRef(null);
   const isSigningOutRef = useRef(false);
@@ -122,6 +123,17 @@ export default function HeartbeatStorePage() {
       ignore = true;
     };
   }, [supabase]);
+
+  useEffect(() => {
+    function handleScroll() {
+      setCartIsFloating(window.scrollY > window.innerHeight * 0.75);
+    }
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     function handleKeyDown(e) {
@@ -508,10 +520,20 @@ export default function HeartbeatStorePage() {
                 </div>
               )}
 
-              <div className="absolute -top-0.25 -right-12">
+              <div
+                className={`${
+                  cartIsFloating
+                    ? "fixed bottom-6 right-6 z-[9998]"
+                    : "absolute -top-0.25 -right-12"
+                } transition-all duration-500`}
+              >
                 <Link
                   href="/store/cart"
-                  className="relative inline-flex h-[42px] w-[42px] items-center justify-center rounded-full border border-[#f3d4a2]/18 bg-white/[0.05] text-[#fff4de] backdrop-blur-[8px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)]"
+                  className={`relative inline-flex items-center justify-center rounded-full border border-[#f3d4a2]/18 bg-white/[0.05] text-[#fff4de] backdrop-blur-[8px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)] ${
+                    cartIsFloating
+                      ? "h-[54px] w-[54px] bg-[#111113]/80 shadow-[0_18px_45px_rgba(0,0,0,0.45)]"
+                      : "h-[42px] w-[42px]"
+                  }`}
                   aria-label="Open cart"
                 >
                   <ShoppingBag size={18} strokeWidth={1.8} />
@@ -590,7 +612,7 @@ export default function HeartbeatStorePage() {
                   <div className="overflow-hidden rounded-[28px] border border-white/10 bg-black/20">
                     <div className="relative aspect-[1/1] w-full">
                       <Image
-                        src="/buchbox2.jpg"
+                        src="/buchbox3.jpg"
                         alt="Heartbeat Buchbox"
                         fill
                         priority
@@ -699,6 +721,23 @@ export default function HeartbeatStorePage() {
                         </ul>
                       </div>
 
+                      <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
+  <p
+    className={`${font2.className} text-[11px] uppercase tracking-[0.26em] text-white/45`}
+  >
+    Triggerwarnungen
+  </p>
+
+  <p
+    className={`${ibmPlexSerif.className} mt-3 text-[16px] leading-[1.7] text-white/78`}
+  >
+    Dieses Buch enthält extreme Gewalt, Tod, psychische Erkrankungen,
+    Entführung, Stalking, Mord, Panikattacken, emotionalen Missbrauch,
+    Gaslighting, Vernachlässigung von Kindern sowie blutige oder grafische
+    Gewalt.
+  </p>
+</div>
+
                       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                         <button
                           onClick={() =>
@@ -725,7 +764,7 @@ export default function HeartbeatStorePage() {
             )}
 
             {bookProduct && (
-              <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start relative">
+              <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start relative">
                 {isBookSoldOut && (
                   <>
                     <div className="pointer-events-none absolute inset-0 z-20 rounded-[34px] bg-black/70" />
@@ -743,33 +782,17 @@ export default function HeartbeatStorePage() {
                   </>
                 )}
                 <div
-                  className={`grid gap-4 sm:grid-cols-[1fr_120px] ${
+                  className={`grid gap-4 sm:grid-cols-[1fr] ${
                     isBookSoldOut ? "grayscale-[0.35]" : ""
                   }`}
                 >
-                  <div className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 shadow-2xl shadow-black/40">
-                    <img
+                  <div className="relative aspect-[1/1] w-full rounded-[28px] overflow-hidden">
+                    <Image
                       src={book.images[1]}
                       alt={`${book.title} cover`}
-                      className="h-full w-full object-cover"
+                      fill
+                      className="object-cover object-center"
                     />
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
-                    {book.images
-                      .filter((_, idx) => idx !== 1)
-                      .map((src, index) => (
-                        <div
-                          key={src}
-                          className="overflow-hidden rounded-2xl border border-white/10 bg-white/5"
-                        >
-                          <img
-                            src={src}
-                            alt={`${book.title} preview ${index + 2}`}
-                            className="h-full w-full object-cover transition duration-300 hover:scale-[1.03]"
-                          />
-                        </div>
-                      ))}
                   </div>
                 </div>
 

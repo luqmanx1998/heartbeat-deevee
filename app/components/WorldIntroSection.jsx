@@ -170,7 +170,7 @@ export default function WorldIntroSection({
             onClick={() => scrollToId("map")}
             className={`${ibmPlexSerif.className} cursor-pointer border border-white/30 bg-black/20 px-10 py-4 text-[15px] uppercase tracking-[0.18em] text-white backdrop-blur-[2px] transition duration-300 hover:border-white/60 hover:bg-white/10 hover:shadow-[0_0_25px_rgba(255,255,255,0.25)]`}
           >
-            Enter the World
+            die Welt betreten
           </button>
 
           <button

@@ -345,6 +345,7 @@ export default function Home() {
       "/albums/witraliria/witraliria2.jpeg",
       "/albums/witraliria/witraliria3.jpeg",
       "/albums/witraliria/witraliria4.jpeg",
+      "/albums/witraliria/witch1.jpg",
     ],
     eldarun: [
       "/albums/eldarun/eldarun.jpeg",
@@ -360,7 +361,13 @@ export default function Home() {
       "/albums/erzklamm/erzklamm3.jpeg",
       "/albums/erzklamm/erzklamm4.jpeg",
     ],
-    aridryan: ["/albums/aridryan/aridryan3.png", "/albums/aridryan/aridryan2.jpeg"],
+    aridryan: [
+      "/albums/aridryan/aridryan3.png",
+      "/albums/aridryan/aridryan2.jpeg",
+      "/albums/aridryan/dryad3.jpg",
+      "/albums/aridryan/dryad4.jpg",
+      "/albums/aridryan/dryad5.jpg",
+      ],
     dammerfels: [
       "/albums/dammerfels/dammerfels.jpeg",
       "/albums/dammerfels/dammerfels2.jpeg",
@@ -452,7 +459,7 @@ export default function Home() {
                 <li 
                 onClick={() => scrollToId("characters")}
                 className="cursor-pointer transition-colors duration-300 hover:text-[#FFD281]">
-                  Characters
+                  Charaktere
                 </li>
                 <li 
                 onClick={() => scrollToId("about")}
@@ -591,7 +598,7 @@ export default function Home() {
 
           <div className="z-25 flex h-full w-full items-center">
             <div className="mx-auto grid w-[75%] max-w-[1440px] grid-cols-2 items-center gap-[15%]">
-              <div className="justify-self-end max-w-[380px] lg:translate-y-12 lg:translate-x-6">
+              <div className="justify-self-end max-w-[380px] lg:translate-y-8 lg:translate-x-6">
                 <Image
                   src="/authorframe2.png"
                   alt="Author image"

@@ -12,6 +12,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       className={myFont.className}
+       suppressHydrationWarning
     >
         <body>
           <Providers>
