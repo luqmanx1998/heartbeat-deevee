@@ -20,7 +20,6 @@ import ReadySection from "./components/ReadySection";
 import FloatingMenu from "./components/FloatingMenu";
 import { FiInstagram } from "react-icons/fi";
 import { SiTiktok } from "react-icons/si";
-import { createClient } from "./lib/supabase/client";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -45,6 +44,7 @@ export default function Home() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isMobileMenuMode, setIsMobileMenuMode] = useState(false);
 
   const introOverlayRef = useRef(null);
   const introLine1Ref = useRef(null);
@@ -100,13 +100,20 @@ export default function Home() {
   if (isTransitioning) return;
   setIsTransitioning(true);
 
+  const targetEl = targetRef?.current ?? heroCtaRef.current;
+
+  if (!targetEl) {
+    router.push("/store");
+    return;
+  }
+
   const tl = gsap.timeline({
     onComplete: () => {
       router.push("/store");
     },
   });
 
-  tl.to(targetRef.current, {
+  tl.to(targetEl, {
     boxShadow: "0 0 40px rgba(255,255,255,0.65)",
     borderColor: "rgba(255,255,255,0.95)",
     backgroundColor: "rgba(255,255,255,0.14)",
@@ -114,7 +121,7 @@ export default function Home() {
     duration: 0.18,
     ease: "power2.out",
   })
-    .to(targetRef.current, {
+    .to(targetEl, {
       scale: 1,
       duration: 0.12,
       ease: "power2.inOut",
@@ -128,18 +135,32 @@ export default function Home() {
       },
       "-=0.02"
     );
-} 
+}
 
-  useEffect(() => {
-  function handleScroll() {
+ useEffect(() => {
+  function handleFloatingMenuVisibility() {
+    const isMobileOrTablet = window.innerWidth < 1024;
+
+    setIsMobileMenuMode(isMobileOrTablet);
+
+    if (isMobileOrTablet) {
+      setShowFloatingMenu(true);
+      return;
+    }
+
     const heroHeight = window.innerHeight * 0.8;
     setShowFloatingMenu(window.scrollY > heroHeight);
   }
 
-  handleScroll();
-  window.addEventListener("scroll", handleScroll);
+  handleFloatingMenuVisibility();
 
-  return () => window.removeEventListener("scroll", handleScroll);
+  window.addEventListener("scroll", handleFloatingMenuVisibility);
+  window.addEventListener("resize", handleFloatingMenuVisibility);
+
+  return () => {
+    window.removeEventListener("scroll", handleFloatingMenuVisibility);
+    window.removeEventListener("resize", handleFloatingMenuVisibility);
+  };
 }, []);
 
   useEffect(() => {
@@ -401,14 +422,14 @@ export default function Home() {
           <div className="relative flex h-full w-full items-center justify-center overflow-hidden px-6 text-center">
             <h2
               ref={introLine1Ref}
-              className={`${segamoriz.className} absolute text-[clamp(64px,9vw,140px)] leading-[0.9] tracking-[-0.02em]`}
+              className={`${segamoriz.className} absolute text-[clamp(42px,14vw,140px)] leading-[0.9] tracking-[-0.02em]`}
             >
               Was, Wenn...
             </h2>
 
             <h2
               ref={introLine2Ref}
-              className={`${segamoriz.className} absolute text-[clamp(54px,7.8vw,120px)] leading-[0.92] tracking-[-0.02em]`}
+              className={`${segamoriz.className} absolute text-[clamp(34px,11vw,120px)] leading-[0.92] tracking-[-0.02em]`}
             >
               Es noch eine
               <br />
@@ -417,7 +438,7 @@ export default function Home() {
 
             <h2
               ref={introLine3Ref}
-              className={`${segamoriz.className} absolute text-[clamp(70px,10vw,160px)] leading-[0.9] tracking-[-0.02em]`}
+              className={`${segamoriz.className} absolute text-[clamp(44px,15vw,160px)] leading-[0.9] tracking-[-0.02em]`}
             >
               Die andere Seite
             </h2>
@@ -429,20 +450,25 @@ export default function Home() {
         <section
           id="home"
           ref={heroSectionRef}
-          className="relative flex h-screen items-center justify-center"
+          className="relative flex min-h-[100svh] items-center justify-center overflow-hidden"
         >
           <nav
             ref={heroNavRef}
-            className="absolute top-4 left-1/2 z-10 z-[100] flex w-full max-w-[1320px] -translate-x-1/2 items-center justify-between px-6"
+            className="absolute left-1/2 top-4 z-[100] flex w-full max-w-[1320px] -translate-x-1/2 px-4 sm:px-6 lg:justify-between lg:items-center"
           >
             {/* <h1 className="cursor-pointer text-[37px] leading-[31px] tracking-[-5%] text-white uppercase">
               Deevee
             </h1> */}
-            <Image src="/deeveelogoclear.png" alt="Deevee Logo" className="cursor-pointer lg:-translate-x-26"
-            width={350}
-            height={300}/>
+            <Image
+              src="/deeveelogoclear.png"
+              alt="Deevee Logo"
+              className="translate-y-5 -translate-x-8 lg:translate-x-0 lg:translate-y-0 h-auto w-[200px] cursor-pointer sm:w-[220px] lg:w-[260px] lg:-translate-x-26 xl:w-[350px]r"
+              width={350}
+              height={300}
+              priority
+            />
 
-            <div>
+            <div className="hidden lg:block lg:translate-x-8">
               <ul
                 className={`ml-14 flex gap-6.25 text-[14px] leading-[100%] tracking-[6%] text-white uppercase ${ibmPlexSerif.className} lg:-translate-x-20`}
               >
@@ -469,7 +495,7 @@ export default function Home() {
               </ul>
             </div>
 
-          <div className="flex gap-3 items-center">
+          <div className="hidden items-center gap-3 lg:flex">
             <a
             href="https://instagram.com/xdeeveee"
             target="_blank"
@@ -521,11 +547,11 @@ export default function Home() {
             ref={heroTitleWrapRef}
             className="relative z-10 text-center text-white uppercase"
           >
-            <h1 className="text-[190px] leading-[159px] tracking-[-5%]">
+            <h1 className="text-[clamp(58px,17vw,190px)] leading-[0.84] tracking-[-0.05em]">
               Heartbeat
             </h1>
             <span
-              className={`mt-8 block text-[20px] tracking-[0.95em] ${font2.className}`}
+              className={`mt-5 block text-[clamp(10px,2.8vw,20px)] tracking-[0.45em] sm:tracking-[0.75em] lg:mt-8 lg:tracking-[0.95em] ${font2.className}`}
             >
               Die andere Seite
             </span>
@@ -533,13 +559,13 @@ export default function Home() {
 
           <div
             ref={heroButtonWrapRef}
-            className="absolute left-1/2 top-[75.5%] z-[100] -translate-x-1/2"
+            className="absolute left-1/2 top-[69%] z-[100] w-full -translate-x-1/2 px-6 text-center sm:top-[73%] lg:top-[75.5%]"
           >
             <button
               ref={heroCtaRef}
               onClick={handleStoreTransition}
               disabled={isTransitioning}
-              className={`${ibmPlexSerif.className} cursor-pointer border border-white/30 bg-black/20 px-10 py-4 text-[15px] tracking-[0.18em] text-white uppercase backdrop-blur-[2px] transition duration-300 hover:border-white/60 hover:bg-white/10 hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] disabled:cursor-default`}
+              className={`${ibmPlexSerif.className} cursor-pointer border border-white/30 bg-black/20 px-7 py-3 text-[12px] tracking-[0.16em] text-white uppercase backdrop-blur-[2px] transition duration-300 hover:border-white/60 hover:bg-white/10 hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] disabled:cursor-default sm:px-10 sm:py-4 sm:text-[15px]`}
             >
               Jetzt eintauchen
             </button>
@@ -547,7 +573,7 @@ export default function Home() {
 
           <div
             ref={heroCaptionRef}
-            className="absolute left-1/2 top-[91.5%] z-2 -translate-x-1/2 space-y-1.5 text-center text-[16px] leading-[100%] tracking-[-3%] text-white uppercase"
+            className="absolute bottom-8 left-1/2 z-[2] w-full max-w-[320px] -translate-x-1/2 space-y-1.5 px-6 text-center text-[12px] leading-[1.2] tracking-[-0.03em] text-white uppercase sm:max-w-none sm:text-[16px] lg:top-[91.5%] lg:bottom-auto"
           >
             <p>Magie ist real. Vertrauen ist tödlich.</p>
             <p className="text-[12px]">Und Liebe kann dein Untergang sein.</p>
@@ -578,44 +604,39 @@ export default function Home() {
         </div>
 
         <section
-        id="about"
-        className="relative h-screen overflow-hidden bg-[url('/bgauthor1.png')] bg-cover bg-center bg-no-repeat contrast-130">
+          id="about"
+          className="relative min-h-[100svh] overflow-hidden bg-[url('/bgauthor1.png')] bg-cover bg-center bg-no-repeat py-20 contrast-130 lg:h-screen lg:py-0"
+        >
           <div className="pointer-events-none absolute inset-x-0 top-0 z-[20] h-24 bg-gradient-to-b from-black to-transparent" />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[20] h-30 bg-gradient-to-t from-black to-transparent" />
-          <div className="pointer-events-none absolute top-0 right-0 h-full w-[15%] z-[20] bg-gradient-to-l from-black to-transparent" />
-          <div className="pointer-events-none absolute top-0 left-0 h-full w-[15%] z-[20] bg-gradient-to-r from-black to-transparent" />
-          
-          <div className="max-w-[1600px] 2xl:mx-auto">
-          <div className="pointer-events-none absolute top-0 3xl:-top-2 right-[-5%] h-full z-10 overflow-visible">
-            <Image
-              src="/rippedpaper_colored3.png"
-              alt=""
-              width={900}
-              height={900}
-              className="h-full w-auto max-w-[62.5vw] contrast-200"
-            />
-          </div>
+          <div className="pointer-events-none absolute top-0 right-0 z-[20] hidden h-full w-[15%] bg-gradient-to-l from-black to-transparent lg:block" />
+          <div className="pointer-events-none absolute top-0 left-0 z-[20] hidden h-full w-[15%] bg-gradient-to-r from-black to-transparent lg:block" />
+          <div className="absolute inset-0 bg-black/35 lg:bg-black/0" />
 
-          <div className="z-25 flex h-full w-full items-center">
-            <div className="mx-auto grid w-[75%] max-w-[1440px] grid-cols-2 items-center gap-[15%]">
-              <div className="justify-self-end max-w-[380px] lg:translate-y-8 lg:translate-x-6">
+          <div className="relative z-[25] mx-auto flex min-h-[100svh] w-full max-w-[1600px] items-center px-5 sm:px-8 lg:h-full lg:min-h-0 lg:px-0">
+            <div className="pointer-events-none absolute top-0 right-[-5%] z-10 hidden h-full overflow-visible lg:block 3xl:-top-2">
+              <Image
+                src="/rippedpaper_colored3.png"
+                alt=""
+                width={900}
+                height={900}
+                className="h-full w-auto max-w-[62.5vw] contrast-200"
+              />
+            </div>
+
+            <div className="relative z-[30] mx-auto grid w-full max-w-[1440px] grid-cols-1 items-center gap-8 lg:w-[75%] lg:grid-cols-2 lg:gap-[15%]">
+              <div className="order-2 flex justify-center lg:order-1 lg:justify-self-end lg:translate-x-6 lg:translate-y-8">
                 <Image
                   src="/authorframe2.png"
                   alt="Author image"
                   width={400}
                   height={720}
-                  className="h-auto w-[280px] object-contain brightness-110 contrast-75 sm:w-[340px] lg:w-[400px] xl:w-[430px]"
+                  className="h-auto w-[230px] object-contain brightness-110 contrast-75 sm:w-[300px] md:w-[340px] lg:w-[400px] xl:w-[430px]"
                 />
               </div>
 
-              <div className="relative z-25 translate-x-[20%] justify-self-start text-white">
-                <div
-                  className={`absolute ${
-                    aboutView === "author"
-                      ? "top-[clamp(24%,10.5vw,370px)] right-[clamp(49%,10vw,370px)] 2xl:top-[clamp(22%,10vw,370px)] 2xl:right-[clamp(55%,9vw,370px)] 3xl:top-[clamp(22%,9.25vw,370px)] 3xl:right-[clamp(56%,9vw,370px)] 4xl:top-[clamp(22%,8vw,370px)] 4xl:right-[clamp(62%,9vw,370px)]"
-                      : "top-[clamp(22.5%,10.5vw,380px)] right-[clamp(50%,10vw,370px)] 2xl:top-[clamp(22%,9.75vw,370px)] 2xl:right-[clamp(55%,9vw,370px)] 3xl:top-[clamp(22%,9.25vw,370px)] 3xl:right-[clamp(57%,9vw,370px)] 4xl:top-[clamp(22%,8vw,370px)] 4xl:right-[clamp(63%,9vw,370px)]"
-                  } z-30 z-[150] inline-flex rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-sm transition`}
-                >
+              <div className="order-1 relative z-[35] mx-auto w-full max-w-[640px] text-center text-white lg:order-2 lg:mx-0 lg:translate-x-[20%] lg:justify-self-start lg:text-left">
+                <div className="mb-6 inline-flex rounded-full border border-white/15 bg-black/30 p-1 backdrop-blur-sm lg:absolute lg:-top-12 lg:left-0 lg:mb-0">
                   <button
                     onClick={() => setAboutView("author")}
                     className={`z-[150] cursor-pointer rounded-full px-5 py-2 text-[12px] uppercase tracking-[0.18em] transition ${
@@ -639,7 +660,7 @@ export default function Home() {
                   </button>
                 </div>
 
-                <h2 className="text-[clamp(48px,6vw,70px)] leading-[0.92] tracking-[-0.05em] 4xl:-translate-y-2">
+                <h2 className="text-[clamp(44px,13vw,70px)] leading-[0.92] tracking-[-0.05em]">
                   {aboutContent[aboutView].titleTop}
                   <br />
                   {aboutContent[aboutView].titleBottom}
@@ -652,10 +673,10 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="mt-11"
+                    className="mt-8 lg:mt-11"
                   >
                     <div
-                      className={`${ibmPlexSerif.className} translate-y-1.5 xl:translate-y-4 max-w-[600px] space-y-3 text-[clamp(14px,1.1vw,16px)] leading-[1.35] tracking-normal`}
+                      className={`${ibmPlexSerif.className} mx-auto max-w-[600px] space-y-3 text-[15px] leading-[1.55] tracking-normal text-white/90 sm:text-[16px] lg:mx-0 lg:translate-y-4 lg:leading-[1.35]`}
                     >
                       {aboutContent[aboutView].paragraphs.map((paragraph) => (
                         <p key={paragraph}>{paragraph}</p>
@@ -665,7 +686,6 @@ export default function Home() {
                 </AnimatePresence>
               </div>
             </div>
-          </div>
           </div>
         </section>
         

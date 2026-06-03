@@ -51,7 +51,6 @@ export default function HeartbeatStorePage() {
       "Entführung",
       "Abenteuer",
       "Parallelwelten",
-      "2 Charakterkarten"
     ],
     details: [
       ["Format", "Taschenbuch"],
@@ -764,7 +763,7 @@ export default function HeartbeatStorePage() {
             )}
 
             {bookProduct && (
-              <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start relative">
+              <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center relative">
                 {isBookSoldOut && (
                   <>
                     <div className="pointer-events-none absolute inset-0 z-20 rounded-[34px] bg-black/70" />
@@ -782,19 +781,24 @@ export default function HeartbeatStorePage() {
                   </>
                 )}
                 <div
-                  className={`grid gap-4 sm:grid-cols-[1fr] ${
-                    isBookSoldOut ? "grayscale-[0.35]" : ""
-                  }`}
-                >
-                  <div className="relative aspect-[1/1] w-full rounded-[28px] overflow-hidden">
-                    <Image
-                      src={book.images[1]}
-                      alt={`${book.title} cover`}
-                      fill
-                      className="object-cover object-center"
-                    />
-                  </div>
-                </div>
+  className={`flex flex-col items-center gap-2 ${
+    isBookSoldOut ? "grayscale-[0.35]" : ""
+  }`}
+>
+  <div className="relative aspect-[1/1] w-full max-w-[620px] rounded-[28px] overflow-hidden">
+    <Image
+      src={book.images[1]}
+      alt={`${book.title} cover`}
+      fill
+      className="object-cover object-center"
+    />
+  </div>
+                 <p
+                      className={`${ibmPlexSerif.className} mt-3 text-[16px] leading-[1.7] text-white/78 lg:max-w-[450px] text-center`}
+                    >
+                      Enthält 1 Charakterkarte (beidseitig bedruckt)
+                    </p>
+</div>
 
                 <div className="lg:sticky lg:top-8">
                   <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.22em] text-white/70">
@@ -877,7 +881,15 @@ export default function HeartbeatStorePage() {
                       Kindern, Tod eines Elternteils, blutige oder grafische
                       Gewalt.
                     </p>
-                  </div>
+
+                     <p
+                      className={`${ibmPlexSerif.className} mt-3 flex flex-wrap text-[16px] leading-[1.6] text-white/78`}
+                    >
+                      Dark Romantasy mit Schwerpunkt auf Fantasy und düstere Themen, aber ohne Spice.
+                    </p>
+
+                                    </div>
+
                 </div>
               </div>
             )}
