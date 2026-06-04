@@ -18,7 +18,7 @@ function MapButton({ className, label, onClick }) {
       onClick={onClick}
     >
       {/* Mobile / tablet CSS button */}
-      <div className="flex h-[30px] min-w-[96px] items-center justify-center rounded-full border border-[#c79c52]/70 bg-[#e7c982]/90 px-3 shadow-[0_6px_16px_rgba(0,0,0,0.35)] backdrop-blur-sm md:h-[34px] md:min-w-[120px] lg:hidden">
+      <div className="flex h-[22px] min-w-[96px] items-center justify-center rounded-full border border-[#c79c52]/70 bg-[#e7c982]/90 px-3 shadow-[0_6px_16px_rgba(0,0,0,0.35)] backdrop-blur-sm md:h-[34px] md:min-w-[120px] lg:hidden">
         <span className="whitespace-nowrap text-[9px] font-bold uppercase tracking-[0.04em] text-[#2b1605] md:text-[11px]">
           {label}
         </span>
@@ -223,37 +223,37 @@ Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierhe
 
             <MapButton
               label="View Taletopia"
-              className="-left-[6%] top-[53%] md:left-[2%] md:top-[54%] lg:left-[7%] lg:top-[46%]"
+              className="left-[1%] top-[57.5%] md:left-[6%] md:top-[57%] lg:left-[7%] lg:top-[46%]"
               onClick={() => setOpenLocation("taletopia")}
             />
 
             <MapButton
               label="View Witraliria"
-              className="left-[7%] top-[10%] md:left-[14%] md:top-[11%] lg:left-[20%] lg:top-[13%]"
+              className="left-[14%] top-[14.5%] md:left-[19%] md:top-[13%] lg:left-[20%] lg:top-[13%]"
               onClick={() => setOpenLocation("witraliria")}
             />
 
             <MapButton
               label="View Erzklamm"
-              className="-left-[4%] top-[86%] md:left-[3%] md:top-[87%] lg:left-[9%] lg:top-[78%]"
+              className="left-[4%] top-[90%] md:left-[8%] md:top-[89%] lg:left-[9%] lg:top-[78%]"
               onClick={() => setOpenLocation("erzklamm")}
             />
 
             <MapButton
               label="View Eldarun"
-              className="left-[21%] top-[75%] md:left-[28%] md:top-[76%] lg:left-[34%] lg:top-[67%]"
+              className="left-[29.5%] top-[79%] md:left-[33%] md:top-[78%] lg:left-[34%] lg:top-[67%]"
               onClick={() => setOpenLocation("eldarun")}
             />
 
             <MapButton
               label="View Dämmerfels"
-              className="left-[60%] top-[87%] md:left-[67%] md:top-[88%] lg:left-[72%] lg:top-[79.5%]"
+              className="left-[66%] top-[91%] md:left-[71%] md:top-[90%] lg:left-[72%] lg:top-[79.5%]"
               onClick={() => setOpenLocation("dammerfels")}
             />
 
             <MapButton
               label="View Aridryan"
-              className="left-[55%] top-[6%] md:left-[62%] md:top-[6.5%] lg:left-[68%] lg:top-[8%]"
+              className="left-[63%] top-[10%] md:left-[66.5%] md:top-[8.5%] lg:left-[68%] lg:top-[8%]"
               onClick={() => setOpenLocation("aridryan")}
             />
           </div>

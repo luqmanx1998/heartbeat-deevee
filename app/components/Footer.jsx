@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FiInstagram } from "react-icons/fi";
 import { SiTiktok } from "react-icons/si";
 
-function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
+function Footer({ ibmPlexSerif, font2, scrollToId }) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -16,55 +16,100 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
   }
 
   async function handleSubscribe() {
-  setError("");
-  setMessage("");
+    setError("");
+    setMessage("");
 
-  const trimmedEmail = email.trim();
+    const trimmedEmail = email.trim();
 
-  if (!trimmedEmail) {
-    setError("Bitte gib deine E-Mail-Adresse ein.");
-    return;
-  }
-
-  if (!validateEmail(trimmedEmail)) {
-    setError("Bitte gib eine gültige E-Mail-Adresse ein.");
-    return;
-  }
-
-  try {
-    setIsSubmitting(true);
-
-    const res = await fetch("/api/subscribe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: trimmedEmail,
-        source: "footer",
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      setError(data.error || "Anmeldung fehlgeschlagen.");
+    if (!trimmedEmail) {
+      setError("Bitte gib deine E-Mail-Adresse ein.");
       return;
     }
 
-    setMessage("Danke! Du wirst über Updates informiert.");
-    setEmail("");
-  } catch (err) {
-    setError("Etwas ist schiefgelaufen.");
-  } finally {
-    setIsSubmitting(false);
+    if (!validateEmail(trimmedEmail)) {
+      setError("Bitte gib eine gültige E-Mail-Adresse ein.");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: trimmedEmail,
+          source: "footer",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Anmeldung fehlgeschlagen.");
+        return;
+      }
+
+      setMessage("Danke! Du wirst über Updates informiert.");
+      setEmail("");
+    } catch (err) {
+      setError("Etwas ist schiefgelaufen.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
-}
+
+  const legalLinks = (
+    <div className="space-y-4">
+      <div className={`${ibmPlexSerif.className} text-lg uppercase`}>
+        © 2026. All Rights Reserved.
+      </div>
+
+      <div
+        className={`${font2.className} flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.18em] text-white/60`}
+      >
+        <Link href="/impressum" className="transition hover:text-[#FFD281]">
+          Impressum
+        </Link>
+
+        <Link href="/datenschutz" className="transition hover:text-[#FFD281]">
+          Datenschutz
+        </Link>
+
+        <Link href="/agb" className="transition hover:text-[#FFD281]">
+          AGB
+        </Link>
+
+        <Link
+          href="/widerrufsrecht"
+          className="transition hover:text-[#FFD281]"
+        >
+          Widerrufsrecht
+        </Link>
+
+        <Link
+          href="/zahlung-und-versand"
+          className="transition hover:text-[#FFD281]"
+        >
+          Zahlung und Versand
+        </Link>
+
+        <Link
+          href="/cookie-einstellungen"
+          className="transition hover:text-[#FFD281]"
+        >
+          Cookie-Einstellungen
+        </Link>
+      </div>
+    </div>
+  );
 
   return (
     <footer className="min-h-screen w-full bg-black">
-      <div className="mx-auto grid min-h-screen max-w-[1440px] gap-16 px-6 pt-20 pb-12 text-white lg:grid-cols-[0.95fr_0.75fr] lg:px-15 lg:pb-15">
-        <div className="flex min-h-full flex-col justify-between">
+      <div className="mx-auto flex min-h-screen max-w-[1440px] flex-col gap-12 px-6 pt-20 pb-12 text-white lg:grid lg:grid-cols-[0.95fr_0.75fr] lg:gap-16 lg:px-15 lg:pb-15">
+        <div className="flex flex-col lg:min-h-full lg:justify-between">
           <div>
             <h1 className="text-[clamp(64px,7vw,308px)] leading-[0.95] uppercase">
               Deevee
@@ -73,24 +118,28 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
             <ul
               className={`${ibmPlexSerif.className} mt-14 space-y-[25px] text-sm leading-[100%] tracking-[6%] uppercase`}
             >
-              <li 
-              onClick={() => scrollToId("home")}
-              className="cursor-pointer transition hover:text-[#FFD281]">
+              <li
+                onClick={() => scrollToId("home")}
+                className="cursor-pointer transition hover:text-[#FFD281]"
+              >
                 Home
               </li>
-              <li 
-              onClick={() => scrollToId("map")}
-              className="cursor-pointer transition hover:text-[#FFD281]">
+              <li
+                onClick={() => scrollToId("map")}
+                className="cursor-pointer transition hover:text-[#FFD281]"
+              >
                 Die Welt
               </li>
-              <li 
-              onClick={() => scrollToId("characters")}
-              className="cursor-pointer transition hover:text-[#FFD281]">
+              <li
+                onClick={() => scrollToId("characters")}
+                className="cursor-pointer transition hover:text-[#FFD281]"
+              >
                 Charaktere
               </li>
-              <li 
-              onClick={() => scrollToId("about")}
-              className="cursor-pointer transition hover:text-[#FFD281]">
+              <li
+                onClick={() => scrollToId("about")}
+                className="cursor-pointer transition hover:text-[#FFD281]"
+              >
                 About
               </li>
             </ul>
@@ -99,72 +148,27 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
           <div className="mt-16 space-y-10">
             <div className="flex items-center gap-4">
               <a
-            href="https://instagram.com/xdeeveee"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            className="inline-flex items-center justify-center p-1 text-white transition-colors duration-300 hover:text-[#FFD281]"
-          >
-            <FiInstagram className="text-[20px] text-white hover:text-[#FFD281] transition-colors duration-300 cursor-pointer" />
-          </a>
+                href="https://instagram.com/xdeeveee"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="inline-flex items-center justify-center p-1 text-white transition-colors duration-300 hover:text-[#FFD281]"
+              >
+                <FiInstagram className="cursor-pointer text-[20px] text-white transition-colors duration-300 hover:text-[#FFD281]" />
+              </a>
+
               <a
-            href="https://www.tiktok.com/@xdeeveee"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            className="inline-flex items-center justify-center p-1 text-white transition-colors duration-300 hover:text-[#FFD281]"
-          >
-            <SiTiktok className="text-[18px] text-white hover:text-[#FFD281] transition-colors duration-300 cursor-pointer" />
-          </a>
+                href="https://www.tiktok.com/@xdeeveee"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+                className="inline-flex items-center justify-center p-1 text-white transition-colors duration-300 hover:text-[#FFD281]"
+              >
+                <SiTiktok className="cursor-pointer text-[18px] text-white transition-colors duration-300 hover:text-[#FFD281]" />
+              </a>
             </div>
 
-            <div className="space-y-4">
-  <div className={`${ibmPlexSerif.className} text-lg uppercase`}>
-    © 2026. All Rights Reserved.
-  </div>
-
-  <div
-    className={`${font2.className} flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.18em] text-white/60`}
-  >
-    <Link
-      href="/impressum"
-      className="transition hover:text-[#FFD281]"
-    >
-      Impressum
-    </Link>
-
-    <Link
-      href="/datenschutz"
-      className="transition hover:text-[#FFD281]"
-    >
-      Datenschutz
-    </Link>
-
-    <Link
-      href="/agb"
-      className="transition hover:text-[#FFD281]"
-    >
-      AGB
-    </Link>
-
-    <Link
-      href="/widerrufsrecht"
-      className="transition hover:text-[#FFD281]"
-    >
-      Widerrufsrecht
-    </Link>
-
-    <Link
-      href="/zahlung-und-versand"
-      className="transition hover:text-[#FFD281]"
-    >
-      Zahlung und Versand
-    </Link>
-    <Link href="/cookie-einstellungen"
-    className="transition hover:text-[#FFD281]"
-    >Cookie-Einstellungen</Link>
-  </div>
-</div>
+            <div className="hidden lg:block">{legalLinks}</div>
           </div>
         </div>
 
@@ -176,7 +180,9 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
               Newsletter
             </p>
 
-            <h2 className={`${ibmPlexSerif.className} mt-4 text-[clamp(30px,3vw,48px)] leading-[1.02] uppercase`}>
+            <h2
+              className={`${ibmPlexSerif.className} mt-4 text-[clamp(30px,3vw,48px)] leading-[1.02] uppercase`}
+            >
               Bleib auf dem Laufenden
             </h2>
 
@@ -197,18 +203,18 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
               />
 
               <button
-              disabled={isSubmitting}
-              onClick={handleSubscribe}
-              className={`${ibmPlexSerif.className} rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm uppercase transition hover:border-white/40 hover:bg-white/15 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60`}
-            >
-              <span className="flex items-center justify-center gap-2">
-                {isSubmitting && (
-                  <span className="h-3.5 w-3.5 animate-spin rounded-full border border-white/25 border-t-white" />
-                )}
+                disabled={isSubmitting}
+                onClick={handleSubscribe}
+                className={`${ibmPlexSerif.className} cursor-pointer rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm uppercase transition hover:border-white/40 hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-60`}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  {isSubmitting && (
+                    <span className="h-3.5 w-3.5 animate-spin rounded-full border border-white/25 border-t-white" />
+                  )}
 
-                {isSubmitting ? "Wird gesendet..." : "Anmelden"}
-              </span>
-            </button>
+                  {isSubmitting ? "Wird gesendet..." : "Anmelden"}
+                </span>
+              </button>
             </div>
 
             {error && (
@@ -224,6 +230,8 @@ function Footer({ ibmPlexSerif, font2, scrollToId, setOpen, open }) {
             )}
           </div>
         </div>
+
+        <div className="lg:hidden">{legalLinks}</div>
       </div>
     </footer>
   );

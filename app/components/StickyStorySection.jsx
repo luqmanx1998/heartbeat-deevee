@@ -84,21 +84,21 @@ export default function StickyStorySection({ font2 }) {
       <div className="sticky-intro pointer-events-none absolute inset-0 z-20">
         <p
           ref={(el) => (introTextRef.current[0] = el)}
-          className={`${font2.className} absolute top-[14%] left-[7%] text-[11px] uppercase tracking-[0.32em] text-white/75`}
+          className={`${font2.className} absolute top-[14%] left-[7%] text-[11px] uppercase tracking-[0.32em] text-white/75 max-w-[150px]`}
         >
           Magie ist real
         </p>
 
         <p
           ref={(el) => (introTextRef.current[1] = el)}
-          className={`${font2.className} absolute top-[58%] right-[8%] text-right text-[11px] uppercase tracking-[0.32em] text-white/75`}
+          className={`${font2.className} absolute top-[58%] right-[8%] text-right text-[11px] uppercase tracking-[0.32em] text-white/75 max-w-[220px]`}
         >
           Vertrauen ist tödlich
         </p>
 
         <p
           ref={(el) => (introTextRef.current[2] = el)}
-          className={`${font2.className} absolute bottom-[12%] left-1/2 -translate-x-1/2 text-center text-[11px] uppercase tracking-[0.32em] text-white/75`}
+          className={`${font2.className} absolute bottom-[12%] left-1/2 -translate-x-1/2 text-center text-[11px] uppercase tracking-[0.32em] text-white/75 max-w-[200px]`}
         >
           Und die andere Seite kennt deinen Namen
         </p>

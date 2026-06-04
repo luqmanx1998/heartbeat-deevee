@@ -614,18 +614,18 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/35 lg:bg-black/0" />
 
           <div className="relative z-[25] mx-auto flex min-h-[100svh] w-full max-w-[1600px] items-center px-5 sm:px-8 lg:h-full lg:min-h-0 lg:px-0">
-            <div className="pointer-events-none absolute top-0 right-[-5%] z-10 hidden h-full overflow-visible lg:block 3xl:-top-2">
-              <Image
-                src="/rippedpaper_colored3.png"
-                alt=""
-                width={900}
-                height={900}
-                className="h-full w-auto max-w-[62.5vw] contrast-200"
-              />
-            </div>
+            <div className="pointer-events-none absolute left-1/2 -top-18 z-10 h-[73%] w-[115%] md:h-[60%] md:w-[190%] -translate-x-1/2 opacity-85 lg:left-auto lg:right-[-5%] lg:-top-4 lg:h-full lg:w-auto lg:translate-x-0 lg:scale-y-180 lg:opacity-100 3xl:-top-2">
+  <Image
+    src="/rippedpaper_colored3.png"
+    alt=""
+    width={900}
+    height={900}
+    className="h-full w-full object-cover contrast-200 lg:w-auto lg:max-w-[62.5vw] lg:object-contain"
+  />
+</div>
 
             <div className="relative z-[30] mx-auto grid w-full max-w-[1440px] grid-cols-1 items-center gap-8 lg:w-[75%] lg:grid-cols-2 lg:gap-[15%]">
-              <div className="order-2 flex justify-center lg:order-1 lg:justify-self-end lg:translate-x-6 lg:translate-y-8">
+              <div className="order-2 flex justify-center lg:order-1 lg:justify-self-end lg:translate-x-6 lg:translate-y-4 translate-y-6">
                 <Image
                   src="/authorframe2.png"
                   alt="Author image"
@@ -673,7 +673,7 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="mt-8 lg:mt-11"
+                    className="mt-8 lg:mt-2"
                   >
                     <div
                       className={`${ibmPlexSerif.className} mx-auto max-w-[600px] space-y-3 text-[15px] leading-[1.55] tracking-normal text-white/90 sm:text-[16px] lg:mx-0 lg:translate-y-4 lg:leading-[1.35]`}

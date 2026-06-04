@@ -70,8 +70,8 @@ function Characters() {
 
   return (
     <section className="relative min-h-screen bg-[#1A0C01] pt-14 pb-20">
-          <div className="mx-auto flex max-w-[1320px] items-center justify-between border-t-1 border-b-1 border-[#4e4318] text-white">
-            <h2 className="text-[40px] leading-[119px] tracking-[-5%]">
+          <div className="mx-auto flex max-w-[1320px] items-center justify-between border-t-1 border-b-1 border-[#4e4318] text-white px-4">
+            <h2 className="text-[40px] leading-[40px] lg:leading-[119px] tracking-[-5%]">
               Meet The Characters
             </h2>
             <div className="translate-y-9 flex items-center gap-3">
