@@ -445,17 +445,18 @@ Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierhe
             onClick={() => setOpenLocation("taletopia")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
-              <div className="absolute inset-0 z-10 flex items-center justify-center transform-gpu">
-                <span className="text-[14px] font-semibold text-[#2b1605] transition duration-100">
-                  View Taletopia
-                </span>
-              </div>
-              <img
-  src="/scroll-plate.svg"
-  alt=""
-  className="pointer-events-none absolute inset-0 h-full w-full object-contain transition duration-100 group-hover:brightness-110"
-/>
-            </div>
+  <div className="absolute inset-0 z-10 flex items-center justify-center">
+    <span className="text-[14px] font-semibold text-[#2b1605]">
+      View Taletopia
+    </span>
+  </div>
+
+  <img
+    src="/scroll-plate.svg"
+    alt=""
+    className="pointer-events-none absolute inset-0 h-full w-full object-contain transition duration-100 group-hover:brightness-110"
+  />
+</div>
           </button>
 
               <button
