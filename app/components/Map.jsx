@@ -450,13 +450,11 @@ Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierhe
                   View Taletopia
                 </span>
               </div>
-              <Image
-                src="/scroll-plate.svg"
-                alt=""
-                fill
-                className="object-contain transition duration-100 group-hover:brightness-110"
-                style={{ pointerEvents: "none" }}
-              />
+              <img
+  src="/scroll-plate.svg"
+  alt=""
+  className="pointer-events-none absolute inset-0 h-full w-full object-contain transition duration-100 group-hover:brightness-110"
+/>
             </div>
           </button>
 
