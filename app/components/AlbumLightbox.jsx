@@ -72,7 +72,7 @@ export default function AlbumLightbox({
             {title}
           </h2>
           <div className="flex items-center gap-8 -translate-x-25">
-            <p className="text-sm text-white/70">
+            <p className="text-sm text-white/70 hidden lg:block">
               {currentIndex + 1} / {images.length}
             </p>
             <button
