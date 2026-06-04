@@ -21,7 +21,7 @@ function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
         {openLocation === "taletopia" && (
           <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
           onClick={() => setOpenLocation(null)}>
-            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)] scale-80 lg:scale-100"
             onClick={(e) => e.stopPropagation()}>
               <button
                 onClick={() => setOpenLocation(null)}
@@ -103,7 +103,7 @@ function Map( { openLocation, setAlbumLocation, setOpenLocation }) {
         {openLocation === "erzklamm" && (
           <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
           onClick={() => setOpenLocation(null)}>
-            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)] scale-80 lg:scale-100"
             onClick={(e) => e.stopPropagation()}>
               <button
                 onClick={() => setOpenLocation(null)}
@@ -171,7 +171,7 @@ Die Zwerge sind fleißig, aber auch vorsichtig. Fremden begegnen sie mit Misstra
         {openLocation === "eldarun" && (
           <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
            onClick={() => setOpenLocation(null)}>
-            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)] scale-80 lg:scale-100"
             onClick={(e) => e.stopPropagation()}>
               <button
                 onClick={() => setOpenLocation(null)}
@@ -237,7 +237,7 @@ Elfen halten sich für überlegen und bleiben meist unter sich. Fremden begegnen
         {openLocation === "witraliria" && (
           <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
           onClick={() => setOpenLocation(null)}>
-            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)] scale-80 lg:scale-100"
              onClick={(e) => e.stopPropagation()}>
               <button
                 onClick={() => setOpenLocation(null)}
@@ -303,7 +303,7 @@ Hexen halten sich meist aus Konflikten heraus und bleiben neutral.
         {openLocation === "aridryan" && (
           <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
           onClick={() => setOpenLocation(null)}>
-            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)] scale-80 lg:scale-100"
             onClick={(e) => e.stopPropagation()}>
               <button
                 onClick={() => setOpenLocation(null)}
@@ -368,7 +368,7 @@ Die Königin jedoch gilt als unberechenbar. Sie hasst die Feen und lässt fremde
         {openLocation === "dammerfels" && (
           <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm"
           onClick={() => setOpenLocation(null)}>
-            <div className="relative w-full max-w-[900px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+            <div className="relative w-full lg:max-w-[800px] animate-[modalIn_0.35s_ease-out] overflow-hidden rounded-[24px] border border-amber-200/20 bg-[#1a120d] shadow-[0_20px_80px_rgba(0,0,0,0.6)] scale-80 lg:scale-100"
             onClick={(e) => e.stopPropagation()}>
               <button
                 onClick={() => setOpenLocation(null)}
@@ -377,7 +377,7 @@ Die Königin jedoch gilt als unberechenbar. Sie hasst die Feen und lässt fremde
                 ✕
               </button>
 
-              <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+              <div className="grid md:grid-cols-[0.9fr_1.1fr]">
                 <div className="relative min-h-[320px]">
                   <Image
                     src="/dammerfels.jpeg"
@@ -441,7 +441,7 @@ Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierhe
               />
 
                         <button
-            className="group absolute left-[7%] top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute -left-[6%] top-[53%] md:left-[2%] md:top-[54%] lg:left-[7%] lg:top-[46%] cursor-pointer animate-[float_3s_ease-in-out_infinite] scale-60 lg:scale-100"
             onClick={() => setOpenLocation("taletopia")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
@@ -461,7 +461,7 @@ Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierhe
           </button>
 
               <button
-            className="group absolute left-[20%] top-[13%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute left-[7%] top-[10%] md:left-[14%] md:top-[11%] lg:left-[20%] lg:top-[13%] cursor-pointer animate-[float_3s_ease-in-out_infinite] scale-60 lg:scale-100"
             onClick={() => setOpenLocation("witraliria")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
@@ -481,7 +481,7 @@ Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierhe
           </button>
 
               <button
-            className="group absolute left-[9%] top-[78%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute -left-[4%] top-[86%] lg:left-[9%] md:top-[87%] md:left-[3%] lg:top-[78%] cursor-pointer animate-[float_3s_ease-in-out_infinite] scale-60 lg:scale-100"
             onClick={() => setOpenLocation("erzklamm")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
@@ -502,7 +502,7 @@ Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierhe
 
 
               <button
-            className="group absolute left-[34%] top-[67%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute left-[21%] top-[75%] md:left-[28%] md:top-[76%] lg:left-[34%] lg:top-[67%] cursor-pointer animate-[float_3s_ease-in-out_infinite] scale-60 lg:scale-100"
             onClick={() => setOpenLocation("eldarun")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
@@ -523,7 +523,7 @@ Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierhe
 
 
               <button
-            className="group absolute left-[72%] top-[79.5%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute left-[60%] top-[87%] md:left-[67%] md:top-[88%] lg:left-[72%] lg:top-[79.5%] cursor-pointer animate-[float_3s_ease-in-out_infinite] scale-60 lg:scale-100"
             onClick={() => setOpenLocation("dammerfels")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
@@ -544,7 +544,7 @@ Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierhe
 
 
               <button
-            className="group absolute left-[68%] top-[8%] cursor-pointer animate-[float_3s_ease-in-out_infinite]"
+            className="group absolute left-[55%] top-[6%] md:left-[62%] md:top-[6.5%] lg:left-[68%] lg:top-[8%] cursor-pointer animate-[float_3s_ease-in-out_infinite] scale-60 lg:scale-100"
             onClick={() => setOpenLocation("aridryan")}
           >
             <div className="relative h-[44px] w-[193px] transition duration-100 group-hover:scale-105">
