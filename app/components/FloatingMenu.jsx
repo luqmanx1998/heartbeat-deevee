@@ -380,7 +380,7 @@ export default function FloatingMenu({
             </div>
           </div>
 
-          <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center justify-center gap-1 md:gap-3 lg:mb-4">
+          <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center justify-center gap-1 md:gap-3 lg:mb-4 mb-20">
             {navItems.map(([label, id], index) => {
               const sharedClass =
               "menu-link group relative inline-block cursor-pointer text-center text-[clamp(56px,7vw,128px)] uppercase leading-[0.9] tracking-[-0.04em] text-white/95";
@@ -421,71 +421,72 @@ export default function FloatingMenu({
           </div>
 
           <div
-            ref={subscribeBlockRef}
-            className="absolute bottom-8 left-8 w-[min(320px,calc(100vw-4rem))] md:bottom-10 md:left-12"
-          >
-            <div className="rounded-[20px] border border-white/10 bg-black/25 p-4 text-left backdrop-blur-[3px]">
-              <div className="overflow-hidden">
-                <p
-                  ref={(el) => (footerLineRefs.current[3] = el)}
-                  className={`${font2.className} inline-block text-[10px] uppercase tracking-[0.28em] text-white/50 will-change-transform`}
-                >
-                  Updates
-                </p>
-              </div>
+  ref={subscribeBlockRef}
+  className="absolute bottom-16 left-5 w-[calc(100vw-2.5rem)] max-w-[360px] md:bottom-10 md:left-12 md:w-[min(320px,calc(100vw-4rem))]"
+>
+  <div className="rounded-[18px] border border-white/10 bg-black/25 p-3 text-left backdrop-blur-[6px] md:rounded-[20px] md:p-4">
+    <div className="overflow-hidden">
+      <p
+        ref={(el) => (footerLineRefs.current[3] = el)}
+        className={`${font2.className} inline-block text-[10px] uppercase tracking-[0.28em] text-white/50 will-change-transform`}
+      >
+        Updates
+      </p>
+    </div>
 
-              <p
-                className={`${ibmPlexSerif.className} mt-2 text-[15px] leading-[1.5] text-white/82`}
-              >
-                Erhalte Neuigkeiten zu neuen Büchern, Presales und besonderen
-                Heartbeat-News.
-              </p>
+    {/* hidden on very small mobile */}
+    <p
+      className={`${ibmPlexSerif.className} mt-2 hidden text-[15px] leading-[1.5] text-white/82 sm:block`}
+    >
+      Erhalte Neuigkeiten zu neuen Büchern, Presales und besonderen
+      Heartbeat-News.
+    </p>
 
-              <div className="mt-4 flex gap-2">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Deine E-Mail"
-                  className={`${font2.className} min-w-0 flex-1 rounded-full border border-white/20 bg-white/[0.04] px-4 py-2.5 text-[11px] uppercase tracking-[0.12em] text-white placeholder:text-white/32 outline-none transition focus:border-white/28 focus:bg-white/[0.07]`}
-                />
+    <div className="mt-3 flex gap-2">
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Deine E-Mail"
+        className={`${font2.className} min-w-0 flex-1 rounded-full border border-white/20 bg-white/[0.04] px-4 py-2.5 text-[10px] uppercase tracking-[0.1em] text-white placeholder:text-white/32 outline-none transition focus:border-white/28 focus:bg-white/[0.07] md:text-[11px] md:tracking-[0.12em]`}
+      />
 
-                <button
-                  disabled={isSubmitting}
-                  onClick={handleSubscribe}
-                  className={`${ibmPlexSerif.className} rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm uppercase transition hover:border-white/40 hover:bg-white/15 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60`}
-                >
-                  <span className="flex items-center justify-center gap-2 text-white/82">
-                    {isSubmitting && (
-                      <span className="h-3.5 w-3.5 animate-spin rounded-full border border-white/25 border-t-white" />
-                    )}
+      <button
+        disabled={isSubmitting}
+        onClick={handleSubscribe}
+        className={`${ibmPlexSerif.className} cursor-pointer rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-[11px] uppercase transition hover:border-white/40 hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-60 md:px-6 md:py-3 md:text-sm`}
+      >
+        <span className="flex items-center justify-center gap-2 text-white/82">
+          {isSubmitting && (
+            <span className="h-3.5 w-3.5 animate-spin rounded-full border border-white/25 border-t-white" />
+          )}
 
-                    {isSubmitting ? "Wird gesendet..." : "Anmelden"}
-                  </span>
-                </button>
-              </div>
+          {isSubmitting ? "..." : "Anmelden"}
+        </span>
+      </button>
+    </div>
 
-              {emailError && (
-                <p
-                  className={`${font2.className} mt-2 text-[11px] tracking-[0.02em] text-red-300`}
-                >
-                  {emailError}
-                </p>
-              )}
+    {emailError && (
+      <p
+        className={`${font2.className} mt-2 text-[11px] tracking-[0.02em] text-red-300`}
+      >
+        {emailError}
+      </p>
+    )}
 
-              {emailMessage && (
-                <p
-                  className={`${font2.className} mt-2 text-[11px] tracking-[0.02em] text-[#FFD281]`}
-                >
-                  {emailMessage}
-                </p>
-              )}
-            </div>
-          </div>
+    {emailMessage && (
+      <p
+        className={`${font2.className} mt-2 text-[11px] tracking-[0.02em] text-[#FFD281]`}
+      >
+        {emailMessage}
+      </p>
+    )}
+  </div>
+</div>
 
           <div
             ref={rightFooterRef}
-            className="absolute bottom-8 right-8 overflow-hidden md:bottom-10 md:right-12"
+            className="absolute bottom-8 right-8 overflow-hidden md:bottom-10 md:right-12 hidden lg:block"
           >
             <p
               ref={(el) => (footerLineRefs.current[4] = el)}
