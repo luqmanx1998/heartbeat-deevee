@@ -7,7 +7,7 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import LoginModal from "../components/LoginModal";
 import { createClient } from "../lib/supabase/client";
 import Link from "next/link";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Menu } from "lucide-react";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -453,99 +453,102 @@ export default function HeartbeatStorePage() {
         <section className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_top,rgba(74,109,190,0.18),transparent_34%),radial-gradient(circle_at_top_right,rgba(132,33,64,0.18),transparent_26%),linear-gradient(to_bottom,#0b0b0d,#090909)] py-10">
           <div className="relative mb-10">
             <div
-              className="absolute right-[13.5%] top-0 z-20"
-              ref={userMenuRef}
+  className="fixed right-4 top-4 z-[9998] flex items-center gap-2 sm:absolute sm:right-[13.5%] sm:top-0 sm:z-20"
+  ref={userMenuRef}
+>
+  {authLoading ? (
+    <div
+      className={`${font2.className} inline-flex h-[38px] items-center justify-center rounded-full border border-white/10 bg-[#111113]/70 px-3 text-[10px] uppercase tracking-[0.16em] text-white/45 backdrop-blur-[10px] sm:h-auto sm:px-5 sm:py-2.5 sm:text-[11px] sm:tracking-[0.24em]`}
+    >
+      Loading...
+    </div>
+  ) : !user ? (
+    <button
+      onClick={() => setShowLoginModal(true)}
+      className={`${font2.className} inline-flex h-[38px] cursor-pointer items-center justify-center rounded-full border border-white/14 bg-[#111113]/70 px-3 text-[10px] uppercase tracking-[0.16em] text-white/88 backdrop-blur-[10px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:text-[#fff4de] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)] sm:h-auto sm:px-5 sm:py-2.5 sm:text-[11px] sm:tracking-[0.24em]`}
+    >
+      Login
+    </button>
+  ) : (
+    <div className="relative">
+      <button
+        onClick={() => setShowUserMenu((prev) => !prev)}
+        className={`${font2.className} inline-flex h-[38px] w-[38px] sm:w-auto sm:max-w-[260px] cursor-pointer items-center justify-center gap-2 rounded-full border border-[#f3d4a2]/18 bg-[#111113]/70 px-3 text-[10px] uppercase tracking-[0.12em] text-[#fff4de] backdrop-blur-[10px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)] sm:h-auto sm:max-w-[260px] sm:justify-start sm:px-4 sm:py-2.5 sm:text-[11px] sm:tracking-[0.18em]`}
+      >
+        <Menu size={18} strokeWidth={1.8} className="sm:hidden" />
+
+      <span className="hidden h-2 w-2 shrink-0 rounded-full bg-[#f3d4a2] sm:inline-block" />
+
+      <span className="hidden truncate normal-case tracking-normal text-[12px] sm:inline">
+        {profile.display_name ?? profile.email}
+      </span>
+      </button>
+
+      {showUserMenu && (
+        <div className="absolute right-0 mt-3 w-[220px] overflow-hidden rounded-[22px] border border-white/10 bg-[#111113]/95 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+          {isAdmin && (
+            <Link
+              href="/admindashboard"
+              className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-[#f1d3a5] transition hover:bg-white/[0.06] hover:text-white`}
+              onClick={() => setShowUserMenu(false)}
             >
-              {authLoading ? (
-                <div
-                  className={`${font2.className} inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-5 py-2.5 text-[11px] uppercase tracking-[0.24em] text-white/45 backdrop-blur-[6px]`}
-                >
-                  Loading...
-                </div>
-              ) : !user ? (
-                <button
-                  onClick={() => setShowLoginModal(true)}
-                  className={`${font2.className} inline-flex cursor-pointer items-center justify-center rounded-full border border-white/14 bg-white/[0.04] px-5 py-2.5 text-[11px] uppercase tracking-[0.24em] text-white/88 backdrop-blur-[6px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:text-[#fff4de] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)]`}
-                >
-                  Login
-                </button>
-              ) : (
-                <div className="relative">
-                  <button
-                    onClick={() => setShowUserMenu((prev) => !prev)}
-                    className={`${font2.className} inline-flex max-w-[260px] cursor-pointer items-center gap-3 rounded-full border border-[#f3d4a2]/18 bg-white/[0.05] px-4 py-2.5 text-[11px] uppercase tracking-[0.18em] text-[#fff4de] backdrop-blur-[8px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)]`}
-                  >
-                    <span className="inline-block h-2 w-2 rounded-full bg-[#f3d4a2]" />
-                    <span className="truncate normal-case tracking-normal text-[12px]">
-                      {profile.display_name ?? profile.email}
-                    </span>
-                  </button>
+              Admin Dashboard
+            </Link>
+          )}
 
-                  {showUserMenu && (
-                    <div className="absolute right-0 mt-3 w-[220px] overflow-hidden rounded-[22px] border border-white/10 bg-[#111113]/95 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl">
-                      {isAdmin && (
-                        <Link
-                          href="/admindashboard"
-                          className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-[#f1d3a5] transition hover:bg-white/[0.06] hover:text-white`}
-                          onClick={() => setShowUserMenu(false)}
-                        >
-                          Admin Dashboard
-                        </Link>
-                      )}
+          <Link
+            href="/store/orders"
+            className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-white/82 transition hover:bg-white/[0.06] hover:text-[#fff4de]`}
+          >
+            Orders
+          </Link>
 
-                      <Link
-                        href="/store/orders"
-                        className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-white/82 transition hover:bg-white/[0.06] hover:text-[#fff4de]`}
-                      >
-                        Orders
-                      </Link>
+          <Link
+            href="/store/profile"
+            className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-white/82 transition hover:bg-white/[0.06] hover:text-[#fff4de]`}
+          >
+            Profile
+          </Link>
 
-                      <Link
-                        href="/store/profile"
-                        className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-white/82 transition hover:bg-white/[0.06] hover:text-[#fff4de]`}
-                      >
-                        Profile
-                      </Link>
+          <div className="my-1 h-px bg-white/8" />
 
-                      <div className="my-1 h-px bg-white/8" />
+          <button
+            onClick={handleSignOut}
+            className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-[#f1d3a5] transition hover:bg-white/[0.06] hover:text-white`}
+          >
+            Sign out
+          </button>
+        </div>
+      )}
+    </div>
+  )}
 
-                      <button
-                        onClick={handleSignOut}
-                        className={`${font2.className} flex w-full cursor-pointer items-center rounded-2xl px-4 py-3 text-left text-[11px] uppercase tracking-[0.2em] text-[#f1d3a5] transition hover:bg-white/[0.06] hover:text-white`}
-                      >
-                        Sign out
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
+  <div
+    className={`${
+      cartIsFloating
+        ? "fixed bottom-6 right-6 z-[9998]"
+        : "static sm:absolute sm:-top-0.25 sm:-right-12"
+    } transition-all duration-500`}
+  >
+    <Link
+      href="/store/cart"
+      className={`relative inline-flex items-center justify-center rounded-full border border-[#f3d4a2]/18 bg-[#111113]/70 text-[#fff4de] backdrop-blur-[10px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)] ${
+        cartIsFloating
+          ? "h-[54px] w-[54px] bg-[#111113]/80 shadow-[0_18px_45px_rgba(0,0,0,0.45)]"
+          : "h-[38px] w-[38px] sm:h-[42px] sm:w-[42px]"
+      }`}
+      aria-label="Open cart"
+    >
+      <ShoppingBag size={cartIsFloating ? 22 : 17} strokeWidth={1.8} />
 
-              <div
-                className={`${
-                  cartIsFloating
-                    ? "fixed bottom-6 right-6 z-[9998]"
-                    : "absolute -top-0.25 -right-12"
-                } transition-all duration-500`}
-              >
-                <Link
-                  href="/store/cart"
-                  className={`relative inline-flex items-center justify-center rounded-full border border-[#f3d4a2]/18 bg-white/[0.05] text-[#fff4de] backdrop-blur-[8px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)] ${
-                    cartIsFloating
-                      ? "h-[54px] w-[54px] bg-[#111113]/80 shadow-[0_18px_45px_rgba(0,0,0,0.45)]"
-                      : "h-[42px] w-[42px]"
-                  }`}
-                  aria-label="Open cart"
-                >
-                  <ShoppingBag size={18} strokeWidth={1.8} />
-
-                  {cartCount > 0 && (
-                    <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#f3d4a2] px-1 text-[10px] font-semibold leading-none text-black">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
-              </div>
-            </div>
+      {cartCount > 0 && (
+        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#f3d4a2] px-1 text-[10px] font-semibold leading-none text-black">
+          {cartCount}
+        </span>
+      )}
+    </Link>
+  </div>
+</div>
 
             <div className="text-center">
               <p

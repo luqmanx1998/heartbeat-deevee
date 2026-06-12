@@ -10,6 +10,9 @@ export default function AdminDashboardLayout({ children }) {
 
       <div className="pointer-events-none absolute inset-3 rounded-[30px] border border-[#8f6a37]/55 shadow-[inset_0_0_0_1px_rgba(217,182,115,0.16),0_0_40px_rgba(0,0,0,0.35)] sm:inset-5 lg:inset-6" />
 
+      <div className="pointer-events-none absolute left-4 top-4 h-14 w-14 rounded-full bg-[radial-gradient(circle,rgba(120,172,255,0.65),rgba(120,172,255,0.16),transparent_70%)] blur-md" />
+      <div className="pointer-events-none absolute bottom-5 right-7 h-20 w-20 rounded-full bg-[radial-gradient(circle,rgba(239,188,101,0.48),rgba(239,188,101,0.08),transparent_72%)] blur-lg" />
+
       <div className="relative mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
         {children}
       </div>
