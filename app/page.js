@@ -60,6 +60,15 @@ export default function Home() {
   const heroCtaRef = useRef(null);
   const pageFlashRef = useRef(null);
 
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+  const logoUrl = `${siteUrl}/deeveeemaildark2.png`;
+  const heroUrl = `${siteUrl}/emailhero.jpg`;
+
+  console.log("EMAIL SITE URL:", siteUrl);
+  console.log("LOGO URL:", logoUrl);
+  console.log("HERO URL:", heroUrl);
+
+
   const aboutContent = {
   author: {
     titleTop: "About",

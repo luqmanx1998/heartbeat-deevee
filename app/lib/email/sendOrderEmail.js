@@ -9,7 +9,7 @@ export async function sendOrderEmail({
   total,
   shippingAddress,
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+  const siteUrl = "https://heartbeat-deevee.vercel.app";
   const logoUrl = `${siteUrl}/deeveeemaildark2.png`;
   const heroUrl = `${siteUrl}/emailhero.jpg`;
 
