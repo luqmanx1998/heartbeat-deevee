@@ -28,7 +28,7 @@ export default function Page() {
     );
   }, [cart]);
 
-  const shipping = cart.length > 0 ? 3.99 : 0;
+  const shipping = cart.length > 0 ? 0 : 0;
 
   const total = subtotal + shipping;
 
