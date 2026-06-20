@@ -39,7 +39,7 @@ export default function CheckoutForm({ total }) {
     });
 
     if (error) {
-      setMessage(error.message || "Payment failed.");
+      setMessage(error.message || "Die Zahlung ist fehlgeschlagen.");
       setIsPaying(false);
       return;
     }
@@ -65,7 +65,7 @@ export default function CheckoutForm({ total }) {
   return (
     <form onSubmit={handleSubmit}>
       <h3 className="mb-5 text-[18px] font-semibold text-white">
-        Payment method
+        Zahlungsmethode
       </h3>
 
       <div className="rounded-[18px] border border-white/10 bg-white/[0.035] p-4">
@@ -74,7 +74,7 @@ export default function CheckoutForm({ total }) {
         <div className="my-5 flex items-center gap-3">
           <div className="h-px flex-1 bg-white/10" />
           <span className="text-[11px] uppercase tracking-[0.22em] text-white/35">
-            or pay another way
+            oder anders bezahlen
           </span>
           <div className="h-px flex-1 bg-white/10" />
         </div>
@@ -93,8 +93,8 @@ export default function CheckoutForm({ total }) {
         className="mt-6 w-full rounded-md bg-[#17120f] px-6 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(0,0,0,0.22)] transition hover:-translate-y-0.5 hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isPaying
-          ? "Processing..."
-          : `Complete purchase - €${Number(total || 0).toFixed(2)}`}
+          ? "Zahlung wird verarbeitet..."
+          : `Kauf abschließen – €${Number(total || 0).toFixed(2)}`}
       </button>
     </form>
   );
