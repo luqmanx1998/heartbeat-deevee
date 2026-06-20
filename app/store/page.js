@@ -75,6 +75,8 @@ export default function HeartbeatStorePage() {
   const [showSignOutOverlay, setShowSignOutOverlay] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [cartToast, setCartToast] = useState(false);
+  const [addedProductId, setAddedProductId] = useState(null);
+  const [cartPulse, setCartPulse] = useState(false);
   const [productsBySlug, setProductsBySlug] = useState({});
   const [productsLoading, setProductsLoading] = useState(true);
   const [cartIsFloating, setCartIsFloating] = useState(false);
@@ -164,14 +166,18 @@ export default function HeartbeatStorePage() {
     setCartCount(count);
   }
 
-  function showCartToast() {
+  function showCartToast(productId) {
     setCartToast(true);
+    setAddedProductId(productId);
+    setCartPulse(true);
 
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
 
     toastTimerRef.current = setTimeout(() => {
       setCartToast(false);
-    }, 2400);
+      setAddedProductId(null);
+      setCartPulse(false);
+    }, 2600);
   }
 
   function addProductBySlug(slug) {
@@ -218,7 +224,7 @@ export default function HeartbeatStorePage() {
     localStorage.setItem("heartbeat_cart", JSON.stringify(cart));
 
     syncCartCount();
-    showCartToast();
+    showCartToast(product.id);
   }
 
   useEffect(() => {
@@ -414,11 +420,20 @@ export default function HeartbeatStorePage() {
         className="relative min-h-screen bg-[#090909] text-white"
       >
         {cartToast && (
-          <div className="fixed left-1/2 top-6 z-[9999] -translate-x-1/2 animate-[fadeIn_0.25s_ease-out]">
+          <div className="fixed left-1/2 top-[50%] z-[9999] -translate-x-1/2 -translate-y-1/2 animate-[fadeIn_0.25s_ease-out]">
             <div
-              className={`${font2.className} rounded-full border border-[#f3d4a2]/18 bg-[#111113]/95 px-5 py-3 text-[11px] uppercase tracking-[0.22em] text-[#fff4de] shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl`}
+              className={`${font2.className} rounded-[26px] border border-[#f3d4a2]/22 bg-[#111113]/95 px-7 py-5 text-center text-[11px] uppercase tracking-[0.22em] text-[#fff4de] shadow-[0_20px_60px_rgba(0,0,0,0.55)] backdrop-blur-xl`}
             >
-              Added to bag!
+              <div className="flex flex-col items-center gap-2">
+                <span>Zum Warenkorb hinzugefügt ✓</span>
+
+                <Link
+                  href="/store/cart"
+                  className="text-[10px] tracking-[0.18em] text-[#f3d4a2] underline underline-offset-4 transition hover:text-white"
+                >
+                  Warenkorb ansehen
+                </Link>
+              </div>
             </div>
           </div>
         )}
@@ -533,6 +548,8 @@ export default function HeartbeatStorePage() {
     <Link
       href="/store/cart"
       className={`relative inline-flex items-center justify-center rounded-full border border-[#f3d4a2]/18 bg-[#111113]/70 text-[#fff4de] backdrop-blur-[10px] transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/35 hover:bg-white/[0.08] hover:shadow-[0_0_24px_rgba(243,212,162,0.14)] ${
+        cartPulse ? "scale-110 ring-2 ring-[#f3d4a2]/50" : ""
+      } ${
         cartIsFloating
           ? "h-[54px] w-[54px] bg-[#111113]/80 shadow-[0_18px_45px_rgba(0,0,0,0.45)]"
           : "h-[38px] w-[38px] sm:h-[42px] sm:w-[42px]"
@@ -752,7 +769,11 @@ export default function HeartbeatStorePage() {
                           }
                           className={`${primaryButton} ${font2.className} bg-[#f2e6d7] text-black hover:bg-white shadow-[0_10px_30px_rgba(242,230,215,0.18)] flex-1 transition duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
                         >
-                          {isBuchboxSoldOut ? "Ausverkauft" : "Buchbox sichern"}
+                          {isBuchboxSoldOut
+                            ? "Ausverkauft"
+                            : addedProductId === buchboxProduct?.id
+                              ? "Hinzugefügt ✓"
+                              : "Buchbox sichern"}
                         </button>
                       </div>
 
@@ -859,7 +880,11 @@ export default function HeartbeatStorePage() {
                         }
                         className={`${primaryButton} ${font2.className} w-full bg-white text-black cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
                       >
-                        {isBookSoldOut ? "Ausverkauft" : "Jetzt kaufen"}
+                        {isBookSoldOut
+                          ? "Ausverkauft"
+                          : addedProductId === bookProduct?.id
+                            ? "Hinzugefügt ✓"
+                            : "Jetzt kaufen"}
                       </button>
                     </div>
 
