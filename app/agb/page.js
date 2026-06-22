@@ -1,5 +1,11 @@
 import LegalPage from "@/app/components/LegalPage";
 
+export const metadata = {
+  title: "AGB | Deevee",
+  description:
+    "Allgemeine Geschäftsbedingungen und Kundeninformationen für den Deevee Shop.",
+};
+
 export default function Page() {
   return (
     <LegalPage title="AGB">
