@@ -114,7 +114,7 @@ export default function GuestOrderPage() {
         <div className="mx-auto max-w-5xl">
           <Link
             href="/store"
-            className="inline-flex rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-white/70 transition hover:text-white"
+            className="inline-flex cursor-pointer rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-white/70 transition hover:bg-white/[0.08] hover:text-white"
           >
             ← Zurück zum Shop
           </Link>
@@ -244,7 +244,7 @@ export default function GuestOrderPage() {
 
                         <button
                           onClick={() => setShowCancelConfirm(true)}
-                          className="mt-5 w-full rounded-full border border-red-300/25 bg-red-950/40 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-red-100 transition hover:bg-red-900/50"
+                          className="mt-5 w-full rounded-full border border-red-300/25 bg-red-950/40 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-red-100 transition hover:bg-red-900/50 cursor-pointer"
                         >
                           Bestellung stornieren
                         </button>
@@ -261,7 +261,7 @@ export default function GuestOrderPage() {
 
                         <button
                           onClick={() => setShowWithdrawalConfirm(true)}
-                          className="mt-5 w-full rounded-full border border-[#f3d4a2]/25 bg-[#4a2d14]/40 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-[#f3d4a2] transition hover:bg-[#4a2d14]/60"
+                          className="mt-5 w-full rounded-full border border-[#f3d4a2]/25 bg-[#4a2d14]/40 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-[#f3d4a2] transition hover:bg-[#4a2d14]/60 cursor-pointer"
                         >
                           Widerruf anfordern
                         </button>
@@ -327,7 +327,7 @@ export default function GuestOrderPage() {
               <button
                 disabled={actionLoading}
                 onClick={() => setShowWithdrawalConfirm(false)}
-                className="flex-1 rounded-[16px] border border-white/10 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-white/70"
+                className="flex-1 cursor-pointer rounded-[16px] border border-white/10 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-white/70 transition hover:bg-white/[0.06] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Abbrechen
               </button>
@@ -335,7 +335,7 @@ export default function GuestOrderPage() {
               <button
                 disabled={actionLoading}
                 onClick={() => runAction("withdrawal")}
-                className="flex-1 rounded-[16px] bg-[#f2e6d7] px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-black"
+               className="flex-1 cursor-pointer rounded-[16px] bg-[#f2e6d7] px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-black transition hover:bg-[#e7d8c5] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {actionLoading ? "Sende..." : "Widerruf senden"}
               </button>
@@ -387,7 +387,7 @@ function ConfirmModal({
           <button
             disabled={disabled}
             onClick={onCancel}
-            className="flex-1 rounded-[16px] border border-white/10 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-white/70"
+            className="flex-1 cursor-pointer rounded-[16px] border border-white/10 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-white/70 transition hover:bg-white/[0.06] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             Abbrechen
           </button>
@@ -395,7 +395,7 @@ function ConfirmModal({
           <button
             disabled={disabled}
             onClick={onConfirm}
-            className="flex-1 rounded-[16px] bg-red-950/70 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-red-100"
+            className="flex-1 cursor-pointer rounded-[16px] bg-red-950/70 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-red-100 transition hover:bg-red-900/80 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {confirmText}
           </button>
