@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import { NextResponse } from "next/server";
 import { createClient } from "@/app/lib/supabase/server";
 import { supabaseAdmin } from "@/app/lib/supabase/admin";
+import { randomUUID } from "crypto";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const SHIPPING_COST = 3.99;
@@ -79,6 +80,8 @@ export async function POST(request) {
     const amount = Math.round(total * 100);
 
     // 🧾 Create order (same pattern as before)
+    const orderAccessToken = randomUUID();
+
     const { data: order, error: orderError } = await supabaseAdmin
       .from("orders")
       .insert({
@@ -87,7 +90,11 @@ export async function POST(request) {
         signature_request: String(signatureRequest || "").trim() || null,
         status: "pending",
         total,
-      })
+        order_access_token: orderAccessToken,
+        order_access_token_expires_at: new Date(
+          Date.now() + 1000 * 60 * 60 * 24 * 30
+        ).toISOString(),
+              })
       .select("id")
       .single();
 
