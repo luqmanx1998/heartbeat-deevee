@@ -48,6 +48,12 @@ export async function sendOrderEmail({
     })
     .join("");
 
+    console.log("SEND ORDER EMAIL DEBUG", {
+  orderId,
+  orderAccessToken,
+  orderLink,
+});
+
   return await resend.emails.send({
     from: process.env.RESEND_FROM_EMAIL,
     to,

@@ -94,7 +94,7 @@ async function fulfillCheckout(sessionId) {
 
   const { data: existingOrder, error: existingOrderError } = await supabaseAdmin
     .from("orders")
-    .select("id, fulfilled_at, customer_email, total")
+    .select("id, fulfilled_at, customer_email, total, order_access_token")
     .eq("id", orderId)
     .maybeSingle();
 
@@ -162,6 +162,7 @@ async function fulfillCheckout(sessionId) {
       items,
       total: existingOrder.total,
       shippingAddress: formattedShippingAddress,
+      orderAccessToken: existingOrder.order_access_token,
     });
 
     console.log("Order email sent:", emailResult);
@@ -178,7 +179,7 @@ async function fulfillPaymentIntent(paymentIntent) {
 
   const { data: existingOrder, error: existingOrderError } = await supabaseAdmin
     .from("orders")
-    .select("id, customer_email, total, shipping_address, fulfilled_at")
+    .select("id, customer_email, total, shipping_address, fulfilled_at, order_access_token")
     .eq("id", orderId)
     .maybeSingle();
 
@@ -235,6 +236,10 @@ async function fulfillPaymentIntent(paymentIntent) {
   }
 
   console.log("PaymentIntent order fulfilled:", orderId);
+  console.log(
+  "TOKEN DEBUG:",
+  existingOrder.order_access_token
+);
 
   try {
     const emailResult = await sendOrderEmail({
@@ -243,6 +248,7 @@ async function fulfillPaymentIntent(paymentIntent) {
       items,
       total: existingOrder.total,
       shippingAddress: existingOrder.shipping_address,
+      orderAccessToken: existingOrder.order_access_token,
     });
 
     console.log("Order email sent:", emailResult);
