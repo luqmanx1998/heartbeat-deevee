@@ -8,10 +8,12 @@ export async function sendOrderEmail({
   items,
   total,
   shippingAddress,
+  orderAccessToken,
 }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
   const logoUrl = `${siteUrl}/deeveeemaildark2.png`;
   const heroUrl = `${siteUrl}/emailhero.jpg`;
+  const orderLink = `${siteUrl}/store/order/${orderId}?token=${orderAccessToken}`;
 
   const itemsHtml = items
     .map((item) => {
@@ -49,7 +51,7 @@ export async function sendOrderEmail({
   return await resend.emails.send({
     from: process.env.RESEND_FROM_EMAIL,
     to,
-    subject: "Deine Deevee Bestellung wurde bestätigt ✦",
+    subject: "Deine Deevee Bestellung wurde bestätigt",
     html: `
       <div style="margin:0; padding:0; background:#0b0b0d; font-family:Arial, Helvetica, sans-serif;">
         <div style="max-width:640px; margin:0 auto; padding:32px 16px;">
@@ -77,7 +79,7 @@ export async function sendOrderEmail({
               </p>
 
               <h1 style="margin:0; font-size:30px; line-height:1.1; color:#151515; letter-spacing:-0.04em;">
-                Vielen Dank für deine Bestellung ✦
+                Vielen Dank für deine Bestellung
               </h1>
 
               <p style="margin:16px 0 0; font-size:14px; line-height:1.7; color:#666;">
@@ -93,7 +95,25 @@ export async function sendOrderEmail({
                 </div>
               </div>
 
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:26px; border-collapse:collapse;">
+              <div style="margin-top:22px; text-align:center;">
+              <a
+                href="${orderLink}"
+                style="
+                  display:inline-block;
+                  padding:14px 22px;
+                  border-radius:999px;
+                  background:#111111;
+                  color:#ffffff;
+                  font-size:13px;
+                  font-weight:700;
+                  text-decoration:none;
+                "
+              >
+                Bestellung ansehen / stornieren
+              </a>
+            </div>
+
+                          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:26px; border-collapse:collapse;">
                 ${itemsHtml}
 
                 <tr>
