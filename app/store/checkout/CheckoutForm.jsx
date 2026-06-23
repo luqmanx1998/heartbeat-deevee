@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  ExpressCheckoutElement,
-  PaymentElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
+import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useState } from "react";
 
 export default function CheckoutForm({ total }) {
@@ -24,15 +19,16 @@ export default function CheckoutForm({ total }) {
     },
   };
 
-  async function confirmPayment() {
+  async function handleSubmit(e) {
+    e.preventDefault();
+
     if (!stripe || !elements) return;
 
     setIsPaying(true);
     setMessage("");
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
+    const { error } = await stripe.confirmPayment({
       elements,
-      redirect: "if_required",
       confirmParams: {
         return_url: `${window.location.origin}/store/success`,
       },
@@ -41,25 +37,7 @@ export default function CheckoutForm({ total }) {
     if (error) {
       setMessage(error.message || "Die Zahlung ist fehlgeschlagen.");
       setIsPaying(false);
-      return;
     }
-
-    if (paymentIntent?.status === "succeeded") {
-      localStorage.removeItem("heartbeat_cart");
-      window.location.href = "/store/success";
-      return;
-    }
-
-    setIsPaying(false);
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    await confirmPayment();
-  }
-
-  async function handleExpressConfirm() {
-    await confirmPayment();
   }
 
   return (
@@ -69,16 +47,6 @@ export default function CheckoutForm({ total }) {
       </h3>
 
       <div className="rounded-[18px] border border-white/10 bg-white/[0.035] p-4">
-        <ExpressCheckoutElement onConfirm={handleExpressConfirm} />
-
-        <div className="my-5 flex items-center gap-3">
-          <div className="h-px flex-1 bg-white/10" />
-          <span className="text-[11px] uppercase tracking-[0.22em] text-white/35">
-            oder anders bezahlen
-          </span>
-          <div className="h-px flex-1 bg-white/10" />
-        </div>
-
         <PaymentElement options={paymentElementOptions} />
       </div>
 
