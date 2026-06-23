@@ -53,7 +53,7 @@ export async function POST(request) {
       const quantity = Math.max(1, Number(item.quantity || 1));
 
       if (product.stock < quantity) {
-        throw new Error("Not enough stock.");
+        throw new Error("Dieser Artikel ist leider nicht mehr in ausreichender Menge verfügbar.");
       }
 
       const unitPrice = Number(product.price);

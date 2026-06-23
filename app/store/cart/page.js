@@ -6,6 +6,7 @@ import Link from "next/link";
 import localFont from "next/font/local";
 import { ShoppingBag, Trash2 } from "lucide-react";
 import { createClient } from "../../lib/supabase/client";
+import { useSearchParams } from "next/navigation";
 
 const font2 = localFont({
   src: "../../fonts/NeueMontreal-Regular.woff2",
@@ -18,6 +19,9 @@ export default function Page() {
   const [productsById, setProductsById] = useState({});
   const [loading, setLoading] = useState(true);
   const [cartNotice, setCartNotice] = useState("");
+
+  const searchParams = useSearchParams();
+  const stockError = searchParams.get("error") === "stock";
 
   useEffect(() => {
     async function loadCart() {
@@ -169,6 +173,13 @@ export default function Page() {
               Überprüfen Sie Ihre Artikel, bevor Sie zur Kasse gehen.
             </p>
           </header>
+
+          {stockError && (
+  <div className="mb-6 rounded-[20px] border border-red-400/20 bg-red-500/10 p-4 text-red-100">
+    Einer oder mehrere Artikel sind leider nicht mehr verfügbar.
+    Dein Warenkorb wurde geleert. Bitte überprüfe die aktuellen Bestände und versuche es erneut.
+  </div>
+)}
 
           {loading ? (
             <div className="rounded-[32px] border border-white/10 bg-white/[0.04] p-8">

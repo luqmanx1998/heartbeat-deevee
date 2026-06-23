@@ -120,11 +120,23 @@ export default function CustomCheckoutPage() {
     const data = await res.json();
 
     if (!res.ok) {
-      setErrorMessage(data.error || "Failed to prepare checkout.");
-      setOrderLoading(false);
-      return;
-    }
+  const errorText = data.error || "Checkout konnte nicht vorbereitet werden.";
 
+  const isStockError =
+    errorText.toLowerCase().includes("stock") ||
+    errorText.toLowerCase().includes("verfügbar") ||
+    errorText.toLowerCase().includes("menge");
+
+  if (isStockError) {
+    localStorage.removeItem("heartbeat_cart");
+    window.location.href = "/store/cart?error=stock";
+    return;
+  }
+
+  setErrorMessage(errorText);
+  setOrderLoading(false);
+  return;
+}
     setClientSecret(data.clientSecret);
     setServerTotal(data.total ?? total);
     setOrderLoading(false);
