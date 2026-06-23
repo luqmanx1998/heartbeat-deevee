@@ -92,7 +92,11 @@ export async function sendOrderEmail({
                 Deine Bestellung wurde erfolgreich erhalten und die Zahlung wurde bestätigt.
               </p>
 
-              <div style="margin-top:24px; padding:16px 18px; border-radius:18px; background:#f7f2eb; border:1px solid #eadfce;">
+              <p style="margin:12px 0 0; font-size:14px; line-height:1.7; color:#666;">
+                Wir informieren dich per E-Mail, sobald deine Bestellung versandt wurde.
+              </p>
+
+                <div style="margin-top:24px; padding:16px 18px; border-radius:18px; background:#f7f2eb; border:1px solid #eadfce;">
                 <div style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#9b8b7c;">
                   Bestellnummer
                 </div>
