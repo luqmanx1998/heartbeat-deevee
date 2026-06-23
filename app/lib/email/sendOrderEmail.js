@@ -119,7 +119,7 @@ export async function sendOrderEmail({
                   text-decoration:none;
                 "
               >
-                Bestellung ansehen / stornieren
+                Bestellung anzeigen & verwalten
               </a>
             </div>
 
