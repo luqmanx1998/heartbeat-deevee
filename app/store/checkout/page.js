@@ -101,44 +101,40 @@ export default function CustomCheckoutPage() {
   const total = subtotal + shippingCost;
 
   async function createPaymentIntent() {
-    setOrderLoading(true);
-    setErrorMessage("");
+  setOrderLoading(true);
+  setErrorMessage("");
 
-    const res = await fetch("/api/elements-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        cart,
-        shipping,
-        guestEmail,
-        signatureRequest,
-      }),
-    });
+  const res = await fetch("/api/elements-payment-intent", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      cart,
+      shipping,
+      guestEmail,
+      signatureRequest,
+    }),
+  });
 
-    const data = await res.json();
+  const data = await res.json();
 
-    if (!res.ok) {
-  if (data.code === "OUT_OF_STOCK") {
-    localStorage.removeItem("heartbeat_cart");
-    window.location.href = "/store/cart?error=stock";
+  if (!res.ok) {
+    if (data.code === "OUT_OF_STOCK") {
+      localStorage.removeItem("heartbeat_cart");
+      window.location.href = "/store/cart?error=stock";
+      return;
+    }
+
+    setErrorMessage(data.error || "Checkout konnte nicht vorbereitet werden.");
+    setOrderLoading(false);
     return;
   }
 
-  setErrorMessage(data.error || "Checkout konnte nicht vorbereitet werden.");
+  setClientSecret(data.clientSecret);
+  setServerTotal(data.total ?? total);
   setOrderLoading(false);
-  return;
 }
-
-  setErrorMessage(errorText);
-  setOrderLoading(false);
-  return;
-}
-    setClientSecret(data.clientSecret);
-    setServerTotal(data.total ?? total);
-    setOrderLoading(false);
-  }
 
   const inputClass =
     "w-full rounded-md border border-white/10 bg-[#cfe0ff] px-4 py-3 text-[#14121c] outline-none transition placeholder:text-[#5d6070] focus:border-[#9b80ff] focus:ring-2 focus:ring-[#7c5cff]/40";
