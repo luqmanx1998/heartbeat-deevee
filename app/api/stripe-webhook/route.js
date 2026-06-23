@@ -94,9 +94,12 @@ async function fulfillCheckout(sessionId) {
 
   const { data: existingOrder, error: existingOrderError } = await supabaseAdmin
     .from("orders")
-    .select("id, fulfilled_at, customer_email, total, order_access_token")
+    .select("id, fulfilled_at, customer_email, total, order_access_token, shipping_address")
     .eq("id", orderId)
     .maybeSingle();
+
+  const finalShippingAddress =
+  formattedShippingAddress || existingOrder.shipping_address;
 
   if (existingOrderError) throw new Error(existingOrderError.message);
   if (!existingOrder) throw new Error("Order not found.");
@@ -111,7 +114,7 @@ async function fulfillCheckout(sessionId) {
         typeof session.payment_intent === "string"
           ? session.payment_intent
           : session.payment_intent?.id ?? null,
-      shipping_address: formattedShippingAddress,
+      shipping_address: finalShippingAddress,
       fulfilled_at: new Date().toISOString(),
     })
     .eq("id", orderId)
@@ -161,7 +164,7 @@ async function fulfillCheckout(sessionId) {
       orderId,
       items,
       total: existingOrder.total,
-      shippingAddress: formattedShippingAddress,
+      shippingAddress: finalShippingAddress,
       orderAccessToken: existingOrder.order_access_token,
     });
 

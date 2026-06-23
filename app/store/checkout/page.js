@@ -104,7 +104,7 @@ export default function CustomCheckoutPage() {
   setOrderLoading(true);
   setErrorMessage("");
 
-  const res = await fetch("/api/elements-payment-intent", {
+  const res = await fetch("/api/create-checkout-session", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -131,9 +131,7 @@ export default function CustomCheckoutPage() {
     return;
   }
 
-  setClientSecret(data.clientSecret);
-  setServerTotal(data.total ?? total);
-  setOrderLoading(false);
+  window.location.href = data.url;
 }
 
   const inputClass =
@@ -397,7 +395,7 @@ export default function CustomCheckoutPage() {
                 </>
               )}
 
-              {clientSecret && (
+              {/* {clientSecret && (
                 <div className="mt-8 border-t border-white/10 pt-7">
                   <Elements
                     stripe={stripePromise}
@@ -406,7 +404,7 @@ export default function CustomCheckoutPage() {
                     <CheckoutForm total={serverTotal ?? total} />
                   </Elements>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </section>
