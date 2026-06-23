@@ -98,12 +98,13 @@ async function fulfillCheckout(sessionId) {
     .eq("id", orderId)
     .maybeSingle();
 
-  const finalShippingAddress =
-  formattedShippingAddress || existingOrder.shipping_address;
 
   if (existingOrderError) throw new Error(existingOrderError.message);
   if (!existingOrder) throw new Error("Order not found.");
   if (existingOrder.fulfilled_at) return;
+
+    const finalShippingAddress =
+  formattedShippingAddress || existingOrder.shipping_address;
 
   const { data: order, error: updateOrderError } = await supabaseAdmin
     .from("orders")
