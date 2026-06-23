@@ -52,9 +52,16 @@ export async function POST(request) {
 
       const quantity = Math.max(1, Number(item.quantity || 1));
 
-      if (product.stock < quantity) {
-        throw new Error("Dieser Artikel ist leider nicht mehr in ausreichender Menge verfügbar.");
-      }
+      if (Number(product.stock ?? 0) < quantity) {
+      return NextResponse.json(
+        {
+          code: "OUT_OF_STOCK",
+          error:
+            "Dieser Artikel ist leider nicht mehr in ausreichender Menge verfügbar.",
+        },
+        { status: 409 },
+      );
+    }
 
       const unitPrice = Number(product.price);
       const subtotal = unitPrice * quantity;

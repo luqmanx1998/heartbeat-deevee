@@ -120,18 +120,16 @@ export default function CustomCheckoutPage() {
     const data = await res.json();
 
     if (!res.ok) {
-  const errorText = data.error || "Checkout konnte nicht vorbereitet werden.";
-
-  const isStockError =
-    errorText.toLowerCase().includes("stock") ||
-    errorText.toLowerCase().includes("verfügbar") ||
-    errorText.toLowerCase().includes("menge");
-
-  if (isStockError) {
+  if (data.code === "OUT_OF_STOCK") {
     localStorage.removeItem("heartbeat_cart");
     window.location.href = "/store/cart?error=stock";
     return;
   }
+
+  setErrorMessage(data.error || "Checkout konnte nicht vorbereitet werden.");
+  setOrderLoading(false);
+  return;
+}
 
   setErrorMessage(errorText);
   setOrderLoading(false);
