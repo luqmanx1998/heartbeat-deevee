@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import CartClient from "./CartClient";
+import StoreLoading from "@/app/components/StoreLoading";
 
 export const metadata = {
   title: "Warenkorb",
@@ -9,7 +10,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<StoreLoading text="Dein Warenkorb wird geladen" />}>
       <CartClient />
     </Suspense>
   );

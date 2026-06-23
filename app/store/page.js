@@ -8,6 +8,7 @@ import LoginModal from "../components/LoginModal";
 import { createClient } from "../lib/supabase/client";
 import Link from "next/link";
 import { ShoppingBag, Menu } from "lucide-react";
+import StoreLoading from "../components/StoreLoading";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -379,30 +380,8 @@ export default function HeartbeatStorePage() {
   const isBookSoldOut = !!bookProduct && Number(bookProduct.stock ?? 0) <= 0;
 
   if (authLoading) {
-    return (
-      <div className="min-h-screen bg-[#090909] flex flex-col items-center justify-center gap-4">
-        <div className="relative w-[72px] h-[72px] flex items-center justify-center">
-          <div
-            className="absolute w-[72px] h-[72px] rounded-full border border-[#f3d4a2]/25 border-t-[#f3d4a2]/70 animate-spin"
-            style={{ animationDuration: "2.8s" }}
-          />
-          <div
-            className="absolute w-[52px] h-[52px] rounded-full border border-[#af8cff]/20 border-r-[#af8cff]/60 animate-spin"
-            style={{ animationDuration: "2s", animationDirection: "reverse" }}
-          />
-          <div
-            className="absolute w-[34px] h-[34px] rounded-full border border-[#f3d4a2]/50 border-l-transparent animate-spin"
-            style={{ animationDuration: "1.4s" }}
-          />
-          <div className="w-[5px] h-[5px] rounded-full bg-[#f3d4a2]/90" />
-        </div>
-        <p className="text-[11px] uppercase tracking-[0.28em] text-[#f3d4a2]/55">
-          Entering the realm
-        </p>
-      </div>
-    );
-  }
-
+  return <StoreLoading />;
+}
   return (
     <>
       {showLoginModal && (
