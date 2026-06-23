@@ -71,11 +71,11 @@ const handleOAuthLogin = async () => {
                 Mit Google anmelden
               </button>
     
-              <button
+              {/* <button
                 className={`${font2.className} inline-flex w-full items-center justify-center rounded-full border border-[#f3d4a2]/22 bg-white/[0.04] px-5 py-3 text-[11px] uppercase tracking-[0.24em] text-white transition duration-300 hover:-translate-y-[1px] hover:border-[#f3d4a2]/38 hover:bg-white/[0.08] hover:text-[#fff4de]`}
               >
                 Mit E-Mail anmelden
-              </button>
+              </button> */}
             </div>
     
             <p
