@@ -1,6 +1,11 @@
 "use client";
 
-import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import {
+  ExpressCheckoutElement,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
 import { useState } from "react";
 
 export default function CheckoutForm({ total }) {
@@ -19,9 +24,7 @@ export default function CheckoutForm({ total }) {
     },
   };
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
+  async function confirmPayment() {
     if (!stripe || !elements) return;
 
     setIsPaying(true);
@@ -37,7 +40,20 @@ export default function CheckoutForm({ total }) {
     if (error) {
       setMessage(error.message || "Die Zahlung ist fehlgeschlagen.");
       setIsPaying(false);
+      return;
     }
+
+    // Stripe will handle redirects automatically.
+    // For card payments, success will redirect to return_url.
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    await confirmPayment();
+  }
+
+  async function handleExpressConfirm() {
+    await confirmPayment();
   }
 
   return (
@@ -47,6 +63,16 @@ export default function CheckoutForm({ total }) {
       </h3>
 
       <div className="rounded-[18px] border border-white/10 bg-white/[0.035] p-4">
+        <ExpressCheckoutElement onConfirm={handleExpressConfirm} />
+
+        <div className="my-5 flex items-center gap-3">
+          <div className="h-px flex-1 bg-white/10" />
+          <span className="text-[11px] uppercase tracking-[0.22em] text-white/35">
+            oder anders bezahlen
+          </span>
+          <div className="h-px flex-1 bg-white/10" />
+        </div>
+
         <PaymentElement options={paymentElementOptions} />
       </div>
 
