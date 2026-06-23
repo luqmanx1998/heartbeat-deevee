@@ -44,37 +44,50 @@ export async function POST(request) {
 
     const productMap = new Map(products.map((p) => [p.id, p]));
 
-    const validatedItems = cart.map((item) => {
-      const product = productMap.get(item.id);
+    const validatedItems = [];
 
-      if (!product) throw new Error("Invalid product.");
-      if (!product.active) throw new Error("Product unavailable.");
+for (const item of cart) {
+  const product = productMap.get(item.id);
 
-      const quantity = Math.max(1, Number(item.quantity || 1));
+  if (!product) {
+    return NextResponse.json(
+      { error: "Produkt wurde nicht gefunden." },
+      { status: 400 },
+    );
+  }
 
-      if (Number(product.stock ?? 0) < quantity) {
-      return NextResponse.json(
-        {
-          code: "OUT_OF_STOCK",
-          error:
-            "Dieser Artikel ist leider nicht mehr in ausreichender Menge verfügbar.",
-        },
-        { status: 409 },
-      );
-    }
+  if (!product.active) {
+    return NextResponse.json(
+      { error: "Dieses Produkt ist aktuell nicht verfügbar." },
+      { status: 400 },
+    );
+  }
 
-      const unitPrice = Number(product.price);
-      const subtotal = unitPrice * quantity;
+  const quantity = Math.max(1, Number(item.quantity || 1));
 
-      return {
-        product_id: product.id,
-        name: product.name,
-        quantity,
-        image: product.image,
-        unitPrice,
-        subtotal,
-      };
-    });
+  if (Number(product.stock ?? 0) < quantity) {
+    return NextResponse.json(
+      {
+        code: "OUT_OF_STOCK",
+        error:
+          "Dieser Artikel ist leider nicht mehr in ausreichender Menge verfügbar.",
+      },
+      { status: 409 },
+    );
+  }
+
+  const unitPrice = Number(product.price);
+  const subtotal = unitPrice * quantity;
+
+  validatedItems.push({
+    product_id: product.id,
+    name: product.name,
+    quantity,
+    image: product.image,
+    unitPrice,
+    subtotal,
+  });
+}
 
     const subtotal = validatedItems.reduce(
       (sum, item) => sum + item.subtotal,
@@ -125,7 +138,9 @@ export async function POST(request) {
       amount,
       currency: "eur",
       receipt_email: customerEmail,
-      payment_method_types: ["card", "paypal"],
+      automatic_payment_methods: {
+  enabled: true,
+},
 
       description: validatedItems
         .map((item) => `${item.name} x${item.quantity}`)
