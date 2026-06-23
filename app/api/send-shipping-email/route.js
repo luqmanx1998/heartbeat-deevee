@@ -131,12 +131,47 @@ export async function POST(request) {
                 Deine Bestellung wurde versandt ✦
               </h1>
 
-              <p style="margin:20px 0 0; font-size:16px; line-height:1.3; color:#4a4a4a;">
-                Hallo,
-                <br/><br/>
-                deine Bestellung ist jetzt unterwegs.
-                Vielen Dank für deine Unterstützung von Deevee.
-              </p>
+             <p style="margin:20px 0 0; font-size:16px; line-height:1.6; color:#4a4a4a;">
+  Hallo,
+  <br/><br/>
+  deine Bestellung ist jetzt unterwegs.
+  Vielen Dank für deine Unterstützung von Deevee.
+</p>
+
+<div
+  style="
+    margin-top:20px;
+    padding:18px;
+    border-radius:18px;
+    background:#f7f2eb;
+    border:1px solid #eadfce;
+  "
+>
+  <p
+    style="
+      margin:0;
+      font-size:12px;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:#9b8b7c;
+    "
+  >
+    Voraussichtliche Lieferung
+  </p>
+
+  <p
+    style="
+      margin:10px 0 0;
+      font-size:15px;
+      line-height:1.6;
+      color:#272727;
+    "
+  >
+    Deine Bestellung sollte innerhalb von
+    <strong>4-5 Werktagen</strong>
+    bei dir eintreffen.
+  </p>
+</div>
 
               <div
                 style="
