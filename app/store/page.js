@@ -28,6 +28,12 @@ function formatPrice(value) {
   return `€${number.toFixed(2)}`;
 }
 
+export const metadata = {
+  title: "Heartbeat Shop | Deevee",
+  description:
+    "Offizieller Shop für Heartbeat - Die andere Seite von Deevee. Buchboxen, signierte Exemplare und exklusive Presale-Inhalte.",
+};
+
 export default function HeartbeatStorePage() {
   const book = {
     title: "Heartbeat",

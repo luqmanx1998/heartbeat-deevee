@@ -25,12 +25,11 @@ const FILTERS = [
   { key: "all", label: "Alle" },
   { key: "paid", label: "Paid" },
   { key: "shipped", label: "Versandt" },
-  { key: "delivered", label: "Geliefert" },
   { key: "cancelled", label: "Storniert" },
   { key: "refunded", label: "Zurückerstattet"}
 ];
 
-const OPERATIONAL_STATUSES = ["paid", "shipped", "delivered", "cancelled", "refunded"];
+const OPERATIONAL_STATUSES = ["paid", "shipped", "cancelled", "refunded"];
 const PAGE_SIZE = 5;
 
 export default function OrdersPage() {
@@ -770,6 +769,38 @@ function OrderDetailsModal({
     </p>
   )}
 </div>
+
+{order.withdrawal_requested_at && (
+  <div className="mt-8 rounded-[24px] border border-amber-300/30 bg-amber-950/25 p-5">
+    <p
+      className={`${font2.className} text-[10px] uppercase tracking-[0.22em] text-amber-200/65`}
+    >
+      Widerruf angefordert
+    </p>
+
+    <p
+      className={`${ibmPlexSerif.className} mt-3 text-[18px] leading-[1.7] text-amber-50/85`}
+    >
+      Der Kunde hat am {formatDate(order.withdrawal_requested_at)} einen
+      Widerruf angefordert.
+    </p>
+
+    {order.withdrawal_notes ? (
+      <p
+        className={`${ibmPlexSerif.className} mt-3 whitespace-pre-line text-[17px] leading-[1.7] text-amber-50/70`}
+      >
+        {order.withdrawal_notes}
+      </p>
+    ) : (
+      <p
+        className={`${ibmPlexSerif.className} mt-3 italic text-[17px] text-amber-50/45`}
+      >
+        Keine zusätzliche Nachricht angegeben.
+      </p>
+    )}
+  </div>
+)}
+
         <div className="mt-8 rounded-[24px] border border-[#8d693b]/35 bg-[linear-gradient(180deg,rgba(25,17,13,0.68),rgba(13,9,9,0.62))] p-5">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
@@ -909,7 +940,6 @@ function StatusPill({ status, font2 }) {
   const statusStyles = {
     paid: "border-emerald-400/30 bg-emerald-950/50 text-emerald-200",
     shipped: "border-sky-400/30 bg-sky-950/50 text-sky-200",
-    delivered: "border-violet-400/30 bg-violet-950/50 text-violet-200",
     cancelled: "border-rose-400/30 bg-rose-950/50 text-rose-200",
   };
 
