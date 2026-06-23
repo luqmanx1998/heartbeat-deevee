@@ -138,9 +138,7 @@ for (const item of cart) {
       amount,
       currency: "eur",
       receipt_email: customerEmail,
-      automatic_payment_methods: {
-  enabled: true,
-},
+      payment_method_types: ["card", "paypal"],
 
       description: validatedItems
         .map((item) => `${item.name} x${item.quantity}`)
