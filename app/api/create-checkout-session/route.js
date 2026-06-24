@@ -143,7 +143,7 @@ export async function POST(request) {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       customer_email: customerEmail,
-      payment_method_types: ["card", "paypal"],
+      payment_method_types: ["paypal", "card"],
       success_url: `${siteUrl}/store/success`,
       cancel_url: `${siteUrl}/store/cart`,
 
