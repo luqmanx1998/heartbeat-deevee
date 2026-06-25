@@ -195,8 +195,8 @@ export default function BookRevealSection({
 
       <div className="absolute inset-0 [transform:rotateY(180deg)] [backface-visibility:hidden]">
         <img
-          src="/backcover2.jpg"
-          alt="Heartbeat – Die andere Seite Rückseite"
+          src="/backcover3.jpg"
+          alt="Heartbeat - Die andere Seite Rückseite"
           draggable="false"
           className="h-full w-full select-none object-contain drop-shadow-[0_28px_48px_rgba(0,0,0,0.55)]"
         />
