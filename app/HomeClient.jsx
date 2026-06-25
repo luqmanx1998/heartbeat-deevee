@@ -623,7 +623,7 @@ export default function Home() {
         <AlbumLightbox
           isOpen={!!albumLocation}
           onClose={() => setAlbumLocation(null)}
-          title={albumLocation ? `${albumLocation} album` : ""}
+          title={albumLocation ? `${albumLocation}` : ""}
           images={albumLocation ? albumImages[albumLocation] || [] : []}
         />
 
