@@ -7,6 +7,9 @@ import { randomUUID } from "crypto";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const SHIPPING_COST = 3.99;
 
+const BOOK_PRODUCT_ID = "d346dcfc-c7d9-47da-b2a9-e2e09aa37914";
+const MAX_BOOK_QUANTITY = 3;
+
 export async function POST(request) {
   try {
     const { cart, shipping, guestEmail, signatureRequest } =
