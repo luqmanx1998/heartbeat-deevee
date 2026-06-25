@@ -47,8 +47,7 @@ export default function Page() {
 
               <p className="mx-auto mt-5 max-w-2xl text-[16px] leading-8 text-white/62 sm:text-[18px]">
                 Deine Bestellung wurde erfolgreich übermittelt und die Zahlung sicher
-                verarbeitet. Wir bereiten nun alles für den Versand vor und halten dich
-                per E-Mail auf dem Laufenden.
+                verarbeitet. Wir bereiten nun alles für den Versand vor und halten dich per E-Mail auf dem Laufenden.
                           </p>
             </div>
 
@@ -84,8 +83,7 @@ export default function Page() {
                 </div>
 
                 <p className="mt-4 text-[15px] leading-7 text-white/70">
-                  Wir verpacken deine Bestellung sorgfältig und informieren dich, sobald
-      sie versendet wurde.
+                  Wir verpacken deine Bestellung sorgfältig und informieren dich, sobald sie versendet wurde.
                 </p>
               </div>
             </div>
