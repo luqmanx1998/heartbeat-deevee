@@ -174,9 +174,11 @@ Elfen halten sich für überlegen und bleiben meist unter sich. Fremden begegnen
           setOpenLocation={setOpenLocation}
           setAlbumLocation={setAlbumLocation}
           imageClassName="object-cover object-top"
-          description={`Witraliria ist die Stadt der Hexen und Hexenmeister. Sie liegt auf einem Hügel und ist von Wasserfällen und Flüssen umgeben.
-Die Stadt ist lebendig und offen. Neben Hexen leben auch viele andere Wesen hier friedlich zusammen.
-Hexen halten sich meist aus Konflikten heraus und bleiben neutral.`}
+          description={`Witraliria ist die Stadt der Hexen und Hexenmeister.
+            Sie liegt auf einem Hügel und ist von Wasserfällen und Flüssen umgeben.
+            Neben Hexen leben auch viele andere Wesen hier friedlich zusammen.
+            Hexen halten sich meist aus Konflikten heraus und
+            bleiben neutral.`}
         />
       )}
 
@@ -205,9 +207,9 @@ Die Königin jedoch gilt als unberechenbar. Sie hasst die Feen und lässt fremde
           gridClassName="md:grid-cols-[0.9fr_1.1fr]"
           maxWidthClassName="lg:max-w-[800px]"
           description={`Dämmerfels ist die Stadt der Vampire und liegt im verbotenen Distrikt, eingeschlossen von einer magischen Mauer.
-Die Stadt besteht aus einer düsteren Burg hoch auf einem Felsen, umgeben von Nebel und toten Wäldern.
-Vampire leben zurückgezogen und gefährlich. Fremde verirren sich selten hierher und noch seltener kehren sie zurück.`}
-        />
+          Die Stadt besteht aus einer düsteren Burg hoch auf einem Felsen, umgeben von Nebel und toten Wäldern.
+          Fremde verirren sich selten hierher und noch seltener kehren sie zurück.`}
+                  />
       )}
 
       <div className="mx-auto w-full max-w-[1440px]">
