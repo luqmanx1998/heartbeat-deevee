@@ -45,11 +45,13 @@ export default function Home() {
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
   const [open, setOpen] = useState(false);
   const [isMobileMenuMode, setIsMobileMenuMode] = useState(false);
+  const [heroVideoReady, setHeroVideoReady] = useState(false);
 
   const introOverlayRef = useRef(null);
   const introLine1Ref = useRef(null);
   const introLine2Ref = useRef(null);
   const introLine3Ref = useRef(null);
+  
 
   const heroSectionRef = useRef(null);
   const heroNavRef = useRef(null);
@@ -59,6 +61,7 @@ export default function Home() {
 
   const heroCtaRef = useRef(null);
   const pageFlashRef = useRef(null);
+  const heroVideoRef = useRef(null);
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
   const logoUrl = `${siteUrl}/deeveeemaildark2.png`;
@@ -538,17 +541,30 @@ export default function Home() {
           </div>
           </nav>
 
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster="/video/poster.jpg"
-            className="absolute inset-0 h-full w-full object-cover"
-          >
-            <source src="/video/video4.mp4" type="video/mp4" />
-          </video>
+          <Image
+  src="/video/poster.jpg"
+  alt=""
+  fill
+  priority
+  className="absolute inset-0 h-full w-full object-cover"
+/>
+
+<video
+  ref={heroVideoRef}
+  autoPlay
+  muted
+  loop
+  playsInline
+  preload="metadata"
+  poster="/video/poster.jpg"
+  onCanPlay={() => setHeroVideoReady(true)}
+  onPlaying={() => setHeroVideoReady(true)}
+  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+    heroVideoReady ? "opacity-100" : "opacity-0"
+  }`}
+>
+  <source src="/video/video4.mp4" type="video/mp4" />
+</video>
 
           <div className="absolute inset-0 bg-black/30" />
           <div className="absolute inset-x-0 top-0 z-[1] h-44 bg-gradient-to-b from-black to-transparent" />
