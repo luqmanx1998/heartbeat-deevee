@@ -1,5 +1,11 @@
 import LegalPage from "@/app/components/LegalPage";
 
+export const metadata = {
+  title: "Impressum | Deevee",
+  description:
+    "Gesetzliche Anbieterkennung und Kontaktinformationen von Deevee.",
+};
+
 export default function Page() {
   return (
     <LegalPage title="Impressum">

@@ -1,5 +1,11 @@
 import LegalPage from "@/app/components/LegalPage";
 
+export const metadata = {
+  title: "Cookie-Einstellungen | Deevee",
+  description:
+    "Informationen zu technisch notwendigen Cookies und aktuellen Cookie-Einstellungen auf Deevee.",
+};
+
 export default function Page() {
   return (
     <LegalPage title="Cookie-Einstellungen">

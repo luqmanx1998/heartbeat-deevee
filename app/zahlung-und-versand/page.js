@@ -1,5 +1,11 @@
 import LegalPage from "@/app/components/LegalPage";
 
+export const metadata = {
+  title: "Zahlung und Versand | Deevee",
+  description:
+    "Informationen zu Versandkosten, Lieferfristen und Zahlungsmöglichkeiten im Deevee Shop.",
+};
+
 export default function Page() {
   return (
     <LegalPage title="Zahlung und Versand">
@@ -15,7 +21,7 @@ export default function Page() {
 
       <p>Versandkosten inklusive gesetzlicher Mehrwertsteuer.</p>
 
-      <p>Wir berechnen die Versandkosten pauschal mit 5,99 € pro Bestellung.</p>
+      <p>Wir berechnen die Versandkosten pauschal mit 3,99 € pro Bestellung.</p>
 
       <h3>Lieferfristen</h3>
 
@@ -56,27 +62,6 @@ export default function Page() {
       </ul>
 
       <p>Bei Fragen finden Sie unsere Kontaktdaten im Impressum.</p>
-
-      <div className="mt-10 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-        <h3 className="!mt-0">Wichtiger Hinweis zu deiner Bestellung</h3>
-
-        <p>
-          Bücher können durch den Transport kleine Macken und abgestoßene Ecken
-          aufweisen.
-        </p>
-
-        <p>
-          Diese kleinen optischen Mängel sind von der Reklamation
-          ausgeschlossen.
-        </p>
-
-        <h3>Wichtige Informationen</h3>
-
-        <p>
-          Bei Bestellung von mehreren Produkten wird die Ware erst mit dem
-          Release des letzten Buches versendet.
-        </p>
-      </div>
     </LegalPage>
   );
 }

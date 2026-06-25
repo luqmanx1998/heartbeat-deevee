@@ -1,5 +1,11 @@
 import LegalPage from "@/app/components/LegalPage";
 
+export const metadata = {
+  title: "Datenschutz | Deevee",
+  description:
+    "Datenschutzerklärung von Deevee mit Informationen zur Verarbeitung personenbezogener Daten.",
+};
+
 export default function Page() {
   return (
     <LegalPage title="Datenschutz">

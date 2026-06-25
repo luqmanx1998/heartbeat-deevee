@@ -1,5 +1,11 @@
 import LegalPage from "@/app/components/LegalPage";
 
+export const metadata = {
+  title: "Widerrufsrecht | Deevee",
+  description:
+    "Informationen zum gesetzlichen Widerrufsrecht, Rücksendungen und zum Muster-Widerrufsformular.",
+};
+
 export default function Page() {
   return (
     <LegalPage title="Widerrufsrecht">

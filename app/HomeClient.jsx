@@ -83,6 +83,7 @@ export default function Home() {
     ],
   },
 
+
   story: {
     titleTop: "About",
     titleBottom: "The Story",
