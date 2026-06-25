@@ -145,12 +145,9 @@ function Map({ openLocation, setAlbumLocation, setOpenLocation }) {
           albumKey="erzklamm"
           setOpenLocation={setOpenLocation}
           setAlbumLocation={setAlbumLocation}
-          description={`Erzklamm ist die Stadt der Zwerge und liegt verborgen in einem Berg. Die Stadt erstreckt sich durch gewaltige Höhlen.
-Überall arbeiten Zwerge an Kristallen, Erz und Stein.
-Feuerstellen und Schmieden leuchten in der
-Dunkelheit.
-Die Zwerge sind fleißig, aber auch vorsichtig. Fremden begegnen sie mit Misstrauen und halten sich lieber unter sich.`}
-        />
+          description={`Erzklamm ist die Stadt der Zwerge und liegt verborgen in einem Berg.
+          Die Zwerge sind fleißig, aber auch sehr vorsichtig. Fremden begegnen sie mit Misstrauen und halten sich lieber unter sich, weil sie Angst vor der anderen Seite und vorallem ihren Bewohnern haben.`}
+                  />
       )}
 
       {openLocation === "eldarun" && (
