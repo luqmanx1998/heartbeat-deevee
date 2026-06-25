@@ -77,9 +77,9 @@ export default function Home() {
     titleTop: "About",
     titleBottom: "The Author",
     paragraphs: [
-      "Deevee ist Autorin im Genre Dark Romantasy und Romantasy und erschafft Geschichten, in denen sich Liebe und Dunkelheit auf faszinierende Weise begegnen. Schon seit ihrem 14. Lebensjahr widmet sie sich dem Schreiben und hat seither ihre Leidenschaft für das Erzählen intensiver, emotionaler und geheimnisvoller Welten stetig vertieft.",
-      "Ihre Geschichten laden Leserinnen und Leser dazu ein, in neue magische Welten einzutauchen, in denen nichts ganz so ist, wie es scheint.",
-      "Wenn sie nicht schreibt, sammelt Deevee neue Inspirationen für ihre nächsten Projekte und ist immer auf der Suche nach Geschichten, die berühren, fesseln und lange im Gedächtnis bleiben.",
+      "Deevee schreibt Dark Romantasy und Romantasy und liebt Geschichten, in denen nichts so ist, wie es zunächst scheint. Bereits mit 14 Jahren begann sie zu schreiben und entdeckte dabei ihre Leidenschaft für geheimnisvolle Welten.",
+      "Besonders am Herzen liegt ihr „Heartbeat“, ein Projekt, das sie seit inzwischen zehn Jahren begleitet und das sie bis heute weiterentwickelt.",
+      "Neben diesem Herzensprojekt arbeitet sie stetig an neuen Büchern und Ideen.",
     ],
   },
 
