@@ -131,9 +131,9 @@ function Map({ openLocation, setAlbumLocation, setOpenLocation }) {
           albumKey="taletopia"
           setOpenLocation={setOpenLocation}
           setAlbumLocation={setAlbumLocation}
-          description={`Taletopia ist die Stadt der Feen und gilt als ihr Herz. Die Stadt liegt auf einem Hügel und wird von einem großen Schloss überragt. Ein Wasserfall fließt mitten durch die Stadt und fließt den Fluss, der durch die vielen Häuser und Brücken führt.
-Überall ist es ruhig und harmonisch. Es gibt wunderschöne Märkte und die Natur ist magisch.
-Regiert wird Taletopia von einem König, der über das Gleichgewicht der Feen und der anderen Seite wacht.`}
+          description={`Taletopia ist die Stadt der Feen und gilt als ihr Herz.
+          Die Stadt liegt auf einem Hügel und wird von einem großen Schloss überragt. Ein Wasserfall fließt mitten durch die Stadt und fließt in den Fluss, der durch die vielen Häuser und Brücken führt.
+          Regiert wird Taletopia von einem König, der über das Gleichgewicht der Feen und der anderen Seite wacht.`}
         />
       )}
 
@@ -145,8 +145,10 @@ Regiert wird Taletopia von einem König, der über das Gleichgewicht der Feen un
           albumKey="erzklamm"
           setOpenLocation={setOpenLocation}
           setAlbumLocation={setAlbumLocation}
-          description={`Erzklamm ist die Stadt der Zwerge und liegt tief verborgen in einem riesigen Berg. Die Stadt erstreckt sich durch gewaltige Höhlen, verbunden durch Brücken, Tunnel und Wasserläufe.
-Überall arbeiten Zwerge an Kristallen, Erz und Stein. Feuerstellen und Schmieden leuchten in der Dunkelheit.
+          description={`Erzklamm ist die Stadt der Zwerge und liegt verborgen in einem Berg. Die Stadt erstreckt sich durch gewaltige Höhlen.
+Überall arbeiten Zwerge an Kristallen, Erz und Stein.
+Feuerstellen und Schmieden leuchten in der
+Dunkelheit.
 Die Zwerge sind fleißig, aber auch vorsichtig. Fremden begegnen sie mit Misstrauen und halten sich lieber unter sich.`}
         />
       )}
@@ -159,10 +161,11 @@ Die Zwerge sind fleißig, aber auch vorsichtig. Fremden begegnen sie mit Misstra
           albumKey="eldarun"
           setOpenLocation={setOpenLocation}
           setAlbumLocation={setAlbumLocation}
-          description={`Eldarun ist die Stadt der Elfen und von einer riesigen Mauer umgeben, die seit tausenden Jahren steht. Deshalb nennt man sie auch „die Stadt, die niemals fällt“.
-Die Stadt ist geprägt von hohen, eleganten Gebäuden und einem großen Schloss im Zentrum.
-Elfen halten sich für überlegen und bleiben meist unter sich. Fremden begegnen sie kühl und abweisend.`}
-        />
+          description={`Eldarun ist die Stadt der Elfen und von einer riesigen Mauer umgeben, die seit tausenden Jahren steht.
+Deshalb nennt man sie auch: „Die Stadt, die niemals fällt“.
+Die Stadt ist geprägt von hohen Gebäuden und einem großen Schloss im Zentrum.
+Elfen halten sich für überlegen und bleiben meist unter sich.`}
+                  />
       )}
 
       {openLocation === "witraliria" && (
@@ -190,10 +193,10 @@ Elfen halten sich für überlegen und bleiben meist unter sich. Fremden begegnen
           albumKey="aridryan"
           setOpenLocation={setOpenLocation}
           setAlbumLocation={setAlbumLocation}
-          description={`Aridryan ist die Stadt der Dryaden und von blühenden Gärten und Wasserfällen umgeben.
-Dort leben nur Frauen, ein eigentlich friedliches Volk, das eng mit der Natur verbunden ist.
-Die Königin jedoch gilt als unberechenbar. Sie hasst die Feen und lässt fremde Späher oft verfolgen oder töten.`}
-        />
+          description={`Aridryan ist die Stadt der Dryaden und von Gärten und Wasserfällen umgeben.
+          Dort leben nur Frauen, ein eigentlich friedliches Volk, das eng mit der Natur verbunden ist.
+          Die Königin jedoch gilt als unberechenbar. Sie hasst die Feen und lässt fremde Späher oft verfolgen oder töten.`}
+                  />
       )}
 
       {openLocation === "dammerfels" && (
