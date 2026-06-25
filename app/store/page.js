@@ -566,6 +566,25 @@ export default function HeartbeatStorePage() {
               </p>
 
               <div className="mx-auto mt-5 h-px w-[220px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+
+              <div className="relative mx-auto mt-10 max-w-3xl px-6">
+  <div className="rounded-[26px] border border-[#f3d4a2]/20 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] px-8 py-6 text-center shadow-xl shadow-black/25 backdrop-blur">
+    <p
+      className={`${font2.className} text-[11px] uppercase tracking-[0.34em] text-[#f3d4a2]/75`}
+    >
+      Versandinformation
+    </p>
+
+    <p
+      className={`${ibmPlexSerif.className} mt-3 text-[22px] leading-[1.5] text-[#fff6ea] sm:text-[26px]`}
+    >
+      Das Buch erscheint am{" "}
+      <span className="text-[#f3d4a2]">25. August 2026</span>
+      <br className="hidden sm:block" />
+      und wird anschließend versendet.
+    </p>
+  </div>
+</div>
             </div>
           </div>
 
