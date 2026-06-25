@@ -579,9 +579,9 @@ export default function HeartbeatStorePage() {
       className={`${ibmPlexSerif.className} mt-3 text-[22px] leading-[1.5] text-[#fff6ea] sm:text-[26px]`}
     >
       Das Buch erscheint am{" "}
-      <span className="text-[#f3d4a2]">25. August 2026</span>
-      <br className="hidden sm:block" />
-      und wird anschließend versendet.
+      <span className="text-[#f3d4a2]">25. August 2026</span>{" "}
+<br className="hidden sm:block" />
+und wird anschließend versendet.
     </p>
   </div>
 </div>
