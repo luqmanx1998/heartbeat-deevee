@@ -96,6 +96,41 @@ export async function sendOrderEmail({
                 Wir informieren dich per E-Mail, sobald deine Bestellung versandt wurde.
               </p>
 
+              <div
+  style="
+    margin-top:20px;
+    padding:18px;
+    border-radius:18px;
+    background:#f7f2eb;
+    border:1px solid #eadfce;
+  "
+>
+  <p
+    style="
+      margin:0;
+      font-size:12px;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:#9b8b7c;
+    "
+  >
+    Versandinformation
+  </p>
+
+  <p
+    style="
+      margin:10px 0 0;
+      font-size:15px;
+      line-height:1.6;
+      color:#272727;
+    "
+  >
+    Das Buch erscheint am
+    <strong>25. August 2026</strong>
+    und wird anschließend versendet.
+  </p>
+</div>
+
                 <div style="margin-top:24px; padding:16px 18px; border-radius:18px; background:#f7f2eb; border:1px solid #eadfce;">
                 <div style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#9b8b7c;">
                   Bestellnummer
