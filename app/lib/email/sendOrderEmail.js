@@ -106,22 +106,21 @@ export async function sendOrderEmail({
               </div>
 
               <div style="margin-top:22px; text-align:center;">
-              <a
-                href="${orderLink}"
-                style="
-                  display:inline-block;
-                  padding:14px 22px;
-                  border-radius:999px;
-                  background:#111111;
-                  color:#ffffff;
-                  font-size:13px;
-                  font-weight:700;
-                  text-decoration:none;
-                "
-              >
-                Bestellung anzeigen & verwalten
-              </a>
-            </div>
+  <a
+    href="${orderLink}"
+    style="
+      display:inline-block;
+      color:#8b6cff;
+      font-size:15px;
+      font-weight:700;
+      text-decoration:underline;
+      text-decoration-thickness:2px;
+      text-underline-offset:5px;
+    "
+  >
+    Bestellung anzeigen & verwalten
+  </a>
+</div>
 
                           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:26px; border-collapse:collapse;">
                 ${itemsHtml}

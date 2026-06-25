@@ -543,6 +543,8 @@ export default function Home() {
             muted
             loop
             playsInline
+            preload="auto"
+            poster="/video/poster.jpg"
             className="absolute inset-0 h-full w-full object-cover"
           >
             <source src="/video/video4.mp4" type="video/mp4" />

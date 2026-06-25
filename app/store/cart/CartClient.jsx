@@ -13,6 +13,8 @@ const font2 = localFont({
 });
 
 const SHIPPING_COST = 3.99;
+const BOOK_PRODUCT_ID = "d346dcfc-c7d9-47da-b2a9-e2e09aa37914";
+const MAX_BOOK_QUANTITY = 3;
 
 export default function CartClient() {
   const [cart, setCart] = useState([]);
@@ -83,26 +85,39 @@ export default function CartClient() {
   const total = subtotal + shipping;
 
   function saveCart(nextCart) {
-    const normalizedCart = nextCart
-      .map((item) => ({
-        id: item.id,
-        quantity: Number(item.quantity || 1),
-      }))
-      .filter((item) => item.id && item.quantity > 0);
+  const normalizedCart = nextCart
+    .map((item) => ({
+      id: item.id,
+      quantity:
+        item.id === BOOK_PRODUCT_ID
+          ? Math.min(Number(item.quantity || 1), MAX_BOOK_QUANTITY)
+          : Number(item.quantity || 1),
+    }))
+    .filter((item) => item.id && item.quantity > 0);
 
-    setCart(normalizedCart);
-    localStorage.setItem("heartbeat_cart", JSON.stringify(normalizedCart));
-  }
+  setCart(normalizedCart);
+  localStorage.setItem("heartbeat_cart", JSON.stringify(normalizedCart));
+}
 
   function increaseQuantity(id) {
-    const nextCart = cart.map((item) =>
-      item.id === id
-        ? { ...item, quantity: Number(item.quantity || 0) + 1 }
-        : item,
-    );
+  const currentItem = cart.find((item) => item.id === id);
 
-    saveCart(nextCart);
+  if (
+    id === BOOK_PRODUCT_ID &&
+    Number(currentItem?.quantity || 0) >= MAX_BOOK_QUANTITY
+  ) {
+    showNotice("Sie können maximal 3 Bücher kaufen");
+    return;
   }
+
+  const nextCart = cart.map((item) =>
+    item.id === id
+      ? { ...item, quantity: Number(item.quantity || 0) + 1 }
+      : item,
+  );
+
+  saveCart(nextCart);
+}
 
   function decreaseQuantity(id) {
     const nextCart = cart.map((item) =>

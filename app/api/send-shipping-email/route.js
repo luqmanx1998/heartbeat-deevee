@@ -124,11 +124,11 @@ export async function POST(request) {
             <div style="padding:34px 30px 30px;">
 
               <p style="margin:0 0 10px; font-size:11px; letter-spacing:0.28em; text-transform:uppercase; color:#b8924f;">
-                Shipping Update
+                Versandbestätigung
               </p>
 
               <h1 style="margin:0; font-size:34px; line-height:1.1; color:#151515; letter-spacing:-0.04em;">
-                Deine Bestellung wurde versandt ✦
+                Deine Bestellung wurde versandt
               </h1>
 
              <p style="margin:20px 0 0; font-size:16px; line-height:1.6; color:#4a4a4a;">
@@ -183,7 +183,7 @@ export async function POST(request) {
                 "
               >
                 <p style="margin:0; font-size:12px; letter-spacing:0.22em; text-transform:uppercase; color:#b8924f;">
-                  Order ID
+                  Bestellnummer
                 </p>
 
                 <p style="margin:10px 0 0; font-size:18px; line-height:1.5; color:#f4efe8; word-break:break-all;">
@@ -191,17 +191,17 @@ export async function POST(request) {
                 </p>
 
                 <p style="margin:24px 0 10px; font-size:12px; letter-spacing:0.22em; text-transform:uppercase; color:#b8924f;">
-                  Shipping Address
+                  Lieferadresse
                 </p>
 
                 <p style="margin:0; font-size:15px; line-height:1.3; color:#f4efe8; white-space:pre-line;">
-                  ${escapeHtml(order.shipping_address || "No address")}
+                  ${escapeHtml(order.shipping_address || "Keine Lieferadresse angegeben")}
                 </p>
               </div>
 
               <div style="margin-top:28px;">
                 <p style="margin:0 0 18px; font-size:12px; letter-spacing:0.22em; text-transform:uppercase; color:#b8924f;">
-                  Items
+                  Artikel
                 </p>
 
                 ${itemsHtml}

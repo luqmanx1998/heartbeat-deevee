@@ -38,17 +38,18 @@ export default function Page() {
             {/* heading */}
             <div className="mt-8 text-center">
               <p className="text-[11px] uppercase tracking-[0.38em] text-[#f3d4a2]/60">
-                Payment Successful
+                Zahlung erfolgreich
               </p>
 
               <h1 className="mt-5 text-[clamp(42px,6vw,72px)] font-semibold leading-[0.95] tracking-[-0.04em] text-white">
-                Thank You
+                Vielen Dank!
               </h1>
 
               <p className="mx-auto mt-5 max-w-2xl text-[16px] leading-8 text-white/62 sm:text-[18px]">
-                Your order has been received and securely processed.
-                We&apos;ll prepare everything and keep you updated along the way.
-              </p>
+                Deine Bestellung wurde erfolgreich übermittelt und die Zahlung sicher
+                verarbeitet. Wir bereiten nun alles für den Versand vor und halten dich
+                per E-Mail auf dem Laufenden.
+                          </p>
             </div>
 
             {/* status cards */}
@@ -61,12 +62,12 @@ export default function Page() {
                     className="text-[#f3d4a2]"
                   />
                   <p className="text-[12px] uppercase tracking-[0.24em] text-white/55">
-                    Order Confirmed
+                    Bestellung bestätigt
                   </p>
                 </div>
 
                 <p className="mt-4 text-[15px] leading-7 text-white/70">
-                  Your purchase is now visible in your account orders page.
+                  Deine Bestellung wurde erfolgreich bestätigt und wird nun bearbeitet.
                 </p>
               </div>
 
@@ -78,12 +79,13 @@ export default function Page() {
                     className="text-[#f3d4a2]"
                   />
                   <p className="text-[12px] uppercase tracking-[0.24em] text-white/55">
-                    Next Steps
+                    Nächste Schritte
                   </p>
                 </div>
 
                 <p className="mt-4 text-[15px] leading-7 text-white/70">
-                  We&apos;ll package your order and begin shipment soon.
+                  Wir verpacken deine Bestellung sorgfältig und informieren dich, sobald
+      sie versendet wurde.
                 </p>
               </div>
             </div>
@@ -94,7 +96,8 @@ export default function Page() {
                 href="/store/orders"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-[#f2e6d7] px-7 py-3 text-sm font-medium text-black transition hover:-translate-y-0.5 hover:bg-white"
               >
-                View Orders
+                Bestellungen ansehen
+
                 <ArrowRight size={16} />
               </Link>
 
@@ -102,14 +105,14 @@ export default function Page() {
                 href="/store"
                 className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-7 py-3 text-sm font-medium text-white/82 transition hover:border-[#f3d4a2]/30 hover:bg-white/[0.06] hover:text-white"
               >
-                Return to Shop
+                Zurück zum Shop
               </Link>
             </div>
 
             {/* footer */}
             <div className="mt-10 border-t border-white/8 pt-6 text-center">
               <p className="text-[12px] uppercase tracking-[0.28em] text-white/35">
-                Deevee Official Store
+                Deevee Offizieller Book Shop
               </p>
             </div>
           </div>
