@@ -71,13 +71,21 @@ function formatPreviewMessage(value) {
 }
 
 function insertLink() {
-  const url = prompt("Link URL:");
+  let url = prompt("Link URL:");
   if (!url) return;
 
+  url = url.trim();
+
+  if (!/^https?:\/\//i.test(url)) {
+    url = `https://${url}`;
+  }
+
   const textarea = document.getElementById("newsletter-message");
+  if (!textarea) return;
+
   const start = textarea.selectionStart;
   const end = textarea.selectionEnd;
-  const selectedText = message.slice(start, end) || "Link";
+  const selectedText = message.slice(start, end) || "hier";
 
   const markdownLink = `[${selectedText}](${url})`;
 
@@ -85,6 +93,14 @@ function insertLink() {
     message.slice(0, start) + markdownLink + message.slice(end);
 
   setMessage(nextMessage);
+
+  requestAnimationFrame(() => {
+    textarea.focus();
+    textarea.setSelectionRange(
+      start + markdownLink.length,
+      start + markdownLink.length,
+    );
+  });
 }
 
   async function handleSendNewsletter(e) {
