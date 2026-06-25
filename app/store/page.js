@@ -729,7 +729,7 @@ export default function HeartbeatStorePage() {
   <p
     className={`${ibmPlexSerif.className} mt-3 text-[16px] leading-[1.7] text-white/78`}
   >
-    Dieses Buch enthält Extreme Gewalt, Tod, psychische Erkrankungen,
+    Dieses Buch enthält extreme Gewalt, Tod, psychische Erkrankungen,
     Entführung, Stalking, Mord, Panikattacken, emotionalen Missbrauch,
     Gaslighting, Vernachlässigung von Kindern sowie blutige oder grafische
     Gewalt.
