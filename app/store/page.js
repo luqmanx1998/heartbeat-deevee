@@ -1002,7 +1002,7 @@ und wird anschließend versendet.
                       },
                       {
                         title: "Romantische Spannung",
-                        text: "Kein hektisches Tempo – sondern langsames Knistern mit echtem Sog.",
+                        text: "Kein hektisches Tempo - sondern langsames Knistern mit echtem Sog.",
                       },
                       {
                         title: "Starker Reihenauftakt",
