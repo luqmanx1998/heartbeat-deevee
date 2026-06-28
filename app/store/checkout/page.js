@@ -100,6 +100,9 @@ export default function CustomCheckoutPage() {
   const shippingCost = cart.length > 0 ? SHIPPING_COST : 0;
   const total = subtotal + shippingCost;
 
+  const productsLoaded =
+  cart.length === 0 || cart.every((item) => productsById[item.id]);
+
   async function createPaymentIntent() {
   setOrderLoading(true);
   setErrorMessage("");
@@ -236,12 +239,16 @@ export default function CustomCheckoutPage() {
               <div className="space-y-3">
                 <div className="flex justify-between text-white/45">
                   <span>Zwischensumme</span>
-                  <span>€{subtotal.toFixed(2)}</span>
+                  <span>
+                    {productsLoaded ? `€${subtotal.toFixed(2)}` : "Wird geladen..."}
+                  </span>
                 </div>
 
-                <div className="flex justify-between text-white/45">
+               <div className="flex justify-between text-white/45">
                   <span>Versand</span>
-                  <span>€{shippingCost.toFixed(2)}</span>
+                  <span>
+                    {productsLoaded ? `€${shippingCost.toFixed(2)}` : "Wird geladen..."}
+                  </span>
                 </div>
 
                 <div className="flex justify-between text-white/45">
@@ -256,9 +263,11 @@ export default function CustomCheckoutPage() {
                 </p>
 
                 <p className="text-[42px] font-semibold tracking-[-0.02em]">
-                  €{Number(serverTotal ?? total).toFixed(2)}
-                </p>
-              </div>
+              {productsLoaded
+                ? `€${Number(serverTotal ?? total).toFixed(2)}`
+                : "Wird geladen..."}
+            </p>
+                          </div>
             </div>
           </div>
         </section>
