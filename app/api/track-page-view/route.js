@@ -27,6 +27,22 @@ export async function POST(request) {
 
     const userAgent = request.headers.get("user-agent") || null;
 
+    const THIRTY_MINUTES_AGO = new Date(Date.now() - 1000 * 60 * 30).toISOString();
+
+const { data: recentView, error: recentViewError } = await supabaseAdmin
+  .from("page_views")
+  .select("id")
+  .eq("visitor_id", visitorId)
+  .eq("page_type", pageType)
+  .gte("created_at", THIRTY_MINUTES_AGO)
+  .maybeSingle();
+
+    if (recentViewError) throw recentViewError;
+
+    if (recentView) {
+    return NextResponse.json({ success: true, skipped: true });
+    }
+
     const { error } = await supabaseAdmin.from("page_views").insert({
       path,
       page_type: pageType,
