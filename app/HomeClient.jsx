@@ -20,6 +20,7 @@ import ReadySection from "./components/ReadySection";
 import FloatingMenu from "./components/FloatingMenu";
 import { FiInstagram } from "react-icons/fi";
 import { SiTiktok } from "react-icons/si";
+import PageViewTracker from "./components/PageViewTracker";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -412,6 +413,7 @@ export default function Home() {
 
   return (
     <>
+      <PageViewTracker pageType="homepage" />
       <SmoothScroll />
       <FloatingMenu
         ibmPlexSerif={ibmPlexSerif}

@@ -9,6 +9,7 @@ import { createClient } from "../lib/supabase/client";
 import Link from "next/link";
 import { ShoppingBag, Menu } from "lucide-react";
 import StoreLoading from "../components/StoreLoading";
+import PageViewTracker from "../components/PageViewTracker";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
@@ -384,6 +385,7 @@ export default function HeartbeatStorePage() {
 }
   return (
     <>
+    <PageViewTracker pageType="store" />
       {showLoginModal && (
         <LoginModal
           ibmPlexSerif={ibmPlexSerif}
