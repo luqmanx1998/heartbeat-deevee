@@ -39,9 +39,22 @@ export default function PageViewTracker({ pageType }) {
         utmContent: searchParams.get("utm_content"),
         utmTerm: searchParams.get("utm_term"),
       }),
-    }).catch((error) => {
-      console.error("Page view tracking failed:", error);
-    });
+    })
+      .then(() => {
+        const hasUtm =
+          searchParams.get("utm_source") ||
+          searchParams.get("utm_medium") ||
+          searchParams.get("utm_campaign") ||
+          searchParams.get("utm_content") ||
+          searchParams.get("utm_term");
+
+        if (hasUtm) {
+          window.history.replaceState({}, "", window.location.pathname);
+        }
+      })
+      .catch((error) => {
+        console.error("Page view tracking failed:", error);
+      });
   }, [pathname, searchParams, pageType]);
 
   return null;
