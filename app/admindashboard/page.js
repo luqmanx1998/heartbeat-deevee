@@ -185,6 +185,11 @@ export default function AdminDashboardPage() {
                 label="Emails"
                 font2={font2}
               />
+              <ActionLink 
+                href="admindashboard/metric"
+                label="Metrics"
+                font2={font2}
+              />
             </div>
           </div>
         </section>
