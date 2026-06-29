@@ -186,7 +186,7 @@ export default function AdminDashboardPage() {
                 font2={font2}
               />
               <ActionLink 
-                href="admindashboard/metric"
+                href="admindashboard/metrics"
                 label="Metrics"
                 font2={font2}
               />
