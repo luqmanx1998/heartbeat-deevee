@@ -5,6 +5,9 @@ const font2 = localFont({
   src: "../../fonts/NeueMontreal-Regular.woff2",
 });
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function Page() {
   const since = new Date();
   since.setDate(since.getDate() - 30);
