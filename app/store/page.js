@@ -3,7 +3,7 @@
 import localFont from "next/font/local";
 import { IBM_Plex_Serif } from "next/font/google";
 import Image from "next/image";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { Suspense, useEffect, useRef, useState, useMemo } from "react";
 import LoginModal from "../components/LoginModal";
 import { createClient } from "../lib/supabase/client";
 import Link from "next/link";
@@ -385,8 +385,10 @@ export default function HeartbeatStorePage() {
 }
   return (
     <>
-    <PageViewTracker pageType="store" />
-      {showLoginModal && (
+    <Suspense fallback={null}>
+      <PageViewTracker pageType="store" />
+    </Suspense>
+          {showLoginModal && (
         <LoginModal
           ibmPlexSerif={ibmPlexSerif}
           font2={font2}

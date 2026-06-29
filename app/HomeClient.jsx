@@ -4,7 +4,7 @@ import Image from "next/image";
 import "./globals.css";
 import localFont from "next/font/local";
 import { IBM_Plex_Serif } from "next/font/google";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import AlbumLightbox from "./components/AlbumLightbox";
@@ -413,7 +413,9 @@ export default function Home() {
 
   return (
     <>
-      <PageViewTracker pageType="homepage" />
+      <Suspense fallback={null}>
+        <PageViewTracker pageType="homepage" />
+      </Suspense>
       <SmoothScroll />
       <FloatingMenu
         ibmPlexSerif={ibmPlexSerif}
