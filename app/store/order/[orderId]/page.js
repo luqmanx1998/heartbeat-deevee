@@ -246,7 +246,7 @@ export default function GuestOrderPage() {
                           onClick={() => setShowCancelConfirm(true)}
                           className="mt-5 w-full rounded-full border border-red-300/25 bg-red-950/40 px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-red-100 transition hover:bg-red-900/50 cursor-pointer"
                         >
-                          Bestellung stornieren
+                          Vertrag widerrufen
                         </button>
                       </>
                     )}
