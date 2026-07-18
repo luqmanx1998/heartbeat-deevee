@@ -752,10 +752,7 @@ und wird anschließend versendet.
   <p
     className={`${ibmPlexSerif.className} mt-3 text-[16px] leading-[1.7] text-white/78`}
   >
-    Dieses Buch enthält extreme Gewalt, Tod, psychische Erkrankungen,
-    Entführung, Stalking, Mord, Panikattacken, emotionalen Missbrauch,
-    Gaslighting, Vernachlässigung von Kindern sowie blutige oder grafische
-    Gewalt.
+   Dieses Buch enthält Gewalt, Tod, Mord, Entführung, Stalking, Panikattacken, psychischen Belastungen, emotionalem Missbrauch, Gaslighting, Vernachlässigung von Kindern, blutigen Kampfszenen.
   </p>
 </div>
 
