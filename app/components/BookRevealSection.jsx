@@ -243,7 +243,7 @@ export default function BookRevealSection({
           </p>
 
           <div className="mt-7 flex flex-wrap justify-center gap-3 lg:justify-start">
-            {["Dark Romantasy", "Magische Welt", "Slow Burn"].map((tag) => (
+            {["Romantasy", "Magische Welt", "Slow Burn"].map((tag) => (
               <span
                 key={tag}
                 className={`${font2.className} reveal-line rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white/70 transition duration-300 hover:border-white/20 hover:bg-white/[0.07] hover:text-white/90`}

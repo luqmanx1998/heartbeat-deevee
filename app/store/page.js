@@ -38,7 +38,7 @@ export default function HeartbeatStorePage() {
     price: "€16.99",
     badge: "Band 1 der Reihe",
     description:
-      "Ein düster-romantischer Fantasyroman über Geheimnisse, Intrigen und Drama. Folge Kylie in eine fremde Welt, in der Magie real ist, Vertrauen tödlich und Liebe dein Untergang sein kann.",
+      "Ein düster-romantischer Fantasyroman über Geheimnisse, Intrigen und Verrat. Folge Kylie in eine fremde Welt, in der Magie real ist, Vertrauen tödlich und Liebe dein Untergang sein kann.",
     longDescription: [
       "Kylie glaubte, sie sei ein ganz normales Mädchen. Bis zu dem Tag, an dem ihre Schwester spurlos verschwindet und die Wahrheit ihre Welt zerreißt. Magische Wesen sind real. Und Kylie ist tiefer in ihrer Welt verstrickt, als sie je hätte ahnen können.",
       "Auf der Suche nach ihrer Schwester betritt sie die andere Seite, ein Reich aus tödlicher Magie, uralten Bündnissen und Intrigen, die niemals in Vergessenheit geraten sind. Doch je näher sie der Wahrheit kommt, desto mehr beginnt alles zu zerbrechen.",
